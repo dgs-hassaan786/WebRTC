@@ -1,6 +1,17 @@
-﻿
+﻿@using System.Security.Claims;
+@using System.Linq;
 @{
     ViewBag.Title = "Manage";
+
+    string email = "", name = "";
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var user = User as ClaimsPrincipal;
+        var claims = user.Claims.ToList();
+        email = User.Identity.Name;
+        name = claims.Where(x => x.Type.Equals("Name")).FirstOrDefault().Value;
+    }
 }
 
 <h2>Manage</h2>
@@ -10,3 +21,12 @@
 </div>
 
 
+
+@section scripts {
+    <script src="~/core/signalR/hubProvider.js"></script>
+    <script>
+        debugger;
+        var hubConnection = new SignalRProvider({ Name: '@name', email: '@email', Status: 'Login' });
+        //hubConnection.startListner();
+    </script>
+}

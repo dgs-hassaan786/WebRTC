@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Security.Claims;
-using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -19,6 +17,10 @@ namespace DGSConsole.Agent
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
-        }
+
+            GlobalHost.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(110);
+            GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(30);
+            GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(10);
+        }        
     }
 }

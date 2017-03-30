@@ -1,4 +1,6 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNet.SignalR;
+using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 
@@ -10,7 +12,10 @@ namespace DGSConsole.Agent
         public void Configuration(IAppBuilder app)
         {
             //ConfigureAuth(app);
-            ConfigureAuthorizationServer(app);            
+            ConfigureAuthorizationServer(app);
+            //MapSignalR(app);
+
+            app.MapSignalR();
         }
 
         private static void ConfigureAuthorizationServer(IAppBuilder app)
@@ -21,6 +26,21 @@ namespace DGSConsole.Agent
                 AuthenticationType = "BACCookies",
                 CookieName = "BACCookies",
                 LoginPath = new PathString("/Account/login")
+            });
+        }
+
+
+        private void MapSignalR(IAppBuilder app)
+        {
+            app.Map("/signalr", map =>
+            {
+                map.UseCors(CorsOptions.AllowAll);
+                var hubConfiguration = new HubConfiguration
+                {
+                    EnableJSONP = true,
+                    EnableDetailedErrors = true
+                };
+                map.RunSignalR(hubConfiguration);
             });
         }
     }

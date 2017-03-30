@@ -1,11 +1,18 @@
-﻿using DGSConsole.Agent.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 using System.Threading.Tasks;
+using DGSConsole.Agent.ViewModels;
 
 namespace DGSConsole.Agent.App_Start
 {
-    public class CommunicationHub : Hub
-    {       
+    [HubName("consoleHub")]
+    public class ConsoleHub : Hub
+    {
+
         public override Task OnConnected()
         {
             ConnectionManager.AddAgent(Context);
@@ -22,6 +29,6 @@ namespace DGSConsole.Agent.App_Start
         {
             //ConnectionManager.AddAgent(Context);
             return base.OnReconnected();
-        }        
+        }
     }
 }
