@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace SignalRChat.Controllers
+namespace DGSConsole.Agent.Controllers
 {
     public class HomeController : Controller
     {
@@ -13,6 +13,7 @@ namespace SignalRChat.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -20,14 +21,26 @@ namespace SignalRChat.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
             return View();
         }
+
+
         public ActionResult Chat()
         {
+            ViewBag.Message = "Chat";
+
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult Manage()
+        {
+
             return View();
         }
     }

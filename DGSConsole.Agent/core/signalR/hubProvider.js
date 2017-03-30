@@ -18,7 +18,8 @@
         chat.connection.qs = onConnected();
 
         $.connection.hub.start().done(function () {
-            console.log('hub connected')
+            chat.server.hello('hello');
+            console.log('hub connected');
         });      
     })(); 
 

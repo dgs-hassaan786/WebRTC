@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Web;
 using Microsoft.AspNet.SignalR;
-namespace SignalRChat
+using DGSConsole.Agent.ViewModels;
+
+namespace DGSConsole.Agent
 {
     public class ChatHub : Hub
     {
@@ -11,10 +13,14 @@ namespace SignalRChat
             Clients.All.addNewMessageToPage(name, message);
         }
 
+        public void Hello(string msg)
+        {
+        }
+
+
         public override System.Threading.Tasks.Task OnConnected()
         {
-            var context = Context;
-            var name = context.QueryString["Name"];
+            ConnectionManager.AddAgent(Context);
             return base.OnConnected();
         }
     }

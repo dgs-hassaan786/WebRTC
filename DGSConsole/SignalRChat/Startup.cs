@@ -1,7 +1,9 @@
 ﻿using Owin;
 using Microsoft.Owin;
-[assembly: OwinStartup(typeof(SignalRChat.Startup))]
-namespace SignalRChat
+using Microsoft.Owin.Security.Cookies;
+
+[assembly: OwinStartup(typeof(DGSConsole.Agent.Startup))]
+namespace DGSConsole.Agent
 {
     public class Startup
     {
@@ -9,6 +11,18 @@ namespace SignalRChat
         {
             // Any connection or hub wire up and configuration should go here
             app.MapSignalR();
+            ConfigureAuthorizationServer(app);
+        }
+
+        private static void ConfigureAuthorizationServer(IAppBuilder app)
+        {
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = "DGSConsoleCookies",
+                CookieName = "DGSConsoleCookies",
+                LoginPath = new PathString("/Account/login")
+            });
         }
     }
 }

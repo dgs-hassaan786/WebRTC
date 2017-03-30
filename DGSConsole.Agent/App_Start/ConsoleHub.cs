@@ -13,6 +13,10 @@ namespace DGSConsole.Agent.App_Start
     public class ConsoleHub : Hub
     {
 
+        public void Hello(string msg)
+        {
+        }
+
         public override Task OnConnected()
         {
             ConnectionManager.AddAgent(Context);
