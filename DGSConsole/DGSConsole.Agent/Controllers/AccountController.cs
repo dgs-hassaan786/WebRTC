@@ -83,6 +83,8 @@ namespace DGSConsole.Agent.Controllers
             {
                 List<Claim> claims = new List<Claim>();
                 claims.Add(new Claim("Role", result.Role));
+                claims.Add(new Claim("Name", result.Name));
+                claims.Add(new Claim("Email", result.Email));
                 var properties = new Microsoft.Owin.Security.AuthenticationProperties
                 {
                     IsPersistent = false,
@@ -90,11 +92,12 @@ namespace DGSConsole.Agent.Controllers
                     ExpiresUtc = DateTimeOffset.Now.AddHours(8),
                     IssuedUtc = DateTimeOffset.Now
                 };
-                var id = new ClaimsIdentity(claims.AsEnumerable(), "BACCookies", "email", "role");
+                var id = new ClaimsIdentity(claims.AsEnumerable(), "BACCookies", "email" , result.Role);
                 id.AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", "Admin"));
                 id.AddClaim(new Claim("http:/esscontrolservice/2010/07/claims/identityprovider/schemas.microsoft.com/acc", "Admin"));
                 Request.GetOwinContext().Authentication.SignIn(properties, id);
-                result.Status = "Login";
+                result.Status = "Login";                
+
                 AgentDataProvider.AddUser(result);
                 return RedirectToLocal(returnUrl);
             }
@@ -410,8 +413,31 @@ namespace DGSConsole.Agent.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Request.GetOwinContext().Authentication.SignOut("BACCookies");
+            ExpireCache(true);
             return RedirectToAction("Index", "Home");
+        }
+
+        private void ExpireCache(bool noStore = false)
+        {
+            try
+            {
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
+                Response.Cache.SetNoStore();
+
+                if (noStore)
+                {
+                    Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                    Response.AddHeader("Pragma", "no-cache");
+                    Response.AddHeader("Expires", "0");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
         }
 
         //

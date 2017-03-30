@@ -8,11 +8,13 @@ namespace DGSConsole.Agent.Controllers
 {
     public class HomeController : Controller
     {
+
         public ActionResult Index()
         {
             return View();
         }
 
+        [Authorize]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -20,6 +22,7 @@ namespace DGSConsole.Agent.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
@@ -27,6 +30,7 @@ namespace DGSConsole.Agent.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Manage()
         {
 
