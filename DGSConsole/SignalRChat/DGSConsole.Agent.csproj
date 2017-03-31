@@ -174,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="core\libs\chzn\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -197,7 +198,48 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Custom.min.css" />
     <Content Include="core\app.js" />
+    <Content Include="core\libs\angular-pageslide\angular-pageslide-directive.js" />
+    <Content Include="core\libs\angular-pageslide\angular-pageslide-directive.min.js" />
+    <Content Include="core\libs\angular\angular-animate.js" />
+    <Content Include="core\libs\angular\angular-animate.min.js" />
+    <Content Include="core\libs\angular\angular-mocks.js" />
+    <Content Include="core\libs\angular\angular-resource.js" />
+    <Content Include="core\libs\angular\angular-resource.min.js" />
+    <Content Include="core\libs\angular\angular-route.js" />
+    <Content Include="core\libs\angular\angular-route.min.js" />
+    <Content Include="core\libs\angular\angular-sanitize.js" />
+    <Content Include="core\libs\angular\angular-sanitize.min.js" />
+    <Content Include="core\libs\angular\angular-ui-min.js" />
+    <Content Include="core\libs\angular\angular-ui-router.min.js" />
+    <Content Include="core\libs\angular\angular-ui.js" />
+    <Content Include="core\libs\angular\angular.js" />
+    <Content Include="core\libs\angular\angular.min.js" />
+    <Content Include="core\libs\classes\allClasses.js" />
+    <Content Include="core\libs\classes\models.js" />
+    <Content Include="core\libs\daterangepicker\daterangepicker.js" />
+    <Content Include="core\libs\fileupload\ng-file-upload-all.js" />
+    <Content Include="core\libs\htmlcanvas\html2canvas.js" />
+    <Content Include="core\libs\htmlcanvas\html2canvas.svg.js" />
+    <Content Include="core\libs\jquery-ui\jquery-ui.js" />
+    <Content Include="core\libs\jquery-ui\jquery-ui.min.js" />
+    <Content Include="core\libs\Lodash\lodash.js" />
+    <Content Include="core\libs\mictest\Fr.voice.js" />
+    <Content Include="core\libs\mictest\record.js" />
+    <Content Include="core\libs\mictest\recorder.js" />
+    <Content Include="core\libs\moment\moment.js" />
+    <Content Include="core\libs\notify\angular-toastr.tpls.js" />
+    <Content Include="core\libs\notify\jquery.toast.js" />
+    <Content Include="core\libs\notify\waitingDialog.js" />
+    <Content Include="core\libs\seleci\angular-bootstrap-toggle.js" />
+    <Content Include="core\libs\seleci\ng-seleci.js" />
+    <Content Include="core\libs\seleci\seleci.js" />
+    <Content Include="core\libs\smart-table\dirPagination.js" />
+    <Content Include="core\libs\smart-table\lrDragNDrop.js" />
+    <Content Include="core\libs\smart-table\smart-table.js" />
+    <Content Include="core\libs\smart-table\smart-table.min.js" />
+    <Content Include="core\libs\smart-table\sortable.js" />
     <Content Include="core\signalR\hubProvider.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -214,6 +256,9 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="core\libs\angular\angular-animate.min.js.map" />
+    <Content Include="core\libs\angular\angular-sanitize.min.js.map" />
+    <Content Include="core\libs\angular\angular.min.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -250,6 +295,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Manage.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Home\List.cshtml" />
+    <Content Include="Views\Home\ChatRoom.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
