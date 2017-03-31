@@ -40,8 +40,8 @@ namespace DGSConsole.Agent
                       //    "~/Scripts/jquery.tabSlideOut.v1.3.js"
                       ));
             bundles.Add(new ScriptBundle("~/bundles/RSignal").Include(
-                   "~/Scripts/jquery.signalR-2.2.1.js",
-                    "~/signalr/hubs"
+                   "~/Scripts/jquery.signalR-2.2.1.js"
+                   
                    ));
         }
 

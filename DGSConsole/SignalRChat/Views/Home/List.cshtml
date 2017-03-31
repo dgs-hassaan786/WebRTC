@@ -3,6 +3,7 @@
  }
  <h2>@ViewBag.Title</h2>
  <h3>@ViewBag.Message</h3>
+
  <div >
      <div data-ng-controller="SuperAdminController" class="container">       
  
@@ -19,8 +20,9 @@
                          <tr dir-paginate="row in userDisplayList | itemsPerPage:options.pagesize" current-page="options.page">
                              <td ng-repeat="col in columns"  ng-bind="row[col.field]"></td>
                              <td>
-                                 <button type="button" id="btnEdit-{{$index}}" data-ng-click="edit(row)" class="btn btn-primary"><i class="fa fa-pencil-square-o fa-fw"></i>Edit</button>
-                                 <button type="button" id="btnDelete-{{$index}}" data-ng-click="showconfirm(row)"  class="btn btn-danger"><i class="fa fa-trash-o fa-fw"></i>Delete</button>
+                                 <button type="button" id="btnEdit-{{$index}}" data-ng-click="gotoChatroom()" class="btn btn-primary"><i class="fa fa-pencil-square-o fa-fw"></i>Chat</button>
+                                 <button type="button" id="btnDelete-{{$index}}" data-ng-click="gotoCall()"  class="btn btn-success"><i class="fa fa-trash-o fa-fw"></i>Call</button>
+                                 <button type="button" id="btnDelete-{{$index}}" data-ng-click="gotoViewscreen()" class="btn btn-default"><i class="fa fa-trash-o fa-fw"></i>View Screen</button>
                              </td>
                          </tr>
                          <tr ng-show="userDisplayList.length<=0">
