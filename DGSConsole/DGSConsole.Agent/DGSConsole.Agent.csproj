@@ -265,10 +265,6 @@
     <Content Include="core\libs\smart-table\smart-table.js" />
     <Content Include="core\libs\smart-table\smart-table.min.js" />
     <Content Include="core\libs\smart-table\sortable.js" />
-    <Content Include="core\modules\Chat\Controller\userAgentController.js" />
-    <Content Include="core\modules\Chat\Controller\userAgentModule.js" />
-    <Content Include="core\modules\Chat\signalRApp.js" />
-    <Content Include="core\modules\Chat\startChat.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
