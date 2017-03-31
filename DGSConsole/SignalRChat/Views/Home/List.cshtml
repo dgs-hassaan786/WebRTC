@@ -1,0 +1,53 @@
+﻿@{
+     ViewBag.Title = "List User";
+ }
+ <h2>@ViewBag.Title</h2>
+ <h3>@ViewBag.Message</h3>
+ <div >
+     <div data-ng-controller="SuperAdminController" class="container">       
+ 
+         <div class="row">
+             <div class="user-table">
+                 <table id="logTable" class="data-table" st-table="userList" st-safe-src="userDisplayList">
+                     <thead>
+                         <tr>
+                             <th ng-repeat="col in columns" ng-bind="col.header"></th>
+                             <th>Action</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         <tr dir-paginate="row in userDisplayList | itemsPerPage:options.pagesize" current-page="options.page">
+                             <td ng-repeat="col in columns"  ng-bind="row[col.field]"></td>
+                             <td>
+                                 <button type="button" id="btnEdit-{{$index}}" data-ng-click="edit(row)" class="btn btn-primary"><i class="fa fa-pencil-square-o fa-fw"></i>Edit</button>
+                                 <button type="button" id="btnDelete-{{$index}}" data-ng-click="showconfirm(row)"  class="btn btn-danger"><i class="fa fa-trash-o fa-fw"></i>Delete</button>
+                             </td>
+                         </tr>
+                         <tr ng-show="userDisplayList.length<=0">
+                             <td colspan="20">No record found</td>
+                         </tr>
+                     </tbody>
+                 </table>
+ 
+                
+             </div>
+             <div>
+                 <div class="number-pagination">
+                     <dir-pagination-controls max-size="5"
+                                              direction-links="true"
+                                              auto-hide="false"
+                                              boundary-links="true">
+                     </dir-pagination-controls>
+ 
+                 </div>
+                 <div class="Page-size">
+                     <div class="pagecount-left">Page size</div>
+                     <div class="pagecount-right">
+                         <select style="display:block" ng-model="options.pagesize"
+                                 ng-options="obj as obj for obj in options.pagingOptions" />
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div> 
