@@ -33,6 +33,8 @@ var ngApp = (function (initializeApp) {
     });
 
 
+    app.service('')
+
 
 
     if (typeof initializeApp != undefined && typeof initializeApp === 'function') {
