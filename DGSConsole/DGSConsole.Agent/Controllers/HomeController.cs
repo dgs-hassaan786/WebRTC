@@ -37,6 +37,10 @@ namespace DGSConsole.Agent.Controllers
 
             return View();
         }
+        public ActionResult ChatRoom()
+        {
+            return View();
+        }
 
     }
 }
