@@ -22,7 +22,7 @@ namespace DGSConsole.Agent.App_Start
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            //ConnectionManager.RemoveAgent(Context);
+            ConnectionManager.RemoveAgent(Context);
             return base.OnDisconnected(stopCalled);
         }
 
@@ -68,7 +68,35 @@ namespace DGSConsole.Agent.App_Start
                     return false;
                 }
             }
+            internal static void RemoveAgent(HubCallerContext context)
+            {
+                try
+                {
+                    AgentLeg agent = new AgentLeg();
+                    agent.Email = context.QueryString["Email"];
+                    agent.Name = context.QueryString["Name"];
+                    agent.Status = context.QueryString["Status"];
+                    var connId = context.ConnectionId;                    
+                    if (_Cache.ContainsKey(agent.Email))
+                    {
+                        if (_Cache[agent.Email].ConnectionIds.Count == 1)
+                        {
+                            _Cache.TryRemove(agent.Email,out agent);
+                        }
+                        else
+                        {
+                            if (_Cache[agent.Email].ConnectionIds.FirstOrDefault(x => x.Equals(connId)) != null)
+                            {
+                                _Cache[agent.Email].ConnectionIds.Remove(connId);
+                            }
+                        }                       
+                    }
+                }
+                catch (Exception)
+                {
 
+                }
+            }
         }
 
 
