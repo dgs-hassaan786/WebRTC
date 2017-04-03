@@ -12,61 +12,69 @@
         email = User.Identity.Name;
         name = claims.Where(x => x.Type.Equals("Name")).FirstOrDefault().Value;
     }
+
+    var ipAddress = ViewBag.IpAddress;
 }
 <script type='text/javascript'>
     window.emailID = '@email';
+    window.ipAddress = '@ipAddress';
 </script>
 
 
 <h2>@ViewBag.Title</h2>
 <h3>@ViewBag.Message</h3>
 
-<div>
-    <div data-ng-controller="SuperAdminController" class="container">
-        <video id="localVideo" autoplay style="display:none"></video>
-        <video id="remoteVideo" autoplay style="display:none"></video>
-        <div class="row">
-            @*<button id="loadUser" class="btn btn-info">Load Users</button></br></br>*@
-            <div class="user-table" ng-show="dataLoaded">
-                <table id="logTable" class="data-table" st-table="userList" st-safe-src="userDisplayList">
-                    <thead>
-                        <tr>
-                            <th ng-repeat="col in columns" ng-bind="col.header"></th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr dir-paginate="row in userDisplayList | itemsPerPage:options.pagesize" current-page="options.page">
-                            <td ng-repeat="col in columns" ng-bind="row[col.field]"></td>
-                            <td>
-                                <button type="button" id="btnEdit-{{$index}}" data-ng-click="gotoChatroom()" class="btn btn-primary"><i class="fa fa-pencil-square-o fa-fw"></i>Chat</button>
-                                <button type="button" id="btnCall-{{$index}}" data-ng-disabled="disableControl(row['Status'])" data-ng-click="gotoCall(row)" class="btn btn-success"><i class="fa fa-trash-o fa-fw"></i>Call</button>
-                                <button type="button" id="btnViewScreen-{{$index}}" data-ng-disabled="disableControl(row['Status'])" data-ng-click="gotoViewscreen(row)" class="btn btn-default"><i class="fa fa-trash-o fa-fw"></i>View Screen</button>
-                            </td>
-                        </tr>
-                        <tr ng-show="userDisplayList.length<=0">
-                            <td colspan="20">No record found</td>
-                        </tr>
-                    </tbody>
-                </table>
 
+<div data-ng-controller="SuperAdminController" class="container">
+    <video id="localVideo" autoplay style="display:none"></video>
+    <video id="remoteVideo" autoplay style="display:none"></video>
+    <div class="row">
+        @*<button id="loadUser" class="btn btn-info">Load Users</button></br></br>*@
+        <div class="user-table" ng-show="dataLoaded">
+            <table id="logTable" class="data-table" st-table="userList" st-safe-src="userDisplayList">
+                <thead>
+                    <tr>
+                        <th ng-repeat="col in columns" ng-bind="col.header"></th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr dir-paginate="row in userDisplayList | itemsPerPage:options.pagesize" current-page="options.page">
+                        <td ng-repeat="col in columns" ng-bind="row[col.field]"></td>
+                        <td>
+                            <button type="button" id="btnEdit-{{$index}}" data-ng-click="gotoChatroom()" class="btn btn-success"><i class="glyphicon glyphicon-pencil" ></i> Chat</button>
+                            <div class="btn-group">
+                                <button type="button" id="btnCall-{{$index}}" ng-disabled="disableControl(row['Status'])" data-ng-click="gotoCall(row)" class="btn btn-primary" style="padding-left:5px !important" ><i class="glyphicon glyphicon-earphone "   ></i> Call</button>
+                                <button type="button" id="btnCall-{{$index}}" ng-disabled="disableControl(row['Status'])" data-ng-click="gotoVideoCall(row)" class="btn btn-warning" style="padding-left:5px !important"><i class="glyphicon glyphicon-facetime-video"  ></i> Video Call</button>                                
+                                <button type="button" id="btnDisconnectCall-{{$index}}" ng-disabled="disableCall" data-ng-click="endCall(row)" class="btn btn-danger" style="padding-left:5px !important"><i class="glyphicon glyphicon-remove" style="padding-left:5px !important" ></i> End Call</button>
+                            </div>
+                            
+                            
+                            <button type="button" id="btnViewScreen-{{$index}}" ng-disabled="disableControl(row['Status'])" data-ng-click="gotoViewscreen(row)" class="btn btn-info"><i class="glyphicon glyphicon-screenshot" ></i> View Screen</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="userDisplayList.length<=0">
+                        <td colspan="20">No record found</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+        <div>
+            <div class="number-pagination">
+                <dir-pagination-controls max-size="5"
+                                         direction-links="true"
+                                         auto-hide="false"
+                                         boundary-links="true">
+                </dir-pagination-controls>
 
             </div>
-            <div>
-                <div class="number-pagination">
-                    <dir-pagination-controls max-size="5"
-                                             direction-links="true"
-                                             auto-hide="false"
-                                             boundary-links="true">
-                    </dir-pagination-controls>
-
-                </div>
-                <div class="Page-size">
-                    <div class="pagecount-left">Page size</div>
-                    <div class="pagecount-right">
-                        <select style="display:block" ng-model="options.pagesize"
-                                ng-options="obj as obj for obj in options.pagingOptions" />
-                    </div>
+            <div class="Page-size">
+                <div class="pagecount-left">Page size</div>
+                <div class="pagecount-right">
+                    <select style="display:block" ng-model="options.pagesize"
+                            ng-options="obj as obj for obj in options.pagingOptions" />
                 </div>
             </div>
         </div>

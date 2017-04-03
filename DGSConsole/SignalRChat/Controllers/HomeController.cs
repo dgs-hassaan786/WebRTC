@@ -45,7 +45,8 @@ namespace DGSConsole.Agent.Controllers
         }
         public ActionResult List()
         {
-
+            string ip = Request.UserHostAddress;
+            ViewBag.IpAddress = ip;
             return View();
         }
         public ActionResult ChatRoom()

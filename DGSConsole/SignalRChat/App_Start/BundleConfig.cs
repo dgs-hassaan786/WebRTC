@@ -19,6 +19,11 @@ namespace DGSConsole.Agent
             RegisterLibBundles(bundles);
 
             RegisterModulesBundles(bundles);
+
+            foreach (var bundle in BundleTable.Bundles)
+            {
+                bundle.Transforms.Clear();
+            }
         }
 
         private static void RegisterJqueryBundles(BundleCollection bundles)
@@ -40,8 +45,9 @@ namespace DGSConsole.Agent
                       //    "~/Scripts/jquery.tabSlideOut.v1.3.js"
                       ));
             bundles.Add(new ScriptBundle("~/bundles/RSignal").Include(
-                   "~/Scripts/jquery.signalR-2.2.1.js"
-                   
+                   "~/Scripts/jquery.signalR-2.2.1.js",
+                   "~/signalr/hubs",
+                   "~/core/signalR/hubProvider.js"                   
                    ));
         }
 
@@ -59,7 +65,8 @@ namespace DGSConsole.Agent
         {
             bundles.Add(new ScriptBundle("~/bundles/app/angular").Include(
                       "~/core/libs/angular/angular.js",
-                      "~/core/libs/angular/angular-animate.js"
+                      "~/core/libs/angular/angular-animate.js",
+                      "~/core/websocketConnection.js"
                       ));
         }
 

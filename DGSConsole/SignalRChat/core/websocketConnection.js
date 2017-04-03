@@ -1,11 +1,18 @@
-﻿function SocketHandler(email) {
+﻿function SocketHandler(emailAddress, wsIp) {
+    var email = emailAddress;
+    var websocketIp = 'ws://173.203.17.7:8172';
+
+    if (typeof wsIp != 'undefined' && wsIp != null && wsIp.indexOf('110.93') != -1)
+        websocketIp = 'ws://172.24.32.7:8172';
 
     var self = this;
     //our username
     var name, connectedUser, yourConn, stream, localVideo = document.querySelector('#localVideo'), remoteVideo = document.querySelector('#remoteVideo');;
 
+
+
     //connecting to our signaling server
-    var conn = new WebSocket('ws://172.24.32.7:8172');//   173.203.17.7:8172
+    var conn = new WebSocket(websocketIp);//   173.203.17.7:8172  'ws://172.24.32.7:8172'
 
     conn.onopen = function () {
         console.log("Connected to the signaling server");
@@ -42,7 +49,7 @@
         } catch (e) {
             console.log('Got error in message: ', e);
         }
-        
+
     };
 
     conn.onerror = function (err) {
@@ -76,7 +83,7 @@
         console.log('login successful');
     };
 
-    this.openAudioStream = function openAudioStream() {
+    self.openAudioStream = function openAudioStream(callback) {
 
         //**********************
         //Starting a peer connection
@@ -118,6 +125,10 @@
                 }
             };
 
+            if (typeof callback == 'function') {
+                callback();
+            }
+
         }, function (error) {
             console.log(error);
         });
@@ -142,31 +153,46 @@
 
     //when somebody sends us an offer
     function handleOffer(offer, name) {
-        connectedUser = name;
-        yourConn.setRemoteDescription(new RTCSessionDescription(offer));
 
-        //create an answer to an offer
-        yourConn.createAnswer(function (answer) {
-            yourConn.setLocalDescription(answer);
+        if (yourConn == null) {
+            self.openAudioStream(function () {
+                connectedUser = name;
+                yourConn.setRemoteDescription(new RTCSessionDescription(offer));
 
-            send({
-                type: "answer",
-                answer: answer
+                //create an answer to an offer
+                yourConn.createAnswer(function (answer) {
+                    yourConn.setLocalDescription(answer);
+
+                    send({
+                        type: "answer",
+                        answer: answer
+                    });
+
+                }, function (error) {
+                    alert("Error when creating an answer");
+                });
             });
+        }
 
-        }, function (error) {
-            alert("Error when creating an answer");
-        });
     };
 
     //when we got an answer from a remote user
     function handleAnswer(answer) {
-        yourConn.setRemoteDescription(new RTCSessionDescription(answer));
+        if (yourConn == null) {
+            self.openAudioStream(function () {
+                yourConn.setRemoteDescription(new RTCSessionDescription(answer));
+            });
+        }
+
     };
 
     //when we got an ice candidate from a remote user
     function handleCandidate(candidate) {
-        yourConn.addIceCandidate(new RTCIceCandidate(candidate));
+        if (yourConn == null) {
+            self.openAudioStream(function () {
+                yourConn.addIceCandidate(new RTCIceCandidate(candidate));
+            });
+        }
     };
 
     self.endCall = function () {
@@ -185,4 +211,5 @@
         yourConn.onaddstream = null;
     };
 
+    return self;
 }

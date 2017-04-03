@@ -25,10 +25,82 @@ var ngApp = (function (initializeApp) {
              $routeProvider.otherwise({ redirectTo: config.defaultRoutePaths });
          }*/
      }]);
-    app.controller('SuperAdminController', function ($scope, MethodProvider) {
+    // http methods
+    app.service('MethodProvider', ['$http', function ($http) {
+        var self = this;
 
-        var socketHandler = new SocketHandler(window.emailID);        
+        self.get = function (url) {
+            var obj = {
+                url: url,
+                method: 'GET',
+                async: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            return $http(obj);
+        };
 
+        self.getPagingData = function (url, pageNo, pageSize) {
+            var obj = {
+                url: url,
+                method: 'GET',
+                async: true,
+                params: { pageNo: pageNo, pageSize: pageSize },
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            return $http(obj);
+        };
+
+        self.post = function (url, data) {
+            var obj = {
+                url: url,
+                method: 'POST',
+                async: true,
+                data: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            return $http(obj);
+        };
+
+        self.put = function (url, data) {
+            var obj = {
+                url: url,
+                method: 'PUT',
+                async: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            if (typeof data != 'undefined' && data != null) {
+                obj.data = JSON.stringify(data);
+            }
+            return $http(obj);
+        };
+
+        self.delete = function (url) {
+            var obj = {
+                url: url,
+                method: 'POST',
+                async: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            return $http(obj);
+        };
+    }]);
+
+
+    app.controller('SuperAdminController', function ($scope) {        
+        $scope.disableCall = true;
+        var socketHandler = new SocketHandler(window.emailID,window.ipAddress);  // alert(data.host);
+                     
         $scope.Name = "Testing Angular";
         $scope.options = { page: 1, pagesize: 10, pagingOptions: [5, 10, 15, 20, 50, 100, 500, 1000] };
         $scope.columns = [{ header: 'Name', field: 'Name' }, { header: 'Email', field: 'Email' }, { header: 'Status', field: 'Status' }]
@@ -61,8 +133,16 @@ var ngApp = (function (initializeApp) {
         }
 
         $scope.gotoCall = function (data) {
-            socketHandler.openAudioStream();
-            socketHandler.connectOtherParty(data.Email);
+            socketHandler.openAudioStream(function () {
+                socketHandler.connectOtherParty(data.Email);
+            });
+            
+        }
+
+        $scope.gotoVideoCall = function (data) {
+            socketHandler.openAudioStream(function () {
+                socketHandler.connectOtherParty(data.Email);
+            });
         }
 
         $scope.endCall = function () {
@@ -70,7 +150,7 @@ var ngApp = (function (initializeApp) {
         }
   
         $scope.disableControl = function (data) {
-            //if (data == "Log out" ) {           
+            //if (data == "Log out" || disableCall) {           
             //        return true;             
             //}
             return false;
@@ -149,77 +229,7 @@ var ngApp = (function (initializeApp) {
         });
     });
 
-    // http methods
-    app.service('MethodProvider', ['$http', function ($http) {
-        var self = this;
-
-        self.get = function (url) {
-            var obj = {
-                url: url,
-                method: 'GET',
-                async: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            return $http(obj);
-        };
-
-        self.getPagingData = function (url, pageNo, pageSize) {
-            var obj = {
-                url: url,
-                method: 'GET',
-                async: true,
-                params: { pageNo: pageNo, pageSize: pageSize },
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            return $http(obj);
-        };
-
-        self.post = function (url, data) {
-            var obj = {
-                url: url,
-                method: 'POST',
-                async: true,
-                data: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            return $http(obj);
-        };
-
-        self.put = function (url, data) {
-            var obj = {
-                url: url,
-                method: 'PUT',
-                async: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-
-            if (typeof data != 'undefined' && data != null) {
-                obj.data = JSON.stringify(data);
-            }
-            return $http(obj);
-        };
-
-        self.delete = function (url) {
-            var obj = {
-                url: url,
-                method: 'POST',
-                async: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            return $http(obj);
-        };
-    }]);
-
+   
     if (typeof initializeApp != undefined && typeof initializeApp === 'function') {
         initializeApp();
     }
