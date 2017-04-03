@@ -44,6 +44,10 @@ var ngApp = (function (initializeApp) {
         { Name: 'Gill', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
         { Name: 'Dim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' }, ]
         $scope.userDisplayList = [].concat($scope.userList);
+        $scope.gotoChatroom = function () {
+           window.location.pathname="/Home/ChatRoom";
+        }
+  
     });
     app.controller('chatController', function ($scope) {
         $(document).ready(function () {
@@ -72,18 +76,17 @@ var ngApp = (function (initializeApp) {
                 ol.append('<li class="chat_bg" data-id="' + key + '" data-value="' + value + '">' + value + '</li>');
             });
             //Loading messages
-            chat_show.append('<p class="left-txt"><strong>' + list[0] + '</strong>: ' + $scope.sms[0].Message + '</br>' + '</p>');
-            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[0].Message + '</br>' + '</p>');
-            chat_show.append('<p class="left-txt"><strong>' + list[0] + '</strong>: ' + $scope.sms[1].Message + '</br>' + '</p>');
-            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[1].Message + '</br>' + '</p>');
-            chat_show.append('<p class="left-txt"><strong>' + list[0] + '</strong>: ' + $scope.sms[2].Message + '</br>' + '</p>');
-            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[2].Message + '</br>' + '</p>');
-            chat_show.append('<p class="left-txt"><strong>' + list[0] + '</strong>: ' + $scope.sms[3].Message + '</br>' + '</p>');
-            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[3].Message + '</br>' + '</p>');
-            chat_show.append('<p class="left-txt"><strong>' + list[0] + '</strong>: ' + $scope.sms[4].Message + '</br>' + '</p>');
-            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[4].Message + '</br>' + '</p>');
-            chat_show.append('<p class="left-txt"><strong>' + list[0] + '</strong>: ' + $scope.sms[5].Message + '</br>' + '</p>');
-            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[5].Message + '</br>' + '</p>');
+            chat_show.append('<p class="left-txt"><strong>' + list[0] + '</strong>: ' + $scope.sms[0].Message  + '</p>');
+            chat_show.append('<p class="pull-right "><strong>' + list[1] + '</strong>: ' + $scope.smsOut[0].Message + '</br>' + '</p>');
+            chat_show.append('<p class="left-txt"><strong>' + '</br>' + '</br>' + list[0] + '</strong>: ' + $scope.sms[1].Message + '</br>' + '</p>');
+            chat_show.append('<p class="pull-right "><strong>' + list[1] + '</strong>: ' + $scope.smsOut[1].Message + '</br>' + '</br>' + '</p>');
+            chat_show.append('<p class="left-txt"><strong>' + '</br>' + '</br>' + list[0] + '</strong>: ' + $scope.sms[2].Message + '</br>' + '</p>');
+            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[2].Message + '</br>' + '</br>' + '</p>');
+            chat_show.append('<p class="left-txt"><strong>' + '</br>' + '</br>' + list[0] + '</strong>: ' + $scope.sms[3].Message + '</br>' + '</p>');
+            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[3].Message + '</br>' + '</br>' + '</p>');
+            chat_show.append('<p class="left-txt"><strong>' + '</br>' + '</br>' + list[0] + '</strong>: ' + $scope.sms[4].Message + '</br>' + '</p>');
+            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[4].Message  + '</p>');
+           
             //On click add user in tab
             $(document).on("click", '.user_list li', function () {
                 var user_id = $(this).attr("data-id");

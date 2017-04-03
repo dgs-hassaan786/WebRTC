@@ -43,9 +43,12 @@
 
    
     @Scripts.Render("~/bundles/jquerycommon")
+    <script src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>
     @Scripts.Render("~/bundles/app/libs")
-    @Scripts.Render("~/bundles/app/core")    
-    <script src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>  
+    @Scripts.Render("~/bundles/app/core")
     @RenderSection("scripts", required: false)
+    
+  
+    
 </body>
 </html>
