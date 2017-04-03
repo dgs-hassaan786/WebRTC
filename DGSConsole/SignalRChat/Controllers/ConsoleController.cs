@@ -11,7 +11,7 @@ namespace DGSConsole.Agent.Controllers
     [RoutePrefix("api/v1")]
     public class ConsoleController : ApiController
     {
-        [Route("/users")]
+        [Route("users")]
         public IHttpActionResult Get()
         {
             try

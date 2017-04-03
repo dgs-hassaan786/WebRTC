@@ -24,7 +24,7 @@ var ngApp = (function (initializeApp) {
              $routeProvider.otherwise({ redirectTo: config.defaultRoutePaths });
          }*/
      }]);
-    app.controller('SuperAdminController', function ($scope) {
+    app.controller('SuperAdminController', function ($scope, MethodProvider) {
         $scope.Name = "Testing Angular";
         $scope.options = { page: 1, pagesize: 10, pagingOptions: [5, 10, 15, 20, 50, 100, 500, 1000] };
         $scope.columns = [{ header: 'Agent Information', field: 'Name' }, { header: 'Chat', field: 'Chat' }, { header: 'View Screen', field: 'Screen' }, { header: 'Call', field: 'Status' }];
@@ -46,6 +46,13 @@ var ngApp = (function (initializeApp) {
         $scope.userDisplayList = [].concat($scope.userList);
         $scope.gotoChatroom = function () {
            window.location.pathname="/Home/ChatRoom";
+        }
+
+
+        $scope.gotoCall = function (data) {
+
+
+
         }
   
     });

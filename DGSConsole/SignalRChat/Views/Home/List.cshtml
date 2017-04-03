@@ -21,8 +21,8 @@
                              <td ng-repeat="col in columns"  ng-bind="row[col.field]"></td>
                              <td>
                                  <button type="button" id="btnEdit-{{$index}}" data-ng-click="gotoChatroom()" class="btn btn-primary"><i class="fa fa-pencil-square-o fa-fw"></i>Chat</button>
-                                 <button type="button" id="btnDelete-{{$index}}" data-ng-click="gotoCall()"  class="btn btn-success"><i class="fa fa-trash-o fa-fw"></i>Call</button>
-                                 <button type="button" id="btnDelete-{{$index}}" data-ng-click="gotoViewscreen()" class="btn btn-default"><i class="fa fa-trash-o fa-fw"></i>View Screen</button>
+                                 <button type="button" id="btnCall-{{$index}}" data-ng-click="gotoCall(row)"  class="btn btn-success"><i class="fa fa-trash-o fa-fw"></i>Call</button>
+                                 <button type="button" id="btnViewScreen-{{$index}}" data-ng-click="gotoViewscreen(row)" class="btn btn-default"><i class="fa fa-trash-o fa-fw"></i>View Screen</button>
                              </td>
                          </tr>
                          <tr ng-show="userDisplayList.length<=0">
