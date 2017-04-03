@@ -146,5 +146,23 @@ namespace DGSConsole.Agent
 
             return base.OnDisconnected(stopCalled);
         }
+        public void OnDisconnected()
+        {
+            //ConnectionManager.RemoveAgent(Context);
+         
+        }
+        public void newConnection(string emailID)
+        {            
+            var allUsers = AgentDataProvider.GetAllAgentsData();
+            var currentStatus = AgentDataProvider.GetStatus(emailID)!=null? AgentDataProvider.GetStatus(emailID):null;
+            foreach (var user in allUsers)
+            {
+                if (user.Email ==emailID && currentStatus!=null)
+                {
+                    user.Status = currentStatus;
+                }
+            }
+            Clients.All.newConnection(allUsers); 
+        }
     }
 }

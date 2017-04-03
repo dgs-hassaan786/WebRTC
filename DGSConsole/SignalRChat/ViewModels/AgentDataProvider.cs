@@ -19,7 +19,13 @@ namespace DGSConsole.Agent.ViewModels
         {
             return GetAllAgentsData().FirstOrDefault(x => x.Email.Equals(email) && x.Password.Equals(password));
         }
-
+        internal static string GetStatus(string email)
+        {
+            if (Cache != null && Cache.ContainsKey(email))
+                return Cache[email].Status;
+            else
+                return null;
+        }
         internal static void AddUser(AgentLeg agent)
         {
             if (!Cache.ContainsKey(agent.Email))
@@ -36,7 +42,7 @@ namespace DGSConsole.Agent.ViewModels
         }
 
 
-        private static List<AgentLeg> GetAllAgentsData()
+        public static List<AgentLeg> GetAllAgentsData()
         {
             List<AgentLeg> lst = new List<AgentLeg>();
             using (StreamReader r = new StreamReader(System.Web.Hosting.HostingEnvironment.MapPath("~/ViewModels/agents.json")))
@@ -46,7 +52,7 @@ namespace DGSConsole.Agent.ViewModels
             }
             return lst;
         }
-
+       
     }
 
     internal class ConnectionManager
@@ -86,5 +92,20 @@ namespace DGSConsole.Agent.ViewModels
             }
         }
 
+        internal static void RemoveAgent(HubCallerContext context)
+        {
+           try
+            {
+                if (AgentDataProvider.Cache!=null && AgentDataProvider.Cache.ContainsKey(context.QueryString["Email"]) &&
+                    AgentDataProvider.Cache[context.QueryString["Email"]].ConnectionIds.FirstOrDefault(x=>x.Equals(context.ConnectionId)).Count()>0)
+                {
+                    AgentDataProvider.Cache[context.QueryString["Email"]].Status = "Logged Off";
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
     }
 }

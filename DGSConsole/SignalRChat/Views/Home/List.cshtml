@@ -1,6 +1,23 @@
-﻿@{
-     ViewBag.Title = "List User";
- }
+﻿@using System.Security.Claims;
+@using System.Linq;
+@{
+    ViewBag.Title = "List User";
+
+    string email = "", name = "";
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var user = User as ClaimsPrincipal;
+        var claims = user.Claims.ToList();
+        email = User.Identity.Name;
+        name = claims.Where(x => x.Type.Equals("Name")).FirstOrDefault().Value;
+    }
+}
+<script type='text/javascript'>
+    window.emailID = '@email';
+</script>
+
+
  <h2>@ViewBag.Title</h2>
  <h3>@ViewBag.Message</h3>
 
@@ -8,7 +25,8 @@
      <div data-ng-controller="SuperAdminController" class="container">       
  
          <div class="row">
-             <div class="user-table">
+             @*<button id="loadUser" class="btn btn-info">Load Users</button></br></br>*@             
+             <div class="user-table" ng-show="dataLoaded">
                  <table id="logTable" class="data-table" st-table="userList" st-safe-src="userDisplayList">
                      <thead>
                          <tr>
@@ -33,7 +51,7 @@
  
                 
              </div>
-             <div>
+             <div >
                  <div class="number-pagination">
                      <dir-pagination-controls max-size="5"
                                               direction-links="true"
@@ -53,3 +71,7 @@
          </div>
      </div>
  </div> 
+@section scripts {
+<script src="~/signalr/hubs"></script>
+<script src="~/core/signalR/hubProvider.js"></script>    
+}
