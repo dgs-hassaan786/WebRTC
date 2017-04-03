@@ -1,0 +1,110 @@
+﻿var stream;
+function hasUserMedia() {
+    //check if the browser supports the WebRTC 
+    return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+       navigator.mozGetUserMedia);
+}
+
+if (hasUserMedia()) {
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia
+       || navigator.mozGetUserMedia;
+
+    //enabling video and audio channels 
+    navigator.getUserMedia({ video: true, audio: true }, function (s) {
+        stream = s;
+        var video = document.querySelector('video');
+
+        //inserting our stream to the video tag     
+        video.src = window.URL.createObjectURL(stream);
+    }, function (err) { });
+} else {
+    alert("WebRTC is not supported");
+}
+
+btnGetAudioTracks.addEventListener("click", function () {
+    console.log("getAudioTracks");
+    console.log(stream.getAudioTracks());
+});
+
+btnGetTrackById.addEventListener("click", function () {
+    console.log("getTrackById");
+    console.log(stream.getTrackById(stream.getAudioTracks()[0].id));
+});
+
+btnGetTracks.addEventListener("click", function () {
+    console.log("getTracks()");
+    console.log(stream.getTracks());
+});
+
+btnGetVideoTracks.addEventListener("click", function () {
+    console.log("getVideoTracks()");
+    console.log(stream.getVideoTracks());
+});
+
+btnRemoveAudioTrack.addEventListener("click", function () {
+    console.log("removeAudioTrack()");
+    stream.removeTrack(stream.getAudioTracks()[0]);
+});
+
+btnRemoveVideoTrack.addEventListener("click", function () {
+    console.log("removeVideoTrack()");
+    stream.removeTrack(stream.getVideoTracks()[0]);
+});
+
+
+
+////constraints for desktop browser
+//var desktopConstraints = {
+
+//    video: {
+//        mandatory: {
+//            maxWidth: 800,
+//            maxHeight: 600
+//        }
+//    },
+
+//    audio: true
+//};
+
+////constraints for mobile browser
+//var mobileConstraints = {
+
+//    video: {
+//        mandatory: {
+//            maxWidth: 480,
+//            maxHeight: 320,
+//        }
+//    },
+
+//    audio: true
+//}
+
+////if a user is using a mobile browser
+//if (/Android|iPhone|iPad/i.test(navigator.userAgent)) {
+//    var constraints = mobileConstraints;
+//} else {
+//    var constraints = desktopConstraints;
+//}
+
+//function hasUserMedia() {
+//    //check if the browser supports the WebRTC
+//    return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+//       navigator.mozGetUserMedia);
+//}
+
+//if (hasUserMedia()) {
+
+//    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+//       navigator.mozGetUserMedia;
+
+//    //enabling video and audio channels
+//    navigator.getUserMedia(constraints, function (stream) {
+//        var video = document.querySelector('video');
+
+//        //inserting our stream to the video tag
+//        video.src = window.URL.createObjectURL(stream);
+
+//    }, function (err) { });
+//} else {
+//    alert("WebRTC is not supported");
+//}
