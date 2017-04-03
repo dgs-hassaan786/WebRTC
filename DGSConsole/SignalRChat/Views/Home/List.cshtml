@@ -18,60 +18,61 @@
 </script>
 
 
- <h2>@ViewBag.Title</h2>
- <h3>@ViewBag.Message</h3>
+<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.Message</h3>
 
- <div >
-     <div data-ng-controller="SuperAdminController" class="container">       
- 
-         <div class="row">
-             @*<button id="loadUser" class="btn btn-info">Load Users</button></br></br>*@             
-             <div class="user-table" ng-show="dataLoaded">
-                 <table id="logTable" class="data-table" st-table="userList" st-safe-src="userDisplayList">
-                     <thead>
-                         <tr>
-                             <th ng-repeat="col in columns" ng-bind="col.header"></th>
-                             <th>Action</th>
-                         </tr>
-                     </thead>
-                     <tbody>
-                         <tr dir-paginate="row in userDisplayList | itemsPerPage:options.pagesize" current-page="options.page">
-                             <td ng-repeat="col in columns"  ng-bind="row[col.field]"></td>
-                             <td>
-                                 <button type="button" id="btnEdit-{{$index}}" data-ng-click="gotoChatroom()" class="btn btn-primary"><i class="fa fa-pencil-square-o fa-fw"></i>Chat</button>
-                                 <button type="button" id="btnCall-{{$index}}" data-ng-click="gotoCall(row)"  class="btn btn-success"><i class="fa fa-trash-o fa-fw"></i>Call</button>
-                                 <button type="button" id="btnViewScreen-{{$index}}" data-ng-click="gotoViewscreen(row)" class="btn btn-default"><i class="fa fa-trash-o fa-fw"></i>View Screen</button>
-                             </td>
-                         </tr>
-                         <tr ng-show="userDisplayList.length<=0">
-                             <td colspan="20">No record found</td>
-                         </tr>
-                     </tbody>
-                 </table>
- 
-                
-             </div>
-             <div >
-                 <div class="number-pagination">
-                     <dir-pagination-controls max-size="5"
-                                              direction-links="true"
-                                              auto-hide="false"
-                                              boundary-links="true">
-                     </dir-pagination-controls>
- 
-                 </div>
-                 <div class="Page-size">
-                     <div class="pagecount-left">Page size</div>
-                     <div class="pagecount-right">
-                         <select style="display:block" ng-model="options.pagesize"
-                                 ng-options="obj as obj for obj in options.pagingOptions" />
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
- </div> 
+<div>
+    <div data-ng-controller="SuperAdminController" class="container">
+        <video id="localVideo" autoplay style="display:none"></video>
+        <video id="remoteVideo" autoplay style="display:none"></video>
+        <div class="row">
+            @*<button id="loadUser" class="btn btn-info">Load Users</button></br></br>*@
+            <div class="user-table" ng-show="dataLoaded">
+                <table id="logTable" class="data-table" st-table="userList" st-safe-src="userDisplayList">
+                    <thead>
+                        <tr>
+                            <th ng-repeat="col in columns" ng-bind="col.header"></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="row in userDisplayList | itemsPerPage:options.pagesize" current-page="options.page">
+                            <td ng-repeat="col in columns" ng-bind="row[col.field]"></td>
+                            <td>
+                                <button type="button" id="btnEdit-{{$index}}" data-ng-click="gotoChatroom()" class="btn btn-primary"><i class="fa fa-pencil-square-o fa-fw"></i>Chat</button>
+                                <button type="button" id="btnCall-{{$index}}" data-ng-disabled="disableControl(row['Status'])" data-ng-click="gotoCall(row)" class="btn btn-success"><i class="fa fa-trash-o fa-fw"></i>Call</button>
+                                <button type="button" id="btnViewScreen-{{$index}}" data-ng-disabled="disableControl(row['Status'])" data-ng-click="gotoViewscreen(row)" class="btn btn-default"><i class="fa fa-trash-o fa-fw"></i>View Screen</button>
+                            </td>
+                        </tr>
+                        <tr ng-show="userDisplayList.length<=0">
+                            <td colspan="20">No record found</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+            <div>
+                <div class="number-pagination">
+                    <dir-pagination-controls max-size="5"
+                                             direction-links="true"
+                                             auto-hide="false"
+                                             boundary-links="true">
+                    </dir-pagination-controls>
+
+                </div>
+                <div class="Page-size">
+                    <div class="pagecount-left">Page size</div>
+                    <div class="pagecount-right">
+                        <select style="display:block" ng-model="options.pagesize"
+                                ng-options="obj as obj for obj in options.pagingOptions" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts {
-<script src="~/signalr/hubs"></script>
-<script src="~/core/signalR/hubProvider.js"></script>    
+    <script src="~/signalr/hubs"></script>
+    <script src="~/core/signalR/hubProvider.js"></script>
 }

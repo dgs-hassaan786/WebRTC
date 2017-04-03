@@ -1,5 +1,6 @@
 ﻿'use strict';
 
+
 function initializeApp() {
     angular.bootstrap(document, ['dwdConsole']);
 }
@@ -25,6 +26,9 @@ var ngApp = (function (initializeApp) {
          }*/
      }]);
     app.controller('SuperAdminController', function ($scope, MethodProvider) {
+
+        var socketHandler = new SocketHandler(window.emailID);        
+
         $scope.Name = "Testing Angular";
         $scope.options = { page: 1, pagesize: 10, pagingOptions: [5, 10, 15, 20, 50, 100, 500, 1000] };
         $scope.columns = [{ header: 'Name', field: 'Name' }, { header: 'Email', field: 'Email' }, { header: 'Status', field: 'Status' }]
@@ -51,35 +55,28 @@ var ngApp = (function (initializeApp) {
                 chat.server.newConnection($(window)[0].emailID);
             });
         });
-     
-        //$scope.columns = [{ header: 'Agent Information', field: 'Name' }, { header: 'Chat', field: 'Chat' }, { header: 'View Screen', field: 'Screen' }, { header: 'Call', field: 'Status' }];
-        //$scope.userList = [
-        //{ Name: 'Aisha', Chat: 'ac@msn.com', Screen: 'Chat Room', Status: 'wait' },
-        //{ Name: 'Ahmed', Chat: 'ahmed@msn.com', Screen: 'Chat Room', Status: 'active' },
-        //{ Name: 'Dim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Dim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Dim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Dim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Lemon', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Bob', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Dave', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'John', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Kim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Lee', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Gill', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Dim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' }, ]
-        //$scope.userDisplayList = [].concat($scope.userList);
+          
         $scope.gotoChatroom = function () {
            window.location.pathname="/Home/ChatRoom";
         }
 
-
         $scope.gotoCall = function (data) {
+            socketHandler.openAudioStream();
+            socketHandler.connectOtherParty(data.Email);
+        }
 
-
-
+        $scope.endCall = function () {
+            socketHandler.endCall();           
         }
   
+        $scope.disableControl = function (data) {
+            //if (data == "Log out" ) {           
+            //        return true;             
+            //}
+            return false;
+        }
+
+
     });
     app.controller('chatController', function ($scope) {
         $(document).ready(function () {
