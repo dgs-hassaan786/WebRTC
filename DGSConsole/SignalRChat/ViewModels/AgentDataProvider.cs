@@ -21,7 +21,7 @@ namespace DGSConsole.Agent.ViewModels
         }
         internal static string GetStatus(string email)
         {
-            if (Cache != null && Cache.ContainsKey(email) != null)
+            if (Cache != null && Cache.ContainsKey(email))
                 return Cache[email].Status;
             else
                 return null;
