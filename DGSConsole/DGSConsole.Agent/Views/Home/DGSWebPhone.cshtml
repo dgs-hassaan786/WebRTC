@@ -1,0 +1,154 @@
+﻿<body>
+    <div style="background-image:url(../../images/3.png)">
+            <div class="dialpad-wraper">
+                <div class="dialpad-main">
+                    <div id="loading_bg_txt">Loading...</div>
+                    <div id="phone_app_main_container">
+                        <div id="js_not_enabled">Enable JavaScript or click the &quot;Allow&quot; button in your browser!!!</div>
+                        <script type="text/javascript">document.getElementById('js_not_enabled').style.display = 'none'; try { document.getElementById('phone_app_main_container').style.display = 'none'; } catch (err) { }</script>
+
+                        <!-- Settings Page -->
+                        <div id="page_settings" data-role="page">
+                            <div id="settings_header" data-role="header" data-theme="b">
+                                <div id="settings_additional_header">
+                                    <div>
+                                        <button id="btn_back_settings" class="btn_header_back ui-btn"><span>&LT;</span>&nbsp;_Settings</button><span id="app_name_settings">&nbsp;</span>
+                                    </div>
+                                    <div id="settings_page_title" class="additional_header_middle">Settings</div>
+                                    <div>
+                                        <a href="#settings_menu" id="btn_settings_menu" data-rel="popup" class="btn_toolbar_menu ui-btn ui-icon-bars ui-btn-icon-notext" data-transition="slidedown">Menu</a>
+                                        @*<div id="settings_menu" class="options_menu" data-role="popup">
+                                            <ul id="settings_menu_ul" data-role="listview" data-inset="true" data-icon="false">
+                                            </ul>
+                                        </div>*@
+                                    </div>
+                                    <div class="separator_line_thick"><!--//--></div>
+                                </div>
+                            </div>
+
+                            <div id="page_settings_content" role="main" class="ui-content" data-theme="b" data-content-theme="b">
+                                <ul id="settings_list" class="mlistview" data-role="listview" data-theme="b" data-divider-theme="b" data-inset="true" data-filter="true" data-filter-placeholder="Search Settings"></ul>
+                                <div id="loginpage_container" class="ui-field-contain">
+                                    <div id="loginpage">
+                                        <div id="logologinpage"></div>
+                                        <input name="lp_serveraddress" id="lp_serveraddress" placeholder="Server" value="" type="text">
+                                        <input name="lp_username" id="lp_username" placeholder="Username" value="" type="text">
+                                        <input name="lp_password" id="lp_password" placeholder="Password" value="" type="text">
+                                        <button id="lp_btn_login" class="ui-btn ui-btn-corner-all ui-btn-b noshadow">Login</button>
+                                        <a href="javascript:;" id="a_newuser" target="_blank">Sign up</a><br />
+                                        <a href="javascript:;" id="a_forgotpassword" target="_blank">Forgot password</a>
+                                        <button id="lp_btn_custom" class="ui-btn ui-btn-corner-all ui-btn-b noshadow" style="display:none;">_Custom</button>
+                                    </div>
+                                </div>
+                                <div id="settings_engine" style="display: none;">
+                                    <a href="javascript:;" target="_blank" id="btn_settings_engine" class="ui-btn noshadow btn_engine"><span id="settings_engine_title" class="engine_title">Choose engine</span><br /><span id="settings_engine_msg" class="engine_msg"></span></a>
+                                    <a href="javascript:;" id="btn_settings_engine_close" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-notext"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Settings Page -->
+                        <div id="page_dialpad" data-role="page">
+                            <div id="dialpad_header" data-role="header">
+                                <div id="dialpad_engine" style="display: none;">
+                                    <a href="javascript:;" target="_blank" id="btn_dialpad_engine" class="ui-btn noshadow btn_engine"><span id="dialpad_engine_title" class="engine_title">Choose engine</span><br /><span id="dialpad_engine_msg" class="engine_msg"></span></a>
+                                    <a href="javascript:;" id="btn_dialpad_engine_close" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-notext"></a>
+                                </div>
+                                <div class="top-box-div" style="background-color:black">
+                                    <div class="status_container" style="color:black">
+                                        <img src="~/images/icon_encrypt.png" class="img_encrypt" title="Encrypted" /><div class="status" id="status_dialpad">&nbsp;</div>
+                                        <div class="curr_user" id="curr_user_dialpad">test</div>
+                                    </div>
+                                </div>
+                                <div class="top-box-div" id="dialpad_header">
+                                    <div id="dialpad_engine" style="display: none;">
+                                        <a href="javascript:;" target="_blank" id="btn_dialpad_engine" class="ui-btn noshadow btn_engine"><span id="dialpad_engine_title" class="engine_title">Choose engine</span><br /><span id="dialpad_engine_msg" class="engine_msg"></span></a>
+                                        <a href="javascript:;" id="btn_dialpad_engine_close" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-notext"></a>
+                                    </div>
+                                    <a id="InboundStatus" href="javascript:;"><div class="top-box"><div class="top-box-icon"><img src="/images/inbound-icon.png" width="26" height="26" /></div>Login</div></a>
+                                    <a id="OutboundStatus" href="javascript:;"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/outbound-icon.png" width="26" height="26" /></div>Logout</div></a>
+                                    <a id="AvailableStatus" href="javascript:;"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/available-icin.png" width="26" height="26" /></div>Wait</div></a>
+                                    <a id="NotAvailableStatus" href="javascript:void(0)"><div class="top-box no-border"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/not-available-icin.png" width="26" height="26" /></div>Break</div></a>
+                                </div>
+                                <div class="phone-number-div">
+                                    <div class="phone-number" id="phone_number_container"><input name="" id="phone_number" type="text" maxlength="15" /></div>
+                                    <a id="removenumber" href="javascript:void(0)"><div class="delete-icon"><img src="https://demov2.webdialer.com/images/number-delete-icon.png" width="41" height="22" /></div></a>
+                                </div>
+                                <div id="page_dialpad_content" role="main">
+                                    <div class="digits-wraper">
+                                        <div class="ui-grid-b" id="dialpad_btn_grid">
+                                            <div class="ui-block-a"><button id="btn_dp_1" class="ui-btn noshadow"><span class="number">1</span><span class="smalltext">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+                                            <div class="ui-block-b"><button id="btn_dp_2" class="ui-btn noshadow"><span class="number">2</span><span class="smalltext">ABC</span></button></div>
+                                            <div class="ui-block-c"><button id="btn_dp_3" class="ui-btn noshadow"><span class="number">3</span><span class="smalltext">DEF&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+
+                                            <div class="ui-block-a"><button id="btn_dp_4" class="ui-btn noshadow"><span class="number">4</span><span class="smalltext">GHI&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+                                            <div class="ui-block-b"><button id="btn_dp_5" class="ui-btn noshadow"><span class="number">5</span><span class="smalltext">JKL&nbsp;</span></button></div>
+                                            <div class="ui-block-c"><button id="btn_dp_6" class="ui-btn noshadow"><span class="number">6</span><span class="smalltext">MNO&nbsp;&nbsp;</span></button></div>
+
+                                            <div class="ui-block-a"><button id="btn_dp_7" class="ui-btn noshadow"><span class="number">7</span><span class="smalltext">PQRS</span></button></div>
+                                            <div class="ui-block-b"><button id="btn_dp_8" class="ui-btn noshadow"><span class="number">8</span><span class="smalltext">TUV</span></button></div>
+                                            <div class="ui-block-c"><button id="btn_dp_9" class="ui-btn noshadow"><span class="number">9</span><span class="smalltext">WXYZ</span></button></div>
+
+                                            <div class="ui-block-a"><button id="btn_dp_ast" class="ui-btn noshadow"><span id="dialpad_asterisk" class="number">&lowast;</span><span class="smalltext">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+                                            <div class="ui-block-b"><button id="btn_dp_0" class="ui-btn noshadow"><span class="number">0</span><span class="smalltext">+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+                                            <div class="ui-block-c"><button id="btn_dp_diez" class="ui-btn noshadow"><span class="number">#</span><span class="smalltext">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+
+                                            <audio id="dtmfsound0"><source src="~/Content/sound/DTMF0.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF0.mp3" type="audio/mpeg"></audio>
+                                            <audio id="dtmfsound1"><source src="~/Content/sound/DTMF1.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF1.mp3" type="audio/mpeg"></audio>
+                                            <audio id="dtmfsound2"><source src="~/Content/sound/DTMF2.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF2.mp3" type="audio/mpeg"></audio>
+                                            <audio id="dtmfsound3"><source src="~/Content/sound/DTMF3.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF3.mp3" type="audio/mpeg"></audio>
+                                            <audio id="dtmfsound4"><source src="~/Content/sound/DTMF4.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF4.mp3" type="audio/mpeg"></audio>
+                                            <audio id="dtmfsound5"><source src="~/Content/sound/DTMF5.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF5.mp3" type="audio/mpeg"></audio>
+                                            <audio id="dtmfsound6"><source src="~/Content/sound/DTMF6.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF6.mp3" type="audio/mpeg"></audio>
+                                            <audio id="dtmfsound7"><source src="~/Content/sound/DTMF7.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF7.mp3" type="audio/mpeg"></audio>
+                                            <audio id="dtmfsound8"><source src="~/Content/sound/DTMF8.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF8.mp3" type="audio/mpeg"></audio>
+                                            <audio id="dtmfsound9"><source src="~/Content/sound/DTMF9.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF9.mp3" type="audio/mpeg"></audio>
+                                            <audio id="dtmfsoundy"><source src="~/Content/sound/DTMFdiez.ogg" type="audio/ogg"><source src="~/Content/sound/DTMFdiez.mp3" type="audio/mpeg"></audio>
+                                            <audio id="dtmfsoundx"><source src="~/Content/sound/DTMFx.ogg" type="audio/ogg"><source src="~/Content/sound/DTMFx.mp3" type="audio/mpeg"></audio>
+
+                                            @*<div class="page_call_content" id="page_call" data-role="page">
+                                <div id="page_call_content">
+                                    <div id="numpad">
+                                        <div class="ui-grid-b" id="numpad_btn_grid">
+                                            <div class="ui-block-a"><button id="numpad_btn_dp_1" class="ui-btn noshadow"><span class="number">1</span><span class="smalltext">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+                                            <div class="ui-block-b"><button id="numpad_btn_dp_2" class="ui-btn noshadow"><span class="number">2</span><span class="smalltext">ABC</span></button></div>
+                                            <div class="ui-block-c"><button id="numpad_btn_dp_3" class="ui-btn noshadow"><span class="number">3</span><span class="smalltext">DEF&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+
+                                            <div class="ui-block-a"><button id="numpad_btn_dp_4" class="ui-btn noshadow"><span class="number">4</span><span class="smalltext">GHI&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+                                            <div class="ui-block-b"><button id="numpad_btn_dp_5" class="ui-btn noshadow"><span class="number">5</span><span class="smalltext">JKL&nbsp;</span></button></div>
+                                            <div class="ui-block-c"><button id="numpad_btn_dp_6" class="ui-btn noshadow"><span class="number">6</span><span class="smalltext">MNO&nbsp;&nbsp;</span></button></div>
+
+                                            <div class="ui-block-a"><button id="numpad_btn_dp_7" class="ui-btn noshadow"><span class="number">7</span><span class="smalltext">PQRS</span></button></div>
+                                            <div class="ui-block-b"><button id="numpad_btn_dp_8" class="ui-btn noshadow"><span class="number">8</span><span class="smalltext">TUV</span></button></div>
+                                            <div class="ui-block-c"><button id="numpad_btn_dp_9" class="ui-btn noshadow"><span class="number">9</span><span class="smalltext">WXYZ</span></button></div>
+
+                                            <div class="ui-block-a"><button id="numpad_btn_dp_ast" class="ui-btn noshadow"><span class="number">&lowast;</span><span class="smalltext">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+                                            <div class="ui-block-b"><button id="numpad_btn_dp_0" class="ui-btn noshadow"><span class="number">0</span><span class="smalltext">+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+                                            <div class="ui-block-c"><button id="numpad_btn_dp_diez" class="ui-btn noshadow"><span class="number">#</span><span class="smalltext">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                                        </div>
+                                    </div>
+                                    <div class="btm-links-div">
+                                        <ul>
+                                            <li><a id="Consultancy" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/consultancy-icon.png" width="35" height="26" /></span>Consultancy</a></li>
+                                            <li><a id="Transfer" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/transfer-icon.png" width="35" height="26" /></span>Transfer</a></li>
+                                            <li><a id="Cancel" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/cancel-icon.png" width="35" height="26" /></span>Cancel</a></li>
+                                            <li><a id="Conference" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/conference-icon.png" width="35" height="26" /></span>Conference</a></li>
+                                            <li class="green-bg" id="btn_call"><a href="javascript:;"><span class="green-icon ui-btn noshadow ui-btn-c"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
+                                            <li><a id="Toggle" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/toggle-icon.png" width="35" height="26" /></span>Toggle</a></li>
+                                            <li><a id="Hold" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/hold-icon.png" width="35" height="26" /></span><span id="HoldButtonText">Hold</span></a></li>
+                                            <li class="red-bg noshadow" data-theme="d" id="hangup_layout"><a id="btn_hangup" href="javascript:;"><span class="red-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
+                                            <li><a id="Mute" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/mute-icon.png" width="35" height="26" /></span><span id="MuteButtonText">Mute</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</body>
