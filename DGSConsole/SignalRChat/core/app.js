@@ -1,5 +1,6 @@
 ﻿'use strict';
 
+
 function initializeApp() {
     angular.bootstrap(document, ['dwdConsole']);
 }
@@ -24,8 +25,82 @@ var ngApp = (function (initializeApp) {
              $routeProvider.otherwise({ redirectTo: config.defaultRoutePaths });
          }*/
      }]);
+    // http methods
+    app.service('MethodProvider', ['$http', function ($http) {
+        var self = this;
 
-    app.controller('SuperAdminController', function ($scope) {
+        self.get = function (url) {
+            var obj = {
+                url: url,
+                method: 'GET',
+                async: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            return $http(obj);
+        };
+
+        self.getPagingData = function (url, pageNo, pageSize) {
+            var obj = {
+                url: url,
+                method: 'GET',
+                async: true,
+                params: { pageNo: pageNo, pageSize: pageSize },
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            return $http(obj);
+        };
+
+        self.post = function (url, data) {
+            var obj = {
+                url: url,
+                method: 'POST',
+                async: true,
+                data: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            return $http(obj);
+        };
+
+        self.put = function (url, data) {
+            var obj = {
+                url: url,
+                method: 'PUT',
+                async: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            if (typeof data != 'undefined' && data != null) {
+                obj.data = JSON.stringify(data);
+            }
+            return $http(obj);
+        };
+
+        self.delete = function (url) {
+            var obj = {
+                url: url,
+                method: 'POST',
+                async: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            return $http(obj);
+        };
+    }]);
+
+
+    app.controller('SuperAdminController', function ($scope) {        
+        $scope.disableCall = true;
+        var socketHandler = new SocketHandler(window.emailID,window.ipAddress);  // alert(data.host);
+                     
         $scope.Name = "Testing Angular";
         $scope.disableElement = [];
         $scope.options = { page: 1, pagesize: 10, pagingOptions: [5, 10, 15, 20, 50, 100, 500, 1000] };
@@ -43,12 +118,6 @@ var ngApp = (function (initializeApp) {
                     $scope.userDisplayList = [].concat($scope.userList);
                     if ($scope.userList != null) {
                         $scope.dataLoaded = true;
-                        for (var i = 0; i < $scope.userList.length; i++) {
-                            if ($scope.userList[i].Status == "Login")
-                                $scope.disableElement[i] = false;
-                            else
-                                $scope.disableElement[i] = true;
-                        }
                     }
                 })
             };
@@ -66,6 +135,32 @@ var ngApp = (function (initializeApp) {
                 userto: $scope.userTo
             })
         }
+
+        $scope.gotoCall = function (data) {
+            socketHandler.openAudioStream(function () {
+                socketHandler.connectOtherParty(data.Email);
+            });
+            
+        }
+
+        $scope.gotoVideoCall = function (data) {
+            socketHandler.openAudioStream(function () {
+                socketHandler.connectOtherParty(data.Email);
+            });
+        }
+
+        $scope.endCall = function () {
+            socketHandler.endCall();           
+        }
+  
+        $scope.disableControl = function (data) {
+            //if (data == "Log out" || disableCall) {           
+            //        return true;             
+            //}
+            return false;
+        }
+
+
     });
 
     app.controller('chatController', function ($scope) {
@@ -123,79 +218,7 @@ var ngApp = (function (initializeApp) {
         });
     });
 
-    // http methods
-    app.service('MethodProvider', ['$http', function ($http) {
-        var self = this;
-
-        self.get = function (url) {
-            var obj = {
-                url: url,
-                method: 'GET',
-                async: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            return $http(obj);
-        };
-
-        self.getPagingData = function (url, pageNo, pageSize) {
-            var obj = {
-                url: url,
-                method: 'GET',
-                async: true,
-                params: {
-                    pageNo: pageNo, pageSize: pageSize
-                },
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            return $http(obj);
-        };
-
-        self.post = function (url, data) {
-            var obj = {
-                url: url,
-                method: 'POST',
-                async: true,
-                data: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            return $http(obj);
-        };
-
-        self.put = function (url, data) {
-            var obj = {
-                url: url,
-                method: 'PUT',
-                async: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-
-            if (typeof data != 'undefined' && data != null) {
-                obj.data = JSON.stringify(data);
-            }
-            return $http(obj);
-        };
-
-        self.delete = function (url) {
-            var obj = {
-                url: url,
-                method: 'POST',
-                async: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            return $http(obj);
-        };
-    }]);
-
+   
     if (typeof initializeApp != undefined && typeof initializeApp === 'function') {
         initializeApp();
     }
