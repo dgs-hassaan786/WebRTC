@@ -101,6 +101,9 @@ var ngApp = (function (initializeApp) {
         $scope.disableCall = true;
         $scope.isVideo = false;
         $scope.chatVal = [];
+        $scope.showMute = true;
+        $scope.enablePause = true;
+        $scope.chatVal = 0;
         $scope.disableElement = [];
 
         function applyIsVideo(val) {

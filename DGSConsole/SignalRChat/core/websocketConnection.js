@@ -8,7 +8,12 @@
 
     var self = this;
     //our username
-    var name, connectedUser, yourConn, stream, localVideo = document.querySelector('#localVideo'), remoteVideo = document.querySelector('#remoteVideo');;
+    var name, connectedUser, yourConn, stream, localVideo = document.querySelector('#localVideo'), remoteVideo = document.querySelector('#remoteVideo');
+    var playButton = document.getElementById("play-pause");
+    var pauseplay = document.getElementById("pause-play");
+    var muteButton = document.getElementById("mutebtn");
+    var unmutebtn = document.getElementById("unmutebtn");
+    var fullScreenButton = document.getElementById("full-screen");
 
 
 
@@ -434,20 +439,61 @@
     }
 
     function handleLeave() {
-        connectedUser = null;
-        remoteVideo.src = null;
+        try {
+
+            connectedUser = null;
+            remoteVideo = null;
+            //stream.getVideoTracks()[0].enabled = false;
+
+            stream.getTracks().forEach(function (track) {                
+                track.stop();
+            });
+
+            yourConn.getTracks().forEach(function (track) {               
+                track.stop();
+            });
+            yourConn.close();
+            yourConn.onicecandidate = null;
+            yourConn.onaddstream = null;
+
+            isVideo = false;
+
+        } catch (e) {
+            console.log(e);
+        }
+        
+    }
+
+
+    self.muteUnmuteCall = function () {
+        stream.getAudioTracks()[0].enabled = !stream.getAudioTracks()[0].enabled
+    }
+
+    self.pauseResumeVideo = function () {        
+        stream.getTracks()[1].enabled = !stream.getTracks()[1].enabled;
+    }
+
+    function eventlistners() {               
+
+        $(document).ready(function () {
+            mutebtn.addEventListener("click", function () {
+                self.muteUnmuteCall()
+            });
+
+            unmutebtn.addEventListener("click", function () {
+                self.muteUnmuteCall();
+            });
+
+            playButton.addEventListener("click", function () {
+                self.pauseResumeVideo();
+            });
+            pauseplay.addEventListener("click", function () {
+                self.pauseResumeVideo();
+            });
+        });
        
-        stream.getVideoTracks()[0].enabled = false
-         
+    }
 
-        yourConn.close();
-        yourConn.onicecandidate = null;
-        yourConn.onaddstream = null;
-
-        isVideo = false;
-    };
-
-    
-
+    eventlistners();
     return self;
 }
