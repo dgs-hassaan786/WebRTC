@@ -62,11 +62,11 @@
 <div data-ng-controller="SuperAdminController" class="container">
 
 
-    <div id="callPage"  class="call-page drag" ng-show="isVideo" ng-cloak>
+    <div id="callPage"  class="call-page drag" ng-show="isVideo" ng-cloak style="opacity: 1;z-index: 99999;">
         <video id="localVideo" autoplay></video>
         <video id="remoteVideo" autoplay></video>
     </div>
-    
+   
     <div class="row">
         @*<button id="loadUser" class="btn btn-info">Load Users</button></br></br>*@
         <div class="user-table" ng-show="dataLoaded">
@@ -82,7 +82,7 @@
                         <td ng-repeat="col in columns" ng-bind="row[col.field]"></td>
 
                         <td>
-                            <button type="button" id="btnEdit-{{$index}}" data-ng-click="gotoChatroom($index)" data-toggle="modal" data-target="#myModal" class="btn btn-success" ng-disabled="disableControl(row['Status'])"><i class="fa fa-pencil-square-o fa-fw"></i>Chat</button>
+                            <button type="button" id="btnEdit-{{$index}}" data-ng-click="gotoChatroom($index)" data-toggle="modal" data-target="#myModal" class="btn btn-success" ng-disabled="disableControl(row['Status'])">Chat <span class="badge">{{chatVal}}</span></button>
                             <div class="btn-group">
                                 <button type="button" id="btnCall-{{$index}}" ng-disabled="disableControl(row['Status'])" data-ng-click="gotoCall(row)" class="btn btn-primary" style="padding-left:5px !important"><i class="glyphicon glyphicon-earphone "></i> Call</button>
                                 <button type="button" id="btnCall-{{$index}}" ng-disabled="disableControl(row['Status'])" data-ng-click="gotoVideoCall(row)" class="btn btn-warning" style="padding-left:5px !important"><i class="glyphicon glyphicon-facetime-video"></i> Video Call</button>
@@ -117,7 +117,7 @@
                             <div class="name">{{userTo}}</div>
                             <div class="last">18:09</div>
                         </div>
-                        <ol class="chat"></ol>
+                        <ol class="chat" style="overflow-y: auto;max-height: 300px;"></ol>
                         <div class="row">
                             <input id="message" class="col-sm-4 textarea" type="text" placeholder="Type here!" />
                             <div class="emojis"> </div>
