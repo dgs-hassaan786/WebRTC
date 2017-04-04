@@ -97,7 +97,7 @@ var ngApp = (function (initializeApp) {
     }]);
 
 
-    app.controller('SuperAdminController', function ($scope) {        
+    app.controller('SuperAdminController', function ($scope) {
         $scope.disableCall = true;
         $scope.isVideo = false;
         $scope.chatVal = [];
@@ -118,30 +118,36 @@ var ngApp = (function (initializeApp) {
         }
 
         var socketHandler = new SocketHandler(window.emailID, window.ipAddress, applyIsVideo, endCall);  // alert(data.host);
-                     
+
         $scope.Name = "Testing Angular";
         $scope.options = { page: 1, pagesize: 10, pagingOptions: [5, 10, 15, 20, 50, 100, 500, 1000] };
         $scope.columns = [{ header: 'Name', field: 'Name' }, { header: 'Email', field: 'Email' }, { header: 'Status', field: 'Status' }]
 
-  
-       
+
+
         $(function () {
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.chatHub;
-
             $scope.callUser = [];
+            $scope.userList = [];
+            var indexUserList=0;
             // Create a function that the hub can call back to return list of all users that are connected
             chat.client.newConnection = function (agentsData) {
                 $scope.$apply(function () {
-                    $scope.userList = angular.copy(agentsData);
-                    $scope.userDisplayList = [].concat($scope.userList);
+                    for (var i = 0; i < agentsData.length; i++) {
+                        if (agentsData[i].Email != $(window)[0].emailID) {
+                            $scope.userList[indexUserList] = angular.copy(agentsData[i]);
+                            indexUserList++;
+                        }
+                    }   
                     if ($scope.userList != null) {
+                        $scope.userDisplayList = [].concat($scope.userList);
                         for (var i = 0; i < $scope.userList.length; i++) {
                             if ($scope.userList[i].Status == "Login") {
-                                $scope.disableElement[i] = false;                              
+                                $scope.disableElement[i] = false;
                             }
                             else {
-                                $scope.disableElement[i] = true;                               
+                                $scope.disableElement[i] = true;
                             }
                             $scope.chatVal[i] = 0;
                         }
@@ -156,7 +162,7 @@ var ngApp = (function (initializeApp) {
         });
 
         $scope.gotoChatroom = function (index) {
-            for (var i = 0; i < $scope.userList.length; i++) { $scope.chatVal[i] = 0; }          
+            for (var i = 0; i < $scope.userList.length; i++) { $scope.chatVal[i] = 0; }
             $scope.userFrom = $(window)[0].emailID;
             $scope.userTo = $scope.userList[index].Email;
             var receiverName = angular.copy($scope.userTo);
@@ -174,7 +180,7 @@ var ngApp = (function (initializeApp) {
                     $scope.disableCall = false;
                 });
             },false);
-            
+
         }
 
         $scope.gotoVideoCall = function (data) {
@@ -185,9 +191,9 @@ var ngApp = (function (initializeApp) {
                 $scope.$apply(function () {
                     $scope.disableCall = false;
                 });
-                
+
             },true);
-    
+
         }
 
         $scope.endCall = function () {
@@ -195,7 +201,7 @@ var ngApp = (function (initializeApp) {
             $scope.disableCall = true;
             $scope.isVideo = false;
         }
-  
+
         $scope.disableControl = function (data) {
             //if (data == "Log out" || disableCall) {           
             //        return true;             
@@ -210,7 +216,7 @@ var ngApp = (function (initializeApp) {
         $(function () {
             var chat = $.connection.chatHub;
             var userFrom = $scope.userFrom;
-            var userTo = $scope.userTo;              
+            var userTo = $scope.userTo;
             var chat_show = $(".chat");
             $scope.$on('myEvent', function (event, message) {
                 $scope.userFrom = message.userfrom;
@@ -222,7 +228,7 @@ var ngApp = (function (initializeApp) {
                     sendMessage();
                 }
             })
-            var sendMessage = function () {               
+            var sendMessage = function () {
                 $scope.finalConnId = $.connection.hub.id;
                 var message = $("#message").val();
                 $.connection.hub.start().done(function () {
@@ -231,7 +237,7 @@ var ngApp = (function (initializeApp) {
                 $("#message").val("");
                 event.preventDefault();
             }
-            $scope.sendMessage = function () {               
+            $scope.sendMessage = function () {
                 $scope.finalConnId = $.connection.hub.id;
                 var message = $("#message").val();
                 $.connection.hub.start().done(function () {
@@ -239,7 +245,7 @@ var ngApp = (function (initializeApp) {
                 });
                 $("#message").val("");
                 event.preventDefault();
-            }      
+            }
             chat.client.broadcastMessage = function (senderName, message, FriendConnID) {
                 if (FriendConnID != null) {
                     //added
@@ -250,14 +256,14 @@ var ngApp = (function (initializeApp) {
                             index=i;
                         }
                     }
-                    
+
                     var sendername = senderName.substring(0, senderName.lastIndexOf("@"));
                     if (senderName == $scope.userFrom) {
                         chat_show.append('<li class="self">' + '<div class="avatar">' + '<img src="http://i.imgur.com/HYcn9xO.png" draggable="false"/>' + '</div>' + '<div class="msg">' + '<p><strong>' + 'You&nbsp:&nbsp&nbsp&nbsp' + '</strong> ' + '&nbsp&nbsp' + message + '&nbsp&nbsp' + '</p>' + '&nbsp&nbsp' + '<time>20:18</time>' + '</div>');
                     }
                     else {
                         $scope.$apply(function () {
-                            ++$scope.$parent.chatVal[index];                         
+                            ++$scope.$parent.chatVal[index];
                         });
                         chat_show.append('<li class="other">' + '<div class="avatar">' + '<img src="http://i.imgur.com/DY6gND0.png" draggable="false"/>' + '</div>' + '<div class="msg">' + '<p><strong>' + sendername + '&nbsp:&nbsp&nbsp&nbsp' + '</strong>' + message + '&nbsp&nbsp' + '</p>' + '&nbsp&nbsp' + '<time>20:18</time>' + '</div>');
                     }
@@ -270,7 +276,7 @@ var ngApp = (function (initializeApp) {
         });
     });
 
-   
+
     if (typeof initializeApp != undefined && typeof initializeApp === 'function') {
         initializeApp();
     }
