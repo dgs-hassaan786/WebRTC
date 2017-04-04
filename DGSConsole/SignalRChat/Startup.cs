@@ -13,6 +13,8 @@ namespace DGSConsole.Agent
         {
             // Any connection or hub wire up and configuration should go here
             //app.MapSignalR();
+
+            app.UseCors(CorsOptions.AllowAll);
             MapSignalR(app);
 
             ConfigureAuthorizationServer(app);

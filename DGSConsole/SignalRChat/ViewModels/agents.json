@@ -4,7 +4,7 @@
     "Status": "Log out",
     "Email": "hassaan.khan@dgsworld.com",
     "Password": "hassaan123",
-    "Role":  "Supervisor"
+    "Role": "Supervisor"
   },
   {
     "Name": "Awais Majeed",
@@ -19,5 +19,26 @@
     "Email": "aisha.siddiqui@dgsworld.com",
     "Password": "aisha123",
     "Role": "Agent"
+  },
+  {
+    "Name": "Ghazanfar Khan",
+    "Status": "Log out",
+    "Email": "ghazanfar.khan@dgsworld.com",
+    "Password": "ghazanfar123",
+    "Role": "Agent"
+  },
+  {
+    "Name": "Haroon Ibrahim",
+    "Status": "Log out",
+    "Email": "haroon.ibrahim@dgsworld.com",
+    "Password": "haroon123",
+    "Role": "Supervisor"
+  },
+  {
+    "Name": "Chad Rycenga",
+    "Status": "Log out",
+    "Email": "chad.rycenga@dgsworld.com",
+    "Password": "chad123",
+    "Role": "Supervisor"
   }
 ]

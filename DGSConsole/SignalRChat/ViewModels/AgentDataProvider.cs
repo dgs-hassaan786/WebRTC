@@ -59,7 +59,7 @@ namespace DGSConsole.Agent.ViewModels
        
     }
 
-    internal class ConnectionManager
+    internal class ConnectionManagerAgent
     {
         internal static bool AddAgent(HubCallerContext context)
         {

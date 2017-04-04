@@ -108,6 +108,7 @@
 </style>
 <script type='text/javascript'>
     window.emailID = '@email';
+    window.name = '@name';
     window.ipAddress = '@ipAddress';
 </script>
 
@@ -145,7 +146,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="row in userDisplayList | itemsPerPage:options.pagesize" current-page="options.page">
+                    <tr dir-paginate="row in userDisplayList | itemsPerPage:options.pagesize track by $index " current-page="options.page">
                         <td ng-repeat="col in columns" ng-bind="row[col.field]"></td>
                      
                        
@@ -155,8 +156,8 @@
                             <span class="badge-custom badge-custom-success">{{chatVal[$index]}}</span></button>
                             <div class="btn-group">
                                 <button type="button" id="btnCall-{{$index}}" ng-disabled="disableControl(row['Status'])" data-ng-click="gotoCall(row)" class="btn btn-primary" style="padding-left:5px !important"><i class="glyphicon glyphicon-earphone "></i> Call</button>
+                                <button type="button" id="btnDisconnectCall-{{$index}}" ng-show="disableCall" data-ng-click="endCall()" class="btn btn-danger" style="padding-left:5px !important"><i class="glyphicon glyphicon-remove" style="padding-left:5px !important"></i> End Call</button>
                                 <button type="button" id="btnCall-{{$index}}" ng-disabled="disableControl(row['Status'])" data-ng-click="gotoVideoCall(row)" class="btn btn-warning" style="padding-left:5px !important"><i class="glyphicon glyphicon-facetime-video"></i> Video Call</button>
-                                @*<button type="button" id="btnDisconnectCall-{{$index}}" ng-disabled="disableCall" data-ng-click="endCall(row)" class="btn btn-danger" style="padding-left:5px !important"><i class="glyphicon glyphicon-remove" style="padding-left:5px !important"></i> End Call</button>*@
                             </div>
 
 
@@ -184,7 +185,7 @@
                     <div class="modal-body">
                         <div class="menu">
                             @*added*@
-                            <div class="back"><i class="fa fa-chevron-left"></i> <img src="http://i.imgur.com/DY6gND0.png" draggable="false" /></div>
+                            <div class="back"><i class="fa fa-chevron-left"></i> <img src="/Content/DY6gND0.png" draggable="false" /></div>
                             <div class="name">{{receiverName}}</div>
                             <div class="last">18:09</div>
                         </div>

@@ -442,7 +442,7 @@
         try {
 
             connectedUser = null;
-            remoteVideo = null;
+            remoteVideo.src = null;
             //stream.getVideoTracks()[0].enabled = false;
 
             stream.getTracks().forEach(function (track) {                

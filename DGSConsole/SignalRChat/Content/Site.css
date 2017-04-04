@@ -2178,7 +2178,7 @@ emoji{
 }
 emoji.please{background-image: url(http://imgur.com/ftowh0s.png);}
 emoji.lmao{background-image: url(http://i.imgur.com/MllSy5N.png);}
-emoji.happy{background-image: url(http://imgur.com/5WUpcPZ.png);}
+emoji.happy{background-image: url(5WUpcPZ.png);}
 emoji.pizza{background-image: url(http://imgur.com/voEvJld.png);}
 emoji.cryalot{background-image: url(http://i.imgur.com/UUrRRo6.png);}
 emoji.books{background-image: url(http://i.imgur.com/UjZLf1R.png);}
@@ -2252,7 +2252,7 @@ input.textarea {
     left: 7px;
     width: 34px;
     height: 34px;
-    background-image: url(http://i.imgur.com/5WUpcPZ.png);
+    background-image: url(5WUpcPZ.png);
     background-repeat: no-repeat;
     background-size: cover;
     z-index: 100;
