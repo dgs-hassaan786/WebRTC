@@ -99,7 +99,23 @@ var ngApp = (function (initializeApp) {
 
     app.controller('SuperAdminController', function ($scope) {        
         $scope.disableCall = true;
-        var socketHandler = new SocketHandler(window.emailID,window.ipAddress);  // alert(data.host);
+        $scope.isVideo = false;
+
+        function applyIsVideo(val) {
+            $scope.$apply(function(){
+                $scope.isVideo = val ? val : false;
+                $scope.disableCall = false;
+            });
+        }
+
+        function endCall() {
+            $scope.$apply(function () {
+                $scope.isVideo = false;
+                $scope.disableCall = false;
+            });
+        }
+
+        var socketHandler = new SocketHandler(window.emailID, window.ipAddress, applyIsVideo, endCall);  // alert(data.host);
                      
         $scope.Name = "Testing Angular";
         $scope.options = { page: 1, pagesize: 10, pagingOptions: [5, 10, 15, 20, 50, 100, 500, 1000] };
@@ -133,20 +149,33 @@ var ngApp = (function (initializeApp) {
         }
 
         $scope.gotoCall = function (data) {
+            $scope.isVideo = false;
             socketHandler.openAudioStream(function () {
                 socketHandler.connectOtherParty(data.Email);
-            });
+                $scope.$apply(function () {
+                    $scope.disableCall = false;
+                });
+            },false);
             
         }
 
         $scope.gotoVideoCall = function (data) {
+
+            $scope.isVideo = true;
             socketHandler.openAudioStream(function () {
                 socketHandler.connectOtherParty(data.Email);
-            });
+                $scope.$apply(function () {
+                    $scope.disableCall = false;
+                });
+                
+            },true);
+    
         }
 
         $scope.endCall = function () {
-            socketHandler.endCall();           
+            socketHandler.endCall();
+            $scope.disableCall = true;
+            $scope.isVideo = false;
         }
   
         $scope.disableControl = function (data) {
