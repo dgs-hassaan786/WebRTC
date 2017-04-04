@@ -100,6 +100,8 @@ var ngApp = (function (initializeApp) {
     app.controller('SuperAdminController', function ($scope) {        
         $scope.disableCall = true;
         $scope.isVideo = false;
+        $scope.showMute = true;
+        $scope.enablePause = true;
         $scope.chatVal = 0;
         $scope.disableElement = [];
 
