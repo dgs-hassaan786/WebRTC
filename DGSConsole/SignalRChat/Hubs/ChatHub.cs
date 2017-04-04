@@ -33,6 +33,22 @@ namespace DGSConsole.Agent
             // Call the addNewMessageToPage method to update clients.
             Clients.All.addNewMessageToPage(name, message);
         }
+        public void sendMessage(string senderName, string message, string connID, string recievername)
+        {
+            //connID of sender
+            var myCachedUsers = AgentDataProvider.GetCache();
+            var allUsers = AgentDataProvider.GetAllAgentsData();
+            if (myCachedUsers.ContainsKey(senderName) && myCachedUsers[senderName].ConnectionIds.Where(x => x == connID).Count() > 0)
+            {
+                var FriendConnID = myCachedUsers.ContainsKey(recievername) ? myCachedUsers[recievername].ConnectionIds.FirstOrDefault() : null;               
+                if (FriendConnID != null)
+                {
+                   // Clients.Caller.broadcastMessage(senderName, message, FriendConnID);
+                    Clients.All.broadcastMessage(senderName, message, FriendConnID);
+                   // Clients.Client(FriendConnID).broadcastMessage(senderName, message, FriendConnID);
+                }
+            }
+        }
 
         public void Hello(string msg)
         {
@@ -89,7 +105,7 @@ namespace DGSConsole.Agent
                         var ansConn = UserOffers.Offers.FirstOrDefault(x => x.Name.Equals(offer.Name));
 
                         if (ansConn != null)
-                        {                            
+                        {
                             Clients.Client(ansConn.ConnectionId).onmessage(new { Type = "answer", Answer = offer.Answer });
                         }
                     }
@@ -101,7 +117,7 @@ namespace DGSConsole.Agent
                         var candidateConn = UserOffers.Offers.FirstOrDefault(x => x.Name.Equals(offer.Name));
 
                         if (candidateConn != null)
-                        {                           
+                        {
                             Clients.Client(candidateConn.ConnectionId).onmessage(new { Type = "candidate", Candidate = offer.Candidate });
                         }
                     }
@@ -111,25 +127,25 @@ namespace DGSConsole.Agent
                     {
                         //console.log("Disconnecting from", offer.name);
                         var conn = UserOffers.Offers.FirstOrDefault(x => x.Name.Equals(offer.Name));
-                                                
+
                         //notify the other user so he can disconnect his peer connection 
                         if (conn != null)
-                        {                        
+                        {
                             Clients.All.onmessage(new { Type = "leave", LeaveUser = conn });
                         }
 
-                        
+
 
                     }
                     break;
 
-                default:                    
+                default:
 
                     Clients.Client(Context.ConnectionId).onmessage(new { Type = "error", Message = "Command not found: " + offer.Type });
                     break;
             }
         }
-     
+
         public override System.Threading.Tasks.Task OnConnected()
         {
             ConnectionManager.AddAgent(Context);
@@ -139,7 +155,7 @@ namespace DGSConsole.Agent
         public override Task OnDisconnected(bool stopCalled)
         {
             var candidateConn = UserOffers.Offers.FirstOrDefault(x => x.ConnectionId.Equals(Context.ConnectionId));
-            if(candidateConn != null)
+            if (candidateConn != null)
             {
                 UserOffers.Offers.Remove(candidateConn);
             }
@@ -149,20 +165,20 @@ namespace DGSConsole.Agent
         public void OnDisconnected()
         {
             //ConnectionManager.RemoveAgent(Context);
-         
+
         }
-        public void newConnection(string emailID)
-        {            
+        public void newConnection()
+        {
             var allUsers = AgentDataProvider.GetAllAgentsData();
-            var currentStatus = AgentDataProvider.GetStatus(emailID)!=null? AgentDataProvider.GetStatus(emailID):null;
+            var myCachedUsers = AgentDataProvider.GetCache();
             foreach (var user in allUsers)
             {
-                if (user.Email ==emailID && currentStatus!=null)
+                if (myCachedUsers.ContainsKey(user.Email))
                 {
-                    user.Status = currentStatus;
-                }
+                    user.Status = myCachedUsers[user.Email].Status;                    
+                }              
             }
-            Clients.All.newConnection(allUsers); 
+            Clients.All.newConnection(allUsers);
         }
     }
 }
