@@ -27,7 +27,8 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>         
-                    <li>@Html.ActionLink("Manage", "List", "Home")</li>            
+                    <li>@Html.ActionLink("Manage", "List", "Home")</li>
+                    <li>@Html.ActionLink("WebPhone", "WebPhone", "Home")</li>            
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -45,6 +46,12 @@
     @Scripts.Render("~/bundles/jquerycommon")
     <script src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>
     <script src="~/core/websocketConnection.js"></script>
+    @*<script src="~/Scripts/Mizutech/webphone_api.js"></script>
+    <link rel="stylesheet" href="~/Content/css/jquery.mobile.structure-1.4.2.css" />
+    <link rel="stylesheet" href="~/Content/css/mainlayout.css" />
+    <link rel="stylesheet" href="~/Content/css/index.css" />
+    <link href="~/Style/style.css" rel="stylesheet" />
+    <script>webphone_api.parameters.issdk = false;</script>*@
     @Scripts.Render("~/bundles/app/libs")
     @Scripts.Render("~/bundles/app/core")
     @RenderSection("scripts", required: false)

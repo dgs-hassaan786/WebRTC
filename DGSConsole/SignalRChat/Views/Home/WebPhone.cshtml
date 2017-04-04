@@ -1,0 +1,274 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout-Mizu.cshtml";
+    ViewBag.Title = "WebPhone";
+}
+
+<div class="dialpad-wraper" style="background-image:url(../../Scripts/Mizutech/images/3.png); background-size:cover; margin-top:50px;">
+    <div class="dialpad-main">
+        
+        <div class="top-box-div">
+            <a id="InboundStatus" href="javascript:void(0)" onclick="Login()"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/inbound-icon.png" width="26" height="26" /></div>Login</div></a>
+            <a id="OutboundStatus" href="javascript:void(0)"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/outbound-icon.png" width="26" height="26" /></div>Logout</div></a>
+            <a id="AvailableStatus" href="javascript:void(0)" onclick="OffBreak()"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/available-icin.png" width="26" height="26" /></div>Wait</div></a>
+            <a id="NotAvailableStatus" href="javascript:void(0)"><div class="top-box no-border"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/not-available-icin.png" width="26" height="26" /></div>Break</div></a>
+        </div>
+        <div class="phone-number-div">
+            <div class="phone-number"><input name="" id="PhoneNumber" type="text" maxlength="15" /></div>
+            <a id="removenumber" href="javascript:void(0)"><div class="delete-icon"><img src="https://demov2.webdialer.com/images/number-delete-icon.png" width="41" height="22" /></div></a>
+        </div>
+        <div class="digits-wraper">
+            <ul>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('1');">1</a></li>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('2');">2</a></li>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('3');">3</a></li>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('4');">4</a></li>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('5');">5</a></li>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('6');">6</a></li>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('7');">7</a></li>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('8');">8</a></li>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('9');">9</a></li>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('*');" class="staricstyle">*</a></li>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('0');">0</a></li>
+                <li><a href="javascript:void(0)" onclick="SendDTMF('#');">#</a></li>
+            </ul>
+            <audio id="dtmfsound0"><source src="~/Content/sound/DTMF0.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF0.mp3" type="audio/mpeg"></audio>
+        </div>
+        <div class="btm-links-div">
+            <ul>
+                <li><a id="Consultancy" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/consultancy-icon.png" width="35" height="26" /></span>Consultancy</a></li>
+                <li onclick="Transfer();"><a id="Transfer" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/transfer-icon.png" width="35" height="26" /></span>Transfer</a></li>
+                <li><a id="Cancel" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/cancel-icon.png" width="35" height="26" /></span>Cancel</a></li>
+                <li><a id="Conference" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/conference-icon.png" width="35" height="26" /></span>Conference</a></li>
+                <li class="green-bg" id="IboundCall" onclick="Accept();"><a href="javascript:void(0)" onclick='call();'><span class="green-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
+                <li class="green-bg" id="OutboundCall" onclick="Call()"><a href="javascript:void(0)" onclick='call();'><span class="green-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
+                <li><a id="Toggle" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/toggle-icon.png" width="35" height="26" /></span>Toggle</a></li>
+                <li><a id="Hold" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/hold-icon.png" width="35" height="26" /></span><span id="HoldButtonText">Hold</span></a></li>
+                <li class="red-bg" onclick="Reject();"><a id="EndCall" href="javascript:void(0)"><span class="red-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
+                <li><a id="Mute" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/mute-icon.png" width="35" height="26" /></span><span id="MuteButtonText">Mute</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+       <script src="~/Scripts/Mizutech/webphone_api.js"></script>
+    @*<script>webphone_api.parameters.issdk = false;</script>*@
+    <script>
+        var serveraddress_input = "10.114.5.111:5060"
+        var username_input = "5111";
+        var password_input = "1234";
+        var destination_input = document.getElementById('destnumber');
+        document.getElementById('IboundCall').style.display = 'none';
+
+        // document.getElementById('btn_hangup').disabled = true;
+        //document.getElementById('icoming_call_layout').style.display = 'none';
+
+
+        // Wait until the webphone is loaded, before calling any API functions
+        // if automatic start is required, then webphone_api.start() should be called "onLoaded" event like this:
+        //      webphone_api.onLoaded(function ()
+        //      {
+        //          webphone_api.start();
+        //      });
+        webphone_api.onLoaded(function () {
+            var serveraddress = webphone_api.getparameter('serveraddress');
+            if (serveraddress.length < 1) { serveraddress = webphone_api.getparameter('serveraddress_user'); } // only for demo
+            var username = webphone_api.getparameter('username');
+            var password = webphone_api.getparameter('password');
+            var destination = webphone_api.getparameter('destination');
+
+            if (serveraddress.length > 0) { serveraddress_input.value = serveraddress; }
+            if (username.length > 0) { username_input.value = username; }
+            if (password.length > 0) { password_input.value = password; }
+            if (destination.length > 0) { destination_input.value = destination; }
+
+            webphone_api.parameters['autostart'] = false;
+        });
+
+        function Start() {
+            var serveraddress = serveraddress_input;
+            var username = username_input;
+            var password = password_input;
+            var destination = destination_input;
+
+            if (typeof (serveraddress) === 'undefined' || serveraddress === null || serveraddress.length < 1) { alert('Set a valid serveaddress.'); serveraddress_input.focus(); return; }
+            if (typeof (username) === 'undefined' || username === null || username.length < 1) { alert('Set a valid username.'); username_input.focus(); return; }
+            if (typeof (password) === 'undefined' || password === null || password.length < 1) { alert('Set a valid password.'); password_input.focus(); return; }
+
+            if (typeof (serveraddress) !== 'undefined' && serveraddress !== null && serveraddress.length > 0) {
+                webphone_api.setparameter('serveraddress', serveraddress);
+            }
+            webphone_api.setparameter('username', username);
+            webphone_api.setparameter('password', password);
+            webphone_api.setparameter('destination', destination);
+
+            document.getElementById('events').innerHTML = 'EVENT, Initializing...';
+
+            webphone_api.start();
+        }
+
+        function Call() {
+            var destnr = document.getElementById('PhoneNumber').value;
+            //document.getElementById('btn_hangup').disabled = false;
+            if (typeof (destnr) === 'undefined' || destnr === null) { destnr = ''; }
+
+            webphone_api.setparameter('destination', destnr);
+            webphone_api.call(destnr);
+        }
+
+        function Login() {
+            var destnr = "*1";
+            if (typeof (destnr) === 'undefined' || destnr === null) { destnr = ''; }
+
+            webphone_api.setparameter('destination', destnr);
+            webphone_api.call(destnr);
+        }
+
+        function OffBreak() {
+            var destnr = "*4";
+            if (typeof (destnr) === 'undefined' || destnr === null) { destnr = ''; }
+
+            webphone_api.setparameter('destination', destnr);
+            webphone_api.call(destnr);
+        }
+
+        function Hangup() {
+            webphone_api.hangup();
+        }
+
+        function Accept() {
+            //document.getElementById('icoming_call_layout').style.display = 'none';
+            webphone_api.accept();
+        }
+
+        function Reject() {
+            //document.getElementById('icoming_call_layout').style.display = 'none';
+            webphone_api.reject();
+        }
+
+        function Mute() {
+            //document.getElementById('icoming_call_layout').style.display = 'none';
+            webphone_api.mute(true, 2);
+        }
+
+        function Hold() {
+            //document.getElementById('icoming_call_layout').style.display = 'none';
+            webphone_api.hold(true);
+        }
+
+        function Transfer() {
+            //document.getElementById('icoming_call_layout').style.display = 'none';
+            webphone_api.transfer(document.getElementById('PhoneNumber').value)
+        }
+
+        function SendDTMF(n) {
+            //document.getElementById('icoming_call_layout').style.display = 'none';
+            webphone_api.dtmf(n, -1);
+            document.getElementById('dtmfsound0').play();
+            if (document.getElementById('PhoneNumber').value.length < 12) {
+                var inputString = document.getElementById('PhoneNumber').value;
+                var shortenedString = inputString + n;
+                document.getElementById('PhoneNumber').value = shortenedString;
+            }
+        }
+
+        $("#Hold").click(function () {
+            var src = ($("#Hold span img").attr('src') === 'https://demov2.webdialer.com/images/hold-icon.png')
+                ? 'https://demov2.webdialer.com/images/resume-icon.png'
+                : 'https://demov2.webdialer.com/images/hold-icon.png';
+            $(this).attr('src', src);
+            if (src == 'https://demov2.webdialer.com/images/hold-icon.png') {
+                $("#HoldButtonText").text("Hold");
+                webphone_api.hold(false);
+            }
+            else {
+                $("#HoldButtonText").text("Resume");
+                webphone_api.hold(true);
+            }
+            $("#Hold span img").attr("src", src);
+        });
+        $("#Mute").click(function () {
+            var src = ($("#Mute span img").attr('src') === 'https://demov2.webdialer.com/images/mute-icon.png')
+                ? 'https://demov2.webdialer.com/images/unmute-icon.png'
+                : 'https://demov2.webdialer.com/images/mute-icon.png';
+            $(this).attr('src', src);
+            if (src == 'https://demov2.webdialer.com/images/mute-icon.png') {
+                $("#MuteButtonText").text("Mute");
+                webphone_api.mute(false, 0);
+            }
+            else {
+                $("#MuteButtonText").text("Unmute");
+                webphone_api.mute(true, 0);
+            }
+            $("#Mute span img").attr("src", src);
+        });
+
+        $("#InboundStatus").click(function () {
+            $("#InboundStatus div").addClass("top-box-active");
+            $("#OutboundStatus div").removeClass("top-box-active");
+        });
+        $("#OutboundStatus").click(function () {
+            $("#InboundStatus div").removeClass("top-box-active");
+            $("#OutboundStatus div").addClass("top-box-active");
+        });
+
+        $("#AvailableStatus").click(function () {
+            $("#AvailableStatus div").addClass("top-box-active");
+            $("#NotAvailableStatus div").removeClass("top-box-active");
+        });
+        $("#NotAvailableStatus").click(function () {
+            $("#AvailableStatus div").removeClass("top-box-active");
+            $("#NotAvailableStatus div").addClass("top-box-active");
+        });
+        webphone_api.getEvents(function (evt) {
+            document.getElementById('events').innerHTML = evt;
+
+            //ProcessEvents(evt);
+        });
+
+        $("#removenumber").click(function () {
+            if ($('#phone_number').val().length > 0) {
+                var inputString = $("#phone_number").val();
+                var shortenedString = inputString.substr(0, (inputString.length - 1));
+                $('#phone_number').val(shortenedString);
+            }
+        });
+
+        $("#Consultancy").addClass("disbaleControl");
+        $("#Cancel").addClass("disbaleControl");
+        $("#Conference").addClass("disbaleControl");
+        $("#Toggle").addClass("disbaleControl");
+
+        webphone_api.onCallStateChange(function (event, direction, peername, peerdisplayname) {
+            if (event === 'callSetup') {
+                //document.getElementById('btn_hangup').disabled = false;
+
+                if (direction == 1) {
+                    // means it's outgoing call
+                    document.getElementById('callerid').value = peername;
+                    document.getElementById('TFN').value = peerdisplayname;
+                }
+                else if (direction == 2) {
+                    // means it's icoming call
+                    document.getElementById('IboundCall').style.display = 'block';
+                    document.getElementById('callerid').value = peername;
+                    document.getElementById('TFN').value = peerdisplayname.split('-')[1];
+                    document.getElementById('OutboundCall').style.display = 'none';
+                }
+            }
+
+            //detecting the end of a call, even if it wasn't successfull
+            if (event === 'callDisconnected') {
+                document.getElementById('btn_hangup').disabled = true;
+                document.getElementById('icoming_call_layout').style.display = 'none';
+                document.getElementById('IboundCall').style.display = 'none';
+                document.getElementById('OutboundCall').style.display = 'block';
+
+            }
+        });
+        
+        $(document).ready(function () {
+            $("#InboundStatus").click();
+        });
+
+        //});
+    </script>
+</div>

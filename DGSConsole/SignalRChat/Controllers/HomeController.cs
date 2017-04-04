@@ -43,6 +43,14 @@ namespace DGSConsole.Agent.Controllers
 
             return View();
         }
+
+      
+        public ActionResult WebPhone()
+        {
+
+            return View();
+        }
+
         public ActionResult List()
         {
             string ip = Request.UserHostAddress;
