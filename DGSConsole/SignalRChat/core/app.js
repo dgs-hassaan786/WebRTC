@@ -100,7 +100,7 @@ var ngApp = (function (initializeApp) {
     app.controller('SuperAdminController', function ($scope) {        
         $scope.disableCall = true;
         $scope.isVideo = false;
-        $scope.chatVal = 0;
+        $scope.chatVal = [];
         $scope.disableElement = [];
 
         function applyIsVideo(val) {
@@ -138,11 +138,12 @@ var ngApp = (function (initializeApp) {
                     if ($scope.userList != null) {
                         for (var i = 0; i < $scope.userList.length; i++) {
                             if ($scope.userList[i].Status == "Login") {
-                                $scope.disableElement[i] = false;
+                                $scope.disableElement[i] = false;                              
                             }
                             else {
-                                $scope.disableElement[i] = true;
+                                $scope.disableElement[i] = true;                               
                             }
+                            $scope.chatVal[i] = 0;
                         }
                         $scope.dataLoaded = true;
                     }
@@ -155,8 +156,11 @@ var ngApp = (function (initializeApp) {
         });
 
         $scope.gotoChatroom = function (index) {
+            for (var i = 0; i < $scope.userList.length; i++) { $scope.chatVal[i] = 0; }          
             $scope.userFrom = $(window)[0].emailID;
             $scope.userTo = $scope.userList[index].Email;
+            var receiverName = angular.copy($scope.userTo);
+            $scope.receiverName = receiverName.substring(0, receiverName.lastIndexOf("@"));
             $scope.$broadcast('myEvent', {
                 userfrom: $scope.userFrom,
                 userto: $scope.userTo
@@ -206,7 +210,7 @@ var ngApp = (function (initializeApp) {
         $(function () {
             var chat = $.connection.chatHub;
             var userFrom = $scope.userFrom;
-            var userTo = $scope.userTo;
+            var userTo = $scope.userTo;              
             var chat_show = $(".chat");
             $scope.$on('myEvent', function (event, message) {
                 $scope.userFrom = message.userfrom;
@@ -218,8 +222,7 @@ var ngApp = (function (initializeApp) {
                     sendMessage();
                 }
             })
-            var sendMessage = function () {
-                $scope.hiddenID = $('#hdId').val();
+            var sendMessage = function () {               
                 $scope.finalConnId = $.connection.hub.id;
                 var message = $("#message").val();
                 $.connection.hub.start().done(function () {
@@ -228,8 +231,7 @@ var ngApp = (function (initializeApp) {
                 $("#message").val("");
                 event.preventDefault();
             }
-            $scope.sendMessage = function () {
-                $scope.hiddenID=  $('#hdId').val();
+            $scope.sendMessage = function () {               
                 $scope.finalConnId = $.connection.hub.id;
                 var message = $("#message").val();
                 $.connection.hub.start().done(function () {
@@ -240,13 +242,22 @@ var ngApp = (function (initializeApp) {
             }      
             chat.client.broadcastMessage = function (senderName, message, FriendConnID) {
                 if (FriendConnID != null) {
+                    //added
+                    var index=0;
+                    for(var i=0;i<$scope.userList.length;i++){
+                        if ($scope.userList[i].Email == $scope.userTo)
+                        {
+                            index=i;
+                        }
+                    }
+                    
                     var sendername = senderName.substring(0, senderName.lastIndexOf("@"));
                     if (senderName == $scope.userFrom) {
                         chat_show.append('<li class="self">' + '<div class="avatar">' + '<img src="http://i.imgur.com/HYcn9xO.png" draggable="false"/>' + '</div>' + '<div class="msg">' + '<p><strong>' + 'You&nbsp:&nbsp&nbsp&nbsp' + '</strong> ' + '&nbsp&nbsp' + message + '&nbsp&nbsp' + '</p>' + '&nbsp&nbsp' + '<time>20:18</time>' + '</div>');
                     }
                     else {
                         $scope.$apply(function () {
-                            ++$scope.$parent.chatVal;
+                            ++$scope.$parent.chatVal[index];                         
                         });
                         chat_show.append('<li class="other">' + '<div class="avatar">' + '<img src="http://i.imgur.com/DY6gND0.png" draggable="false"/>' + '</div>' + '<div class="msg">' + '<p><strong>' + sendername + '&nbsp:&nbsp&nbsp&nbsp' + '</strong>' + message + '&nbsp&nbsp' + '</p>' + '&nbsp&nbsp' + '<time>20:18</time>' + '</div>');
                     }
