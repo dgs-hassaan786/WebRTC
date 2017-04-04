@@ -2069,6 +2069,7 @@ a{
     order: 1;
     border-top-left-radius: 0px;
     box-shadow: -1px 2px 0px #D4D4D4;
+    background:#e9ed88
 }
 .other:before {
     content: "";
@@ -2091,6 +2092,7 @@ a{
     order: 1;
     border-bottom-right-radius: 0px;
     box-shadow: 1px 2px 0px #D4D4D4;
+    background:#ffdec1;
 }
 .self .avatar {
     order: 2;
@@ -2258,4 +2260,26 @@ input.textarea {
 }
 .emojis:active {
     opacity: 0.9;
+}
+.badge-custom {
+  padding: 1px 9px 2px;
+  font-size: 12.025px;
+  font-weight: bold;
+  white-space: nowrap;
+  color: #ffffff;
+  background-color: #999999;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+.badge-custom:hover {
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.badge-custom-success {
+  background-color: #468847;
+}
+.badge-custom-success:hover {
+  background-color: #356635;
 }
