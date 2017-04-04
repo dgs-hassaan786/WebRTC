@@ -24,16 +24,17 @@ var ngApp = (function (initializeApp) {
              $routeProvider.otherwise({ redirectTo: config.defaultRoutePaths });
          }*/
      }]);
+
     app.controller('SuperAdminController', function ($scope) {
         $scope.Name = "Testing Angular";
+        $scope.disableElement = [];
         $scope.options = { page: 1, pagesize: 10, pagingOptions: [5, 10, 15, 20, 50, 100, 500, 1000] };
         $scope.columns = [{ header: 'Name', field: 'Name' }, { header: 'Email', field: 'Email' }, { header: 'Status', field: 'Status' }]
 
-  
-       
         $(function () {
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.chatHub;
+
             $scope.callUser = [];
             // Create a function that the hub can call back to return list of all users that are connected
             chat.client.newConnection = function (agentsData) {
@@ -41,108 +42,84 @@ var ngApp = (function (initializeApp) {
                     $scope.userList = angular.copy(agentsData);
                     $scope.userDisplayList = [].concat($scope.userList);
                     if ($scope.userList != null) {
-                       
                         $scope.dataLoaded = true;
+                        for (var i = 0; i < $scope.userList.length; i++) {
+                            if ($scope.userList[i].Status == "Login")
+                                $scope.disableElement[i] = false;
+                            else
+                                $scope.disableElement[i] = true;
+                        }
                     }
                 })
             };
 
-            $.connection.hub.start().done(function () { 
-                chat.server.newConnection($(window)[0].emailID);
+            $.connection.hub.start().done(function () {
+                chat.server.newConnection();
             });
         });
-     
-        //$scope.columns = [{ header: 'Agent Information', field: 'Name' }, { header: 'Chat', field: 'Chat' }, { header: 'View Screen', field: 'Screen' }, { header: 'Call', field: 'Status' }];
-        //$scope.userList = [
-        //{ Name: 'Aisha', Chat: 'ac@msn.com', Screen: 'Chat Room', Status: 'wait' },
-        //{ Name: 'Ahmed', Chat: 'ahmed@msn.com', Screen: 'Chat Room', Status: 'active' },
-        //{ Name: 'Dim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Dim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Dim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Dim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Lemon', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Bob', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Dave', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'John', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Kim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Lee', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Gill', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' },
-        //{ Name: 'Dim', Chat: 'dim@msn.com', Screen: 'Chat Room', Status: 'connected' }, ]
-        //$scope.userDisplayList = [].concat($scope.userList);
-        $scope.gotoChatroom = function () {
-           window.location.pathname="/Home/ChatRoom";
+
+        $scope.gotoChatroom = function (index) {
+            $scope.userFrom = $(window)[0].emailID;
+            $scope.userTo = $scope.userList[index].Email;
+            $scope.$broadcast('myEvent', {
+                userfrom: $scope.userFrom,
+                userto: $scope.userTo
+            })
         }
-
-   
     });
+
     app.controller('chatController', function ($scope) {
-        $(document).ready(function () {
-            var message = "Hi ";
-            $scope.sms = [{ Message: 'Hello', Date: '31-3-2017' },
-            { Message: 'hows life going?', Date: '31-3-2017' }
-            , { Message: 'I am doing good', Date: '31-3-2017' }
-            , { Message: 'on what languages you are working on? .. i might be needing some help', Date: '31-3-2017' }
-            , { Message: 'HTML DOM elements', Date: '31-3-2017' }];
-            $scope.smsOut = [{ Message: 'Hi Bob', Date: '31-3-2017' },
-            { Message: 'I am doing good ', Date: '31-3-2017' },
-            { Message: 'am working on multiple things', Date: '31-3-2017' },
-            { Message: 'tell me on wat u need help in', Date: '31-3-2017' },
-            { Message: 'oh ok lets meet up will surely sort ur problem..', Date: '31-3-2017' }];
-            var list = ['Bob', 'Bill', 'Ben', 'John'];
-            var chat_show = $(".chat_group div#chat1");
-            var tab_menu = $(".chat-content .nav.nav-pills");
-            var tab_content = $(".chat-content .tab-content");
-            $(".form-chat .send_message").on("click", function (event) {
-                var message = $(".form-chat .message").val();
-            });
-            //Loading Users
-            var ol = $(".user_list");
-            ol.empty();
-            $.each(list, function (key, value) {
-                ol.append('<li class="chat_bg" data-id="' + key + '" data-value="' + value + '">' + value + '</li>');
-            });
-            //Loading messages
-            chat_show.append('<p class="left-txt"><strong>' + list[0] + '</strong>: ' + $scope.sms[0].Message  + '</p>');
-            chat_show.append('<p class="pull-right "><strong>' + list[1] + '</strong>: ' + $scope.smsOut[0].Message + '</br>' + '</p>');
-            chat_show.append('<p class="left-txt"><strong>' + '</br>' + '</br>' + list[0] + '</strong>: ' + $scope.sms[1].Message + '</br>' + '</p>');
-            chat_show.append('<p class="pull-right "><strong>' + list[1] + '</strong>: ' + $scope.smsOut[1].Message + '</br>' + '</br>' + '</p>');
-            chat_show.append('<p class="left-txt"><strong>' + '</br>' + '</br>' + list[0] + '</strong>: ' + $scope.sms[2].Message + '</br>' + '</p>');
-            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[2].Message + '</br>' + '</br>' + '</p>');
-            chat_show.append('<p class="left-txt"><strong>' + '</br>' + '</br>' + list[0] + '</strong>: ' + $scope.sms[3].Message + '</br>' + '</p>');
-            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[3].Message + '</br>' + '</br>' + '</p>');
-            chat_show.append('<p class="left-txt"><strong>' + '</br>' + '</br>' + list[0] + '</strong>: ' + $scope.sms[4].Message + '</br>' + '</p>');
-            chat_show.append('<p class="pull-right rgt-txt"><strong>' + list[1] + '</strong>: ' + $scope.smsOut[4].Message  + '</p>');
-           
-            //On click add user in tab
-            $(document).on("click", '.user_list li', function () {
-                var user_id = $(this).attr("data-id");
-                var user_name = $(this).attr("data-value");
-                var username = "Bob"
-                var chatadded = false;
-                if ($('a[data-chat="' + user_name + '"]', tab_menu).length > 0) {
-                    chatadded = true;
+        $(function () {
+            var chat = $.connection.chatHub;
+            var userFrom = $scope.userFrom;
+            var userTo = $scope.userTo;
+            var chat_show = $(".chat");
+            $scope.$on('myEvent', function (event, message) {
+                $scope.userFrom = message.userfrom;
+                $scope.userTo = message.userto;
+            })
+            $('#message').keypress(function (e) {
+                var code = (e.keyCode ? e.keyCode : e.which);
+                if (code == 13) {
+                    sendMessage();
                 }
+            })
+            var sendMessage = function () {
+                $scope.hiddenID = $('#hdId').val();
+                $scope.finalConnId = $.connection.hub.id;
+                var message = $("#message").val();
+                $.connection.hub.start().done(function () {
+                    chat.server.sendMessage($scope.userFrom, message, $scope.finalConnId, $scope.userTo);
+                });
+                $("#message").val("");
+                event.preventDefault();
+            }
+            $scope.sendMessage = function () {
+                $scope.hiddenID=  $('#hdId').val();
+                $scope.finalConnId = $.connection.hub.id;
+                var message = $("#message").val();
+                $.connection.hub.start().done(function () {
+                    chat.server.sendMessage($scope.userFrom, message, $scope.finalConnId, $scope.userTo);
+                });
+                $("#message").val("");
+                event.preventDefault();
+            }
 
-                if (user_name != username) {
-                    var chatid = "chat" + user_id;
-
-                    var li = $("li", tab_menu);
-
-                    if (chatadded == false) {
-                        li.removeClass("active");
-                        tab_menu.append('<li class="active"><a data-toggle="pill" href="#' + chatid + '" data-id="' + user_id + '" data-chat="' + user_name + '">' + user_name + '</a></li>');
-                        $("ul", tab_content).removeClass("in");
-                        $("ul", tab_content).removeClass("active");
-                        tab_content.append('<ul id=' + chatid + ' class="tab-pane fade in active"></ul>');
+            //var chat_show = $(".chat_group div#chat1");
+            chat.client.broadcastMessage = function (senderName, message, FriendConnID) {
+                if (FriendConnID != null) {
+                    if (senderName == $scope.userFrom) {
+                        chat_show.append('<li class="other">' + '<div class="avatar">' + '<img src="http://i.imgur.com/HYcn9xO.png" draggable="false"/>' + '</div>' + '<div class="msg">' + '<p><strong>' + 'You&nbsp:&nbsp&nbsp&nbsp' + '</strong> ' + '&nbsp&nbsp'  +message + '&nbsp&nbsp' + '<emoji class="books" /> ' + '</p>' + '&nbsp&nbsp' + '<time>20:18</time>' + '</div>');
                     }
                     else {
-
+                        chat_show.append('<li class="self">' + '<div class="avatar">' + '<img src="http://i.imgur.com/DY6gND0.png" draggable="false"/>' + '</div>' + '<div class="msg">' + '<p><strong>' + senderName + '&nbsp:&nbsp&nbsp&nbsp' +  '</strong>'+ message + '&nbsp&nbsp' + '<emoji class="pizza" /> ' + '</p>' + '&nbsp&nbsp' + '<time>20:18</time>' + '</div>');
                     }
                 }
                 else {
-                    alert("You cannot chat with yourself")
+                    ('#myModal').modal('toggle');
                 }
-            });
+            }
+
         });
     });
 
@@ -167,7 +144,9 @@ var ngApp = (function (initializeApp) {
                 url: url,
                 method: 'GET',
                 async: true,
-                params: { pageNo: pageNo, pageSize: pageSize },
+                params: {
+                    pageNo: pageNo, pageSize: pageSize
+                },
                 headers: {
                     'Content-Type': 'application/json'
                 }

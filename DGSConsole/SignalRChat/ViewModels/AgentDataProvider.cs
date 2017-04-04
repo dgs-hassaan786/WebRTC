@@ -19,6 +19,10 @@ namespace DGSConsole.Agent.ViewModels
         {
             return GetAllAgentsData().FirstOrDefault(x => x.Email.Equals(email) && x.Password.Equals(password));
         }
+        internal static ConcurrentDictionary<string, AgentLeg> GetCache()
+        {
+            return Cache;
+        }
         internal static string GetStatus(string email)
         {
             if (Cache != null && Cache.ContainsKey(email))
