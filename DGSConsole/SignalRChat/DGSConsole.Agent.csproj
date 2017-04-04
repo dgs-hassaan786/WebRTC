@@ -197,9 +197,11 @@
     <Compile Include="ViewModels\AgentDataProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap - Copy.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min - Copy.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Custom.min.css" />
     <Content Include="Content\sound\beep-01.wav" />
