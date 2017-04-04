@@ -33,5 +33,20 @@ namespace DGSConsole.Agent.Controllers
             return View();
         }
 
+        public ActionResult WebPhone()
+        {
+            return View();
+        }
+
+        public ActionResult DGSWebPhone()
+        {
+            return View();
+        }
+
+        public ActionResult Testphone()
+        {
+            return View();
+        }
+
     }
 }

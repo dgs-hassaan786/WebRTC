@@ -3,43 +3,271 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/Style/style.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" />
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>*@
+    
+    @*<link rel="stylesheet" href="~/Content/css/themes/wphone_1.0.css" />*@
+    @*<link rel="stylesheet" href="~/Content/css/themes/jquery.mobile.icons.min.css" />*@
+    <link rel="stylesheet" href="~/Content/css/jquery.mobile.structure-1.4.2.css" />
+    <link rel="stylesheet" href="~/Content/css/mainlayout.css" />
+    <script src="~/Scripts/Mizutech/js/techdemo_example/jquery-1.9.1.min.js"></script>
+
+    <link rel="stylesheet" href="~/Content/css/index.css" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script src="~/Scripts/angular.min.js"></script>
-</head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+
+    @*<script src="~/Scripts/Mizutech/webphone_api.js"></script>*@
+    <script>webphone_api.parameters.issdk = false;</script>
+   
+    @*<script>
+        $(document).ready(function () {
+            var IsonCall = false;
+            $("#Consultancy").addClass("disbaleControl");
+            $("#Transfer").addClass("disbaleControl");
+            $("#Cancel").addClass("disbaleControl");
+            $("#Conference").addClass("disbaleControl");
+            $("#btn_call").removeClass("disbaleControl");
+            $("#Toggle").addClass("disbaleControl");
+            $("#Hold").addClass("disbaleControl");
+            $("#btn_hangup").removeClass("disbaleControl");
+            $("#Mute").addClass("disbaleControl");
+
+            webphone_api.onLoaded(function () {
+                //Set parameters (Replace upper case worlds with your settings)
+                //Alternatively these can be also preset in your webphone_api.js file or passed as URL parameters
+                webphone_api.setparameter('serveraddress', '10.114.5.111:5060');
+                webphone_api.setparameter('username', '5111');
+                webphone_api.setparameter('password', '1234');
+                //See the “Parameters” section below for more options
+                //Start the webphone (optional but recommended)
+                webphone_api.start();
+                //These API calls below actually should be placed behind separate functions (button clicks)
+                //Make a call (Usually initiated by user action, such as click on a click to call button. Number can be extension, SIP username, SIP URI or mobile/landline phone)
+                webphone_api.call('*1');
+                webphone_api.call('*4');
+                alert("awais");
+            });
+
+            $("#InboundStatus").click(function () {
+                $("#InboundStatus div").addClass("top-box-active");
+                $("#OutboundStatus div").removeClass("top-box-active");
+                webphone_api.call("912025806200", -1);
+            });
+            $("#OutboundStatus").click(function () {
+                $("#InboundStatus div").removeClass("top-box-active");
+                $("#OutboundStatus div").addClass("top-box-active");
+            });
+
+            $("#AvailableStatus").click(function () {
+                $("#AvailableStatus div").addClass("top-box-active");
+                $("#NotAvailableStatus div").removeClass("top-box-active");
+                webphone_api.call("*4", -1);
+            });
+            $("#NotAvailableStatus").click(function () {
+                $("#AvailableStatus div").removeClass("top-box-active");
+                $("#NotAvailableStatus div").addClass("top-box-active");
+            });
+
+            $("#btn_call").click(function () {
+                IsonCall = true;
+                $("#Consultancy").addClass("disbaleControl");
+                $("#Transfer").addClass("disbaleControl");
+                $("#Cancel").addClass("disbaleControl");
+                $("#Conference").addClass("disbaleControl");
+                $("#btn_call").removeClass("disbaleControl");
+                $("#Toggle").addClass("disbaleControl");
+                $("#Hold").removeClass("disbaleControl");
+                $("#btn_hangup").removeClass("disbaleControl");
+                $("#Mute").removeClass("disbaleControl");
+                $('#phone_number').val('');
+            });
+            $("#btn_hangup").click(function () {
+                IsonCall = false;
+                $("#Consultancy").addClass("disbaleControl");
+                $("#Transfer").addClass("disbaleControl");
+                $("#Cancel").addClass("disbaleControl");
+                $("#Conference").addClass("disbaleControl");
+                $("#btn_call").removeClass("disbaleControl");
+                $("#Toggle").addClass("disbaleControl");
+                $("#Hold").addClass("disbaleControl");
+                $("#btn_hangup").removeClass("disbaleControl");
+                $("#Mute").addClass("disbaleControl");
+                $('#phone_number').val('');
+            });
+            $("#Consultancy").click(function () {
+                $("#Consultancy").addClass("disbaleControl");
+                $("#Transfer").removeClass("disbaleControl");
+                $("#Cancel").removeClass("disbaleControl");
+                $("#Conference").removeClass("disbaleControl");
+                $("#btn_call").addClass("disbaleControl");
+                $("#Toggle").removeClass("disbaleControl");
+                $("#Hold").removeClass("disbaleControl");
+                $("#btn_hangup").removeClass("disbaleControl");
+                $("#Mute").removeClass("disbaleControl");
+            });
+            $("#Transfer").click(function () {
+                $("#Consultancy").addClass("disbaleControl");
+                $("#Transfer").addClass("disbaleControl");
+                $("#Cancel").addClass("disbaleControl");
+                $("#Conference").addClass("disbaleControl");
+                $("#btn_call").addClass("disbaleControl");
+                $("#Toggle").addClass("disbaleControl");
+                $("#Hold").addClass("disbaleControl");
+                $("#btn_hangup").removeClass("disbaleControl");
+                $("#Mute").addClass("disbaleControl");
+            });
+            $("#Conference").click(function () {
+                $("#Consultancy").addClass("disbaleControl");
+                $("#Transfer").removeClass("disbaleControl");
+                $("#Cancel").removeClass("disbaleControl");
+                $("#Conference").addClass("disbaleControl");
+                $("#btn_call").addClass("disbaleControl");
+                $("#Toggle").addClass("disbaleControl");
+                $("#Hold").removeClass("disbaleControl");
+                $("#btn_hangup").removeClass("disbaleControl");
+                $("#Mute").removeClass("disbaleControl");
+            });
+            $("#Cancel").click(function () {
+                $("#Consultancy").removeClass("disbaleControl");
+                $("#Transfer").removeClass("disbaleControl");
+                $("#Cancel").addClass("disbaleControl");
+                $("#Conference").removeClass("disbaleControl");
+                $("#btn_call").addClass("disbaleControl");
+                $("#Toggle").addClass("disbaleControl");
+                $("#Hold").removeClass("disbaleControl");
+                $("#btn_hangup").removeClass("disbaleControl");
+                $("#Mute").removeClass("disbaleControl");
+            });
+            $("#Hold").click(function () {
+                var src = ($("#Hold span img").attr('src') === 'https://demov2.webdialer.com/images/hold-icon.png')
+                    ? 'https://demov2.webdialer.com/images/resume-icon.png'
+                    : 'https://demov2.webdialer.com/images/hold-icon.png';
+                $(this).attr('src', src);
+                if (src == 'https://demov2.webdialer.com/images/hold-icon.png') {
+                    $("#HoldButtonText").text("Hold");
+                }
+                else {
+                    $("#HoldButtonText").text("Resume");
+                }
+                $("#Hold span img").attr("src", src);
+            });
+            $("#Mute").click(function () {
+                var src = ($("#Mute span img").attr('src') === 'https://demov2.webdialer.com/images/mute-icon.png')
+                    ? 'https://demov2.webdialer.com/images/unmute-icon.png'
+                    : 'https://demov2.webdialer.com/images/mute-icon.png';
+                $(this).attr('src', src);
+                if (src == 'https://demov2.webdialer.com/images/mute-icon.png') {
+                    $("#MuteButtonText").text("Mute");
+                    mute();
+                }
+                else {
+                    $("#MuteButtonText").text("Unmute");
+                    unmute();
+                }
+                $("#Mute span img").attr("src", src);
+            });
+            $("#phone_number").bind('keyup', function (e) {
+                if ($('#phone_number').val().length >= 10 && IsonCall) {
+                    $("#Consultancy").removeClass("disbaleControl");
+                    $("#Transfer").removeClass("disbaleControl");
+                    $("#Conference").removeClass("disbaleControl");
+                }
+                else if (IsonCall) {
+                    $("#Consultancy").addClass("disbaleControl");
+                    $("#Transfer").addClass("disbaleControl");
+                    $("#Conference").addClass("disbaleControl");
+                }
+            });
+            $("#removenumber").click(function () {
+                if ($('#phone_number').val().length > 0) {
+                    var inputString = $("#phone_number").val();
+                    var shortenedString = inputString.substr(0, (inputString.length - 1));
+                    $('#phone_number').val(shortenedString);
+                }
+            });
+
+            //$("#InboundStatus").trigger("click");
+            //$("#NotAvailableStatus").trigger("click");
+        });
+
+        function EnterInput(txt) {
+            if ($('#phone_number').val().length < 10) {
+                var inputString = $("#phone_number").val();
+                var shortenedString = inputString + txt;
+                $('#phone_number').val(shortenedString);
+            }
+        }
+
+    </script>*@
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("DGSConsole", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <li>@Html.ActionLink("WebPhone", "WebPhone", "Home")</li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+        <div class="container body-content">
+            @RenderBody()
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    <script src="~/core/app.js"></script>
+            <div class="bottom-content" id="footercontent">
+            <div class="col-md-12">
+                <div class="col-md-3">
+                    <div class="full-colm">
+                        <label>Name</label>
+                        <span>Jason More</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="full-colm">
+                        <label>Skill</label>
+                        <span>302</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="full-colm">
+                        <label>CallerID</label>
+                        <span id="callerid">20250806200</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="full-colm">
+                        <label>TFN</label>
+                        <span id="TFN">20250806200</span>
+                    </div>
+                </div>
+
+            </div>
+            </div>
+            <div class="bottom-alerts-div" id="footercontent"><div id="events" class="bottom-alerts"></div></div>
+            <footer class="footer">
+                <p>&copy; @DateTime.Now.Year - DGS WebPhone</p>
+            </footer>
+        </div>
+
+        @*@Scripts.Render("~/bundles/jquery")*@
+        @Scripts.Render("~/bundles/bootstrap")
+        <script src="~/core/app.js"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
