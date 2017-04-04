@@ -79,6 +79,14 @@ namespace DGSConsole.Agent
             "~/Content/Custom.min.css",
                      "~/Content/site.css"
                       ));
+
+            bundles.Add(new StyleBundle("~/Content/css-Mizu").Include(
+                     "~/Content/bootstrap.min - Copy.css",
+                     "~/Content/bootstrap - Copy.css",
+
+           "~/Content/Custom.min.css",
+                    "~/Content/site.css"
+                     ));
         }
 
         private static void RegisterLibBundles(BundleCollection bundles)
