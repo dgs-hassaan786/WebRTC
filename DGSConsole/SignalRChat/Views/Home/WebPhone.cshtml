@@ -5,51 +5,173 @@
 
 <div class="dialpad-wraper" style="background-image:url(../../Scripts/Mizutech/images/3.png); background-size:cover; margin-top:50px;">
     <div class="dialpad-main">
-        
-        <div class="top-box-div">
-            <a id="InboundStatus" href="javascript:void(0)" onclick="Login()"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/inbound-icon.png" width="26" height="26" /></div>Login</div></a>
-            <a id="OutboundStatus" href="javascript:void(0)"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/outbound-icon.png" width="26" height="26" /></div>Logout</div></a>
-            <a id="AvailableStatus" href="javascript:void(0)" onclick="OffBreak()"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/available-icin.png" width="26" height="26" /></div>Wait</div></a>
-            <a id="NotAvailableStatus" href="javascript:void(0)"><div class="top-box no-border"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/not-available-icin.png" width="26" height="26" /></div>Break</div></a>
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+                <button id="btnDialer" type="button" class="btn btn-primary">Dialer</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button id="btnChat" type="button" class="btn btn-success">Chat</button>
+            </div>
         </div>
-        <div class="phone-number-div">
-            <div class="phone-number"><input name="" id="PhoneNumber" type="text" maxlength="15" /></div>
-            <a id="removenumber" href="javascript:void(0)"><div class="delete-icon"><img src="https://demov2.webdialer.com/images/number-delete-icon.png" width="41" height="22" /></div></a>
+
+        <div id="dialerpad">
+            <div class="top-box-div">
+                <a id="InboundStatus" href="javascript:void(0)" onclick="Login()"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/inbound-icon.png" width="26" height="26" /></div>Login</div></a>
+                <a id="OutboundStatus" href="javascript:void(0)"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/outbound-icon.png" width="26" height="26" /></div>Logout</div></a>
+                <a id="AvailableStatus" href="javascript:void(0)" onclick="OffBreak()"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/available-icin.png" width="26" height="26" /></div>Wait</div></a>
+                <a id="NotAvailableStatus" href="javascript:void(0)"><div class="top-box no-border"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/not-available-icin.png" width="26" height="26" /></div>Break</div></a>
+            </div>
+            <div class="phone-number-div">
+                <div class="phone-number"><input name="" id="PhoneNumber" type="text" maxlength="15" /></div>
+                <a id="removenumber" href="javascript:void(0)"><div class="delete-icon"><img src="https://demov2.webdialer.com/images/number-delete-icon.png" width="41" height="22" /></div></a>
+            </div>
+            <div class="digits-wraper">
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('1');">1</a></li>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('2');">2</a></li>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('3');">3</a></li>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('4');">4</a></li>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('5');">5</a></li>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('6');">6</a></li>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('7');">7</a></li>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('8');">8</a></li>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('9');">9</a></li>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('*');" class="staricstyle">*</a></li>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('0');">0</a></li>
+                    <li><a href="javascript:void(0)" onclick="SendDTMF('#');">#</a></li>
+                </ul>
+                <audio id="dtmfsound0"><source src="~/Content/sound/DTMF0.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF0.mp3" type="audio/mpeg"></audio>
+            </div>
+            <div class="btm-links-div">
+                <ul>
+                    <li><a id="Consultancy" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/consultancy-icon.png" width="35" height="26" /></span>Consultancy</a></li>
+                    <li onclick="Transfer();"><a id="Transfer" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/transfer-icon.png" width="35" height="26" /></span>Transfer</a></li>
+                    <li><a id="Cancel" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/cancel-icon.png" width="35" height="26" /></span>Cancel</a></li>
+                    <li><a id="Conference" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/conference-icon.png" width="35" height="26" /></span>Conference</a></li>
+                    <li class="green-bg" id="IboundCall" onclick="Accept();"><a href="javascript:void(0)" onclick='call();'><span class="green-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
+                    <li class="green-bg" id="OutboundCall" onclick="Call()"><a href="javascript:void(0)" onclick='call();'><span class="green-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
+                    <li><a id="Toggle" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/toggle-icon.png" width="35" height="26" /></span>Toggle</a></li>
+                    <li><a id="Hold" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/hold-icon.png" width="35" height="26" /></span><span id="HoldButtonText">Hold</span></a></li>
+                    <li class="red-bg" onclick="Reject();"><a id="EndCall" href="javascript:void(0)"><span class="red-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
+                    <li><a id="Mute" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/mute-icon.png" width="35" height="26" /></span><span id="MuteButtonText">Mute</span></a></li>
+                </ul>
+            </div>
         </div>
-        <div class="digits-wraper">
-            <ul>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('1');">1</a></li>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('2');">2</a></li>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('3');">3</a></li>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('4');">4</a></li>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('5');">5</a></li>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('6');">6</a></li>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('7');">7</a></li>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('8');">8</a></li>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('9');">9</a></li>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('*');" class="staricstyle">*</a></li>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('0');">0</a></li>
-                <li><a href="javascript:void(0)" onclick="SendDTMF('#');">#</a></li>
-            </ul>
-            <audio id="dtmfsound0"><source src="~/Content/sound/DTMF0.ogg" type="audio/ogg"><source src="~/Content/sound/DTMF0.mp3" type="audio/mpeg"></audio>
-        </div>
-        <div class="btm-links-div">
-            <ul>
-                <li><a id="Consultancy" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/consultancy-icon.png" width="35" height="26" /></span>Consultancy</a></li>
-                <li onclick="Transfer();"><a id="Transfer" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/transfer-icon.png" width="35" height="26" /></span>Transfer</a></li>
-                <li><a id="Cancel" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/cancel-icon.png" width="35" height="26" /></span>Cancel</a></li>
-                <li><a id="Conference" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/conference-icon.png" width="35" height="26" /></span>Conference</a></li>
-                <li class="green-bg" id="IboundCall" onclick="Accept();"><a href="javascript:void(0)" onclick='call();'><span class="green-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
-                <li class="green-bg" id="OutboundCall" onclick="Call()"><a href="javascript:void(0)" onclick='call();'><span class="green-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
-                <li><a id="Toggle" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/toggle-icon.png" width="35" height="26" /></span>Toggle</a></li>
-                <li><a id="Hold" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/hold-icon.png" width="35" height="26" /></span><span id="HoldButtonText">Hold</span></a></li>
-                <li class="red-bg" onclick="Reject();"><a id="EndCall" href="javascript:void(0)"><span class="red-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
-                <li><a id="Mute" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/mute-icon.png" width="35" height="26" /></span><span id="MuteButtonText">Mute</span></a></li>
-            </ul>
+        <div id="chat">
+            <div class="container bootstrap snippet">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet portlet-default">
+                            <div class="portlet-heading">
+                                <div class="portlet-title">
+                                    <h4><i class="fa fa-circle text-green"></i> Jane Smith</h4>
+                                </div>
+                                <div class="portlet-widgets">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-white dropdown-toggle btn-xs" data-toggle="dropdown">
+                                            <i class="fa fa-circle text-green"></i> Status
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul id="dropdown" class="dropdown-menu" role="menu">
+                                            <li>
+                                                <a href="#"><i class="fa fa-circle text-green"></i> Online</a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fa fa-circle text-orange"></i> Away</a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fa fa-circle text-red"></i> Offline</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <span class="divider"></span>
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#chat"><i class="fa fa-chevron-down"></i></a>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div id="chat" class="panel-collapse collapse in">
+                                <div>
+                                    <div class="portlet-body chat-widget" style="overflow-y: auto; width: auto; height: 300px;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p class="text-center text-muted small">January 1, 2014 at 12:23 PM</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="media">
+                                                    <a class="pull-left" href="#">
+                                                        <img class="media-object img-circle" src="http://lorempixel.com/30/30/people/1/" alt="">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h4 class="media-heading">
+                                                            Jane Smith
+                                                            <span class="small pull-right">12:23 PM</span>
+                                                        </h4>
+                                                        <p>Hi, I wanted to make sure you got the latest product report. Did Roddy get it to you?</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="media">
+                                                    <a class="pull-left" href="#">
+                                                        <img class="media-object img-circle" src="http://lorempixel.com/30/30/people/7/" alt="">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h4 class="media-heading">
+                                                            John Smith
+                                                            <span class="small pull-right">12:28 PM</span>
+                                                        </h4>
+                                                        <p>Yeah I did. Everything looks good.</p>
+                                                        <p>Did you have an update on purchase order #302?</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="media">
+                                                    <a class="pull-left" href="#">
+                                                        <img class="media-object img-circle" src="http://lorempixel.com/30/30/people/7/" alt="">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h4 class="media-heading">
+                                                            Jane Smith
+                                                            <span class="small pull-right">12:39 PM</span>
+                                                        </h4>
+                                                        <p>No not yet, the transaction hasn't cleared yet. I will let you know as soon as everything goes through. Any idea where you want to get lunch today?</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="portlet-footer">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <textarea class="form-control" placeholder="Enter message..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-default pull-right">Send</button>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col-md-4 -->
+                </div>
+            </div>
         </div>
     </div>
 
-       <script src="~/Scripts/Mizutech/webphone_api.js"></script>
+    <script src="~/Scripts/Mizutech/webphone_api.js"></script>
     @*<script>webphone_api.parameters.issdk = false;</script>*@
     <script>
         var serveraddress_input = "10.114.5.111:5060"
@@ -102,7 +224,7 @@
 
             document.getElementById('events').innerHTML = 'EVENT, Initializing...';
 
-            webphone_api.start();
+            webphone_api.start();            
         }
 
         function Call() {
@@ -264,11 +386,22 @@
 
             }
         });
-        
+
         $(document).ready(function () {
             $("#InboundStatus").click();
         });
 
+        $("#btnDialer").click(function () {
+            $("#dialerpad").show();
+            $("#chat").hide();
+        });
+        $("#btnChat").click(function () {
+            $("#chat").show();
+            $("#dialerpad").hide();
+        });
+        $("#chat").hide();
+
+      
         //});
     </script>
 </div>
