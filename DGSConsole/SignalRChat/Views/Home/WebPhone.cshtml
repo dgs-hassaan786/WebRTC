@@ -5,7 +5,31 @@
 
 <div class="dialpad-wraper" style="background-image:url(../../Scripts/Mizutech/images/3.png); background-size:cover; margin-top:50px;">
     <div class="dialpad-main">
-        
+        <!-- Modal -->
+        <div id="myModal" z-index:2" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" >
+            <div class="modal-dialog caller">
+                <div class="modal-content" id="Call-Feedback-content">
+                    <div class="incoming-pic"><img src="~/Scripts/Mizutech/images/caller-img.jpg" /></div>
+                    <div class="incoming-left">
+                        <h4 id="lblCallType"></h4>
+                        <h3><p id="IncomingCallbody">2025806200</p></h3>
+                        <label id="FullNameID">Jason More</label>
+                    </div>
+                    <div class="incoming-right">
+                        <div class="animation"><img src="~/Scripts/Mizutech/images/incoming-call.gif" /></div>
+                    </div>
+                    <div class="callerfooter">
+                        <div class="callertxt">
+                            <span>Last Spoke : </span><label id="LastSpokeID">Yesterday</label>
+                            <span>Last Sale Call : </span><label id="IsSaleCallID">False</label>
+                            <span>RGUs Count : </span><label id="RGUsCountID">0</label>
+                            <span>Total Talk Time : </span><label id="TotalTalkTimeID">00:32:15</label>
+                            <span>Disposition : </span> <label id="DispositionTitleID">Test Call</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="top-box-div">
             <a id="InboundStatus" href="javascript:void(0)" onclick="Login()"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/inbound-icon.png" width="26" height="26" /></div>Login</div></a>
             <a id="OutboundStatus" href="javascript:void(0)"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/outbound-icon.png" width="26" height="26" /></div>Logout</div></a>
@@ -35,13 +59,13 @@
         </div>
         <div class="btm-links-div">
             <ul>
-                <li><a id="Consultancy" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/consultancy-icon.png" width="35" height="26" /></span>Consultancy</a></li>
+                <li onclick="Consultancy();"><a id="Consultancy" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/consultancy-icon.png" width="35" height="26" /></span>Consultancy</a></li>
                 <li onclick="Transfer();"><a id="Transfer" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/transfer-icon.png" width="35" height="26" /></span>Transfer</a></li>
-                <li><a id="Cancel" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/cancel-icon.png" width="35" height="26" /></span>Cancel</a></li>
-                <li><a id="Conference" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/conference-icon.png" width="35" height="26" /></span>Conference</a></li>
+                <li onclick="Cancel()"><a id="Cancel" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/cancel-icon.png" width="35" height="26" /></span>Cancel</a></li>
+                <li onclick="Conference();"><a id="Conference" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/conference-icon.png" width="35" height="26" /></span>Conference</a></li>
                 <li class="green-bg" id="IboundCall" onclick="Accept();"><a href="javascript:void(0)" onclick='call();'><span class="green-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
                 <li class="green-bg" id="OutboundCall" onclick="Call()"><a href="javascript:void(0)" onclick='call();'><span class="green-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
-                <li><a id="Toggle" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/toggle-icon.png" width="35" height="26" /></span>Toggle</a></li>
+                <li onclick="Toggle();"><a id="Toggle" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/toggle-icon.png" width="35" height="26" /></span>Toggle</a></li>
                 <li><a id="Hold" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/hold-icon.png" width="35" height="26" /></span><span id="HoldButtonText">Hold</span></a></li>
                 <li class="red-bg" onclick="Reject();"><a id="EndCall" href="javascript:void(0)"><span class="red-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
                 <li><a id="Mute" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/mute-icon.png" width="35" height="26" /></span><span id="MuteButtonText">Mute</span></a></li>
@@ -49,7 +73,7 @@
         </div>
     </div>
 
-       <script src="~/Scripts/Mizutech/webphone_api.js"></script>
+    <script src="~/Scripts/Mizutech/webphone_api.js"></script>
     @*<script>webphone_api.parameters.issdk = false;</script>*@
     <script>
         var serveraddress_input = "10.114.5.111:5060"
@@ -131,7 +155,27 @@
         }
 
         function Hangup() {
+            webphone_api.setline(-2);
             webphone_api.hangup();
+        }
+
+        function Conference() {
+            webphone_api.conference(document.getElementById('PhoneNumber').value, true);
+        }
+
+        function Consultancy() {
+            //webphone_api.conference(document.getElementById('PhoneNumber').value, true);
+            webphone_api.conference('2', false);
+        }
+
+        function Toggle() {
+            webphone_api.conference('');
+        }
+
+        function Cancel() {
+            setline(3); //select the third line
+            hangup(); //will disconnect the third line
+            //webphone_api.conference(document.getElementById('PhoneNumber').value,false);
         }
 
         function Accept() {
@@ -234,7 +278,7 @@
 
         $("#Consultancy").addClass("disbaleControl");
         $("#Cancel").addClass("disbaleControl");
-        $("#Conference").addClass("disbaleControl");
+        //$("#Conference").addClass("disbaleControl");
         $("#Toggle").addClass("disbaleControl");
 
         webphone_api.onCallStateChange(function (event, direction, peername, peerdisplayname) {
@@ -243,15 +287,19 @@
 
                 if (direction == 1) {
                     // means it's outgoing call
-                    document.getElementById('callerid').value = peername;
-                    document.getElementById('TFN').value = peerdisplayname;
+                    document.getElementById('callerid').innerHTML = peername;
+                    document.getElementById('TFN').innerHTML = peerdisplayname;
                 }
                 else if (direction == 2) {
                     // means it's icoming call
+                    webphone_api.accept();
+                    $('#myModal').modal('show');
+                    document.getElementById('IncomingCallbody').innerHTML = "Call is coming from: " + peername;
+                    //IncomingCallbody
                     document.getElementById('IboundCall').style.display = 'block';
-                    document.getElementById('callerid').value = peername;
-                    document.getElementById('TFN').value = peerdisplayname.split('-')[1];
                     document.getElementById('OutboundCall').style.display = 'none';
+                    document.getElementById('callerid').innerHTML = peername;
+                    document.getElementById('TFN').innerHTML = peerdisplayname.split('-')[1];
                 }
             }
 
@@ -264,7 +312,7 @@
 
             }
         });
-        
+
         $(document).ready(function () {
             $("#InboundStatus").click();
         });
@@ -272,3 +320,4 @@
         //});
     </script>
 </div>
+

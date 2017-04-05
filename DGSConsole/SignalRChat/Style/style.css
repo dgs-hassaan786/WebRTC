@@ -256,6 +256,113 @@ background-color:#b6b6b6;
     padding-right: 10px;
 }
 
+.incoming-pic {
+    width: 19%;
+    float: left;
+    padding: 3%;
+}
+
+.incoming-left {
+    width: 50%;
+    float: left;
+    padding-left: 0;
+}
+
+.incoming-right {
+    width: 30%;
+    float: left;
+}
+
+    .incoming-right img {
+           width: 56%;
+    margin-top: 15px;
+    height: 70px;
+    text-align: right;
+    float: right;
+    }
+
+.animation {
+    width: 100%;
+    text-align: center;
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+.callerfooter {
+    background: #565656;
+    width: 100%;
+    float: left;
+    padding: 10px;
+    margin: 0;
+    /*border-radius: 0 0 10px 10px;*/
+}
+
+    .callerfooter img {
+        float: left;
+        padding: 0;
+        margin: 0;
+    }
+
+    .caller {
+    overflow-y: inherit !important;
+}
+
+.caller {
+    /*box-shadow: none !important;*/
+    /*border-radius: 10px !important;*/
+    background: #f6f6f6;
+}
+
+    .caller .modal-content {
+        padding: 0 !important;
+    }
+
+        .caller .modal-content h4 {
+            font-size: 22px;
+            color: #929292;
+            text-align: left;
+            width: 100%;
+            font-style: normal;
+            float: left;
+            padding: 0;
+            margin: 14px 0 0px 0;
+        }
+
+        .caller .modal-content h3 {
+            font-size: 25px;
+            color: #929292;
+            text-align: left;
+            width: 100%;
+            float: left;
+            padding: 0;
+            margin: 0;
+        }
+
+.callertxt {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+    .callertxt label {
+        float: left;
+        width: 50%;
+        font-size: 14px;
+        color: #fff;
+        padding: 0;
+        margin: 0;
+    }
+
+    .callertxt span {
+        float: left;
+        width: 30%;
+        font-size: 14px;
+        color: rgba(224,224,222,1);
+        padding: 0;
+        margin: 0;
+    }
 
 
 
