@@ -295,7 +295,7 @@ function onCreate (event) // called only once - bind events here
     $("#btn_dp_1").on("tap", function()
     {
         PutNumber('1');
-
+        
 /*
 webphone_api.getsipheader('Expires', function (val) { console.log('getsipheaderresponse 1 : ' + val); });
 webphone_api.getsipheader('Contact', function (val) { console.log('getsipheaderresponse 2 : ' + val); });
@@ -851,6 +851,7 @@ function onStart(event)
     {
         global.dploadingdisplayed = true;
         document.getElementById('status_dialpad').innerHTML = stringres.get('loading');
+        common.PutToDebugLogSpecial(1, 'EVENT, _dialpad: onStart display Loading...', false, '');
     }
     
     global.isDialpadStarted = true;
@@ -1086,7 +1087,7 @@ var IS_BLOCKED = 10; // divide by this value
 function GetRecents()
 {
     var enablepres = false;
-    var presencequery = '';
+    var presencequery = [];
     try{
     if (common.isNull(global.chlist) || global.chlist.length < 1 || (global.refreshrecents === false && global.recentlist.length > 0))
     {
@@ -1170,18 +1171,33 @@ function GetRecents()
         
         if (enablepres)
         {
-            var presence = global.presenceHM[item[common.CH_NUMBER]];;
+            var presence = '-1';
+            var presobj = global.presenceHM[item[common.CH_NUMBER]];
+            if (!common.isNull(presobj)) { presence = presobj[common.PRES_STATUS]; }
 
             // -1=not exists(undefined), 0=offline, 1=invisible, 2=idle, 3=pending, 4=DND, 5=online
-            if (!common.isNull(presence) && presence === '5') // available
+            if (!common.isNull(presence)) // available
             {
-                points = points + IS_ONLINE;
+                if (presence === '5')
+                {
+                    points = points + IS_ONLINE;
+                }
+                else if ((presence === '0' || presence === '1' || presence === '4') && points > 10)
+                {
+                    points = Math.floor(points / 2);
+                }else
+                {
+                    points = Math.floor(points / 1.5);
+                }
             }
 
-            if (common.isNull(presence) || presence.length < 1)
+            if (common.isNull(presence) || presence.length < 1 || presence === '-1')
             {
-                if (presencequery.length > 0) { presencequery = presencequery + ','; }
-                presencequery = presencequery + item[common.CH_NUMBER];
+                if (common.isNull(presencequery)) { presencequery = []; }
+                if (presencequery.indexOf(item[common.CH_NUMBER]) < 0)
+                {
+                    presencequery.push(item[common.CH_NUMBER]);
+                }
             }
         }
         
@@ -1252,17 +1268,25 @@ function GetRecents()
     global.refreshrecents = false;
     SortRecents();
     
-    if (enablepres && presencequery.length > 0)
+    if (enablepres && !common.isNull(presencequery) && presencequery.length > 0)
     {
-        presencequery = presencequery.replace('-', '');
-        presencequery = presencequery.replace('-', '');
-        presencequery = presencequery.replace('-', '');
-        presencequery = presencequery.replace('(', '');
-        presencequery = presencequery.replace(')', '');
+        var ulist = '';
+        for (var i = 0; i < presencequery.length; i++)
+        {
+            if (common.isNull(presencequery[i]) || common.Trim(presencequery[i]).length < 1) { continue; }
+            
+            if (ulist.length > 0) { ulist = ulist + ','; }
+            ulist = ulist + presencequery[i];
+        }
         
-        //var retval = webphone_api.checkpresence(presencequery);
-        //common.PutToDebugLog(3, "EVENT, _dialpad GetRecents API_CheckPresence: " + retval);
-        common.PresenceGet2(presencequery);
+        if (!common.isNull(ulist) && ulist.length > 0)
+        {
+            ulist = common.ReplaceAll(ulist, '-', '');
+            ulist = common.ReplaceAll(ulist, ')', '');
+            ulist = common.ReplaceAll(ulist, '(', '');
+            
+            common.PresenceGet2(ulist);
+        }
     }
 
     } catch(err) { common.PutToDebugLogException(2, "_dialpad: GetRecents", err); }
@@ -1427,7 +1451,10 @@ function PopulateListRecents() // :no return value
         if (enablepres)
         {
             var phonenr = item[common.RC_NUMBER];
-            var presence = global.presenceHM[phonenr];
+            
+            var presence = '-1';
+            var presobj = global.presenceHM[phonenr];
+            if (!common.isNull(presobj)) { presence = presobj[common.PRES_STATUS]; }
 
             // -1=not exists(undefined), 0=offline, 1=invisible, 2=idle, 3=pending, 4=DND, 5=online
             if (common.isNull(presence) || presence.length < 1)
@@ -1998,6 +2025,7 @@ var MENUITEM_DIALPAD_WEBCALLME = '#menuitem_dialpad_webcallme';
 var MENUITEM_DIALPAD_CONFERENCEROOMS = '#menuitem_dialpad_conferencerooms';
 var MENUITEM_DIALPAD_VIDEOCALL = '#menuitem_dialpad_videocall';
 var MENUITEM_DIALPAD_CALLPICKUP_101VOICE = '#menuitem_dialpad_callpickup_101voice';
+var MENUITEM_DIALPAD_SCREENSHARE = '#menuitem_screenshare';
 
 function CreateOptionsMenu (menuId) // adding items to menu, called from html
 {
@@ -2076,10 +2104,12 @@ function CreateOptionsMenu (menuId) // adding items to menu, called from html
     
     if (common.HideSettings('conference', stringres.get('sett_display_name_' + 'conference'), 'conference', true) === false)
     {
+        /*
         console.log('usingmizuserver: ' + common.GetConfigBool('usingmizuserver', false));
         console.log('common.IsMizuWebRTCEmbeddedServer(): ' + common.IsMizuWebRTCEmbeddedServer());
         console.log('common.IsMizuWebRTCGateway(): ' + common.IsMizuWebRTCGateway());
         console.log('common.getuseengine(): ' + common.getuseengine());
+            */
         //if (common.IsMizuServer() === true)
         if (common.GetConfigBool('usingmizuserver', false) === true
                 || ((common.IsMizuWebRTCEmbeddedServer() === true || common.IsMizuWebRTCGateway() === true) && common.getuseengine() === global.ENGINE_WEBRTC))
@@ -2112,6 +2142,12 @@ function CreateOptionsMenu (menuId) // adding items to menu, called from html
                 $(menuId).append( '<li id="' + MENUITEM_DIALPAD_VIDEOCALL + '"><a data-rel="back">' + stringres.get('video_call') + '</a></li>' ).listview('refresh');
             }
         }
+    }
+    
+//    if (common.getuseengine() === global.ENGINE_WEBRTC)
+    if (common.GetParameterInt('hasscreenshare', 0) > 0)
+    {
+        $(menuId).append( '<li id="' + MENUITEM_DIALPAD_SCREENSHARE + '"><a data-rel="back">' + stringres.get('menu_screenshare') + '</a></li>' ).listview('refresh');
     }
     
     common.PutToDebugLog(4, 'EVENT, pv_1: ' + common.IsWindowsSoftphone() + '; pv_2: ' + common.GetConfig('needactivation') + '; pv_3: ' + common.CanShowLicKeyInput());
@@ -2223,9 +2259,143 @@ function MenuItemSelected(itemid)
             case MENUITEM_DIALPAD_CALLPICKUP_101VOICE:
                 StartCall('**', false);
                 break;
+            case MENUITEM_DIALPAD_SCREENSHARE:
+                ScreenShare();
+                break;
         }
     });
     } catch(err) { common.PutToDebugLogException(2, "_dialpad: MenuItemSelected", err); }
+}
+
+function ScreenShare(phoneNr) // initiate screenshare call if a number is entered in phone field, or request a number from the user
+{
+    try{
+    var field = document.getElementById('phone_number');
+    if ( common.isNull(field) ) { return; }
+    var number = field.value;
+    if (!common.isNull(number))
+    {
+        number = common.Trim(number);
+        if (number.length > 0)
+        {
+            number = common.NormalizeNumber(number);
+            webphone_api.screenshare(number);
+            common.PutToDebugLog(4, 'EVENT, _dialpad initiate screenshare call to: ' + number);
+            return;
+        }
+    }
+    
+    var popupWidth = common.GetDeviceWidth();
+    if ( !common.isNull(popupWidth) && common.IsNumber(popupWidth) && popupWidth > 100 )
+    {
+        popupWidth = Math.floor(popupWidth / 1.2);
+    }else
+    {
+        popupWidth = 220;
+    }
+    var btnimage = 'btn_add_contact_txt.png';
+    
+    var template = '' +
+'<div id="adialog_screensharecall" data-role="popup" class="ui-content messagePopup" data-overlay-theme="a" data-theme="a" style="max-width:' + popupWidth + 'px;">' +
+
+    '<div data-role="header" data-theme="b">' +
+        '<a href="javascript:;" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right closePopup">Close</a>' +
+        '<h1 class="adialog_title">' + stringres.get('screenshare_call') + '</h1>' +
+    '</div>' +
+    '<div role="main" class="ui-content adialog_content adialog_btn_nexttoinput">' +
+        '<span>' + stringres.get('phone_nr') + ':</span>' +
+        '<div style="clear: both;"><!--//--></div>' +
+        '<input type="text" id="screensharecall_input" name="screensharecall_input" data-theme="a"/>' +
+        '<button id="btn_pickct" class="btn_nexttoinput ui-btn ui-btn-corner-all ui-btn-b noshadow"><img src="' + common.GetElementSource() + 'images/' + btnimage + '"></button>' +
+    '</div>' +
+    '<div data-role="footer" data-theme="b" class="adialog_footer">' +
+        '<a href="javascript:;" id="adialog_positive" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b adialog_2button" data-rel="back" data-transition="flow">' + stringres.get('btn_sharescreen') + '</a>' +
+        '<a href="javascript:;" id="adialog_negative" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b adialog_2button" data-rel="back">' + stringres.get('btn_cancel') + '</a>' +
+    '</div>' +
+'</div>';
+
+    var popupafterclose = function () {};
+
+    $.mobile.activePage.append(template).trigger("create");
+    //$.mobile.activePage.append(template).trigger("pagecreate");
+
+    $.mobile.activePage.find(".closePopup").bind("tap", function (e)
+    {
+        $.mobile.activePage.find(".messagePopup").popup("close");
+    });
+
+    $.mobile.activePage.find(".messagePopup").popup().popup("open").bind(
+    {
+        popupafterclose: function ()
+        {
+            $(this).unbind("popupafterclose").remove();
+            $('#adialog_positive').off('click');
+            $('#adialog_negative').off('click');
+            $('#btn_pickct').off('click');
+            popupafterclose();
+        }
+    });
+    
+// listen for enter onclick, and click OK button
+/* no need for this, because it reloads the page
+    $( "#adialog_videocall" ).keypress(function( event )
+    {
+        if ( event.which === 13 )
+        {
+            event.preventDefault();
+            $("#adialog_positive").click();
+        }else
+        {
+            return;
+        }
+    });
+*/
+    var screensharecall = document.getElementById('screensharecall_input');
+    if (!common.isNull(screensharecall))
+    {
+        if (!common.isNull(phoneNr) && phoneNr.length > 0) { screensharecall.value = phoneNr; }
+        screensharecall.focus();
+    } // setting cursor to text input
+    
+    $('#adialog_positive').on('click', function (event)
+    {
+        $( '#adialog_screensharecall' ).on( 'popupafterclose', function( event )
+        {
+            number = screensharecall.value;
+
+            common.PutToDebugLog(5,"EVENT, _dialpad ScreenShare 1 ok: " + number);
+
+            if (common.isNull(number) || (common.Trim(number)).length < 1)
+            {
+                return;
+            }else
+            {
+                number = common.Trim(number);
+            }
+
+            number = common.NormalizeNumber(number);
+            webphone_api.screenshare(number);
+        });
+    });
+
+    $('#adialog_negative').on('click', function (event)
+    {
+        ;
+    });
+    
+    $('#btn_pickct').on('click', function (event)
+    {
+        $.mobile.activePage.find(".messagePopup").popup("close");
+
+        $( '#adialog_screensharecall' ).on( 'popupafterclose', function( event )
+        {
+            $( '#adialog_screensharecall' ).off( 'popupafterclose' );
+
+            common.PickContact(ScreenShare);
+        });
+    });
+    
+    } catch(err) { common.PutToDebugLogException(2, "_dialpad: ScreenShare", err); }
 }
 
 
@@ -2749,6 +2919,12 @@ function onDestroy (event)
     
     } catch(err) { common.PutToDebugLogException(2, "_dialpad: onDestroy", err); }
 }
+
+var dialpad_public = {
+
+    PopulateListRecents: PopulateListRecents
+};
+window.dialpad_public = dialpad_public;
 
 // public members and methods
 return {

@@ -318,6 +318,36 @@
     <Content Include="Scripts\Mizutech\css\jquery.mobile-1.4.2.min.css" />
     <Content Include="Scripts\Mizutech\css\jquery.mobile.css" />
     <Content Include="Scripts\Mizutech\css\jquery.mobile.structure-1.4.2.css" />
+    <Content Include="Scripts\Mizutech\css\js\click2call\click2call.js" />
+    <Content Include="Scripts\Mizutech\css\js\lib\adapter.js" />
+    <Content Include="Scripts\Mizutech\css\js\lib\api_helper.js" />
+    <Content Include="Scripts\Mizutech\css\js\lib\jquery.mobile-1.4.2.min.js" />
+    <Content Include="Scripts\Mizutech\css\js\lib\lib_softphone.js" />
+    <Content Include="Scripts\Mizutech\css\js\lib\mwpdeploy.js" />
+    <Content Include="Scripts\Mizutech\css\js\lib\picoModal.js" />
+    <Content Include="Scripts\Mizutech\css\js\lib\require.js" />
+    <Content Include="Scripts\Mizutech\css\js\linkify\linkify.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\stringres.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\themes.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_addeditcontact.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_call.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_callhistorydetails.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_callhistorylist.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_contactdetails.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_contactslist.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_dialpad.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_filetransfer.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_filters.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_internalbrowser.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_logview.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_message.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_messagelist.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_newuser.js" />
+    <Content Include="Scripts\Mizutech\css\js\softphone\_settings.js" />
+    <Content Include="Scripts\Mizutech\css\js\techdemo_example\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\Mizutech\css\js\techdemo_example\picoModal.js" />
+    <Content Include="Scripts\Mizutech\css\js\techdemo_example\stringres.js" />
+    <Content Include="Scripts\Mizutech\css\js\techdemo_example\techdemo_example.js" />
     <Content Include="Scripts\Mizutech\css\mainlayout.css" />
     <Content Include="Scripts\Mizutech\css\pmodal.css" />
     <Content Include="Scripts\Mizutech\css\techdemo_example\techdemo_example.css" />
@@ -566,6 +596,16 @@
     <Content Include="Scripts\Mizutech\js\techdemo_example\picoModal.js" />
     <Content Include="Scripts\Mizutech\js\techdemo_example\stringres.js" />
     <Content Include="Scripts\Mizutech\js\techdemo_example\techdemo_example.js" />
+    <Content Include="Scripts\Mizutech\native\expressInstall.swf" />
+    <Content Include="Scripts\Mizutech\native\flashphone.swf" />
+    <Content Include="Scripts\Mizutech\native\mediaench.dll" />
+    <Content Include="Scripts\Mizutech\native\mediaenchx64.dll" />
+    <Content Include="Scripts\Mizutech\native\opx32.dll" />
+    <Content Include="Scripts\Mizutech\native\opx64.dll" />
+    <Content Include="Scripts\Mizutech\native\readme.txt" />
+    <Content Include="Scripts\Mizutech\native\ring.wav" />
+    <Content Include="Scripts\Mizutech\native\webphone.jar" />
+    <Content Include="Scripts\Mizutech\native\WebPhoneService_Install.exe" />
     <Content Include="Scripts\Mizutech\webphone_api.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
@@ -601,6 +641,13 @@
     <Content Include="Views\Home\WebPhone.cshtml" />
     <Content Include="Views\Shared\_Layout-Mizu.cshtml" />
     <Content Include="Views\Home\SceenShare.cshtml" />
+    <Content Include="Scripts\Mizutech\native\flashphone.mxml" />
+    <Content Include="Scripts\Mizutech\native\mediaench.dylib" />
+    <Content Include="Scripts\Mizutech\native\mediaenchx64.dylib" />
+    <Content Include="Scripts\Mizutech\native\opx32.jnilib" />
+    <Content Include="Scripts\Mizutech\native\opx32.so" />
+    <Content Include="Scripts\Mizutech\native\opx64.so" />
+    <Content Include="Scripts\Mizutech\native\webrtcplugin.pkg" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

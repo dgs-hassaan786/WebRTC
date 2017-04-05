@@ -136,7 +136,7 @@ var isctblocked = false;
 function PopulateData()
 {
     var enablepres = false;
-    var presencequery = '';
+    var presencequery = [];
     try{
     if (common.isNull(contact) || contact.length < 1)
     {
@@ -170,6 +170,7 @@ function PopulateData()
         if (common.IsContactBlocked(null, numbers)) { isctblocked = true; }
     }
     
+    var NOW = common.GetTickCount();
     if (!common.isNull(numbers) && numbers.length > 0)
     {
         for (var i = 0; i < numbers.length; i++)
@@ -178,16 +179,28 @@ function PopulateData()
 
             if (enablepres)
             {
-                var presence = global.presenceHM[numbers[i]];
+                var presence = '-1';
+                var lastcheck = 0; // timestamp last checked presence
+                var presobj = global.presenceHM[numbers[i]];
+                if (!common.isNull(presobj))
+                {
+                    presence = presobj[common.PRES_STATUS];
+                    var laststr = presobj[common.PRES_TIME];
+                    if (!common.isNull(laststr) && common.IsNumber(laststr))
+                    lastcheck = common.StrToInt(laststr);
+                }
 
                 // -1=not exists(undefined), 0=offline, 1=invisible, 2=idle, 3=pending, 4=DND, 5=online
                 
-                if (common.isNull(presence) || presence.length < 1)
+                if (common.isNull(presence) || presence.length < 1 || presence === '-1' || (lastcheck > 0 && NOW - lastcheck > 20000))
                 {
                     presenceimg = '';
                     
-                    if (presencequery.length > 0) { presencequery = presencequery + ','; }
-                    presencequery = presencequery + numbers[i];
+                    if (common.isNull(presencequery)) { presencequery = []; }
+                    if (presencequery.indexOf(numbers[i]) < 0)
+                    {
+                        presencequery.push(numbers[i]);
+                    }
                 }
                 else if (presence === '0') // offline
                 {
@@ -373,19 +386,26 @@ function PopulateData()
     }
 // END handle favorite
     
-    if (enablepres && presencequery.length > 0)
+    if (enablepres && !common.isNull(presencequery) && presencequery.length > 0)
     {
-        presencequery = presencequery.replace('-', '');
-        presencequery = presencequery.replace('-', '');
-        presencequery = presencequery.replace('-', '');
-        presencequery = presencequery.replace('(', '');
-        presencequery = presencequery.replace(')', '');
+        var ulist = '';
+        for (var i = 0; i < presencequery.length; i++)
+        {
+            if (common.isNull(presencequery[i]) || common.Trim(presencequery[i]).length < 1) { continue; }
+            
+            if (ulist.length > 0) { ulist = ulist + ','; }
+            ulist = ulist + presencequery[i];
+        }
         
-        //var retval = webphone_api.checkpresence(presencequery);
-        //common.PutToDebugLog(3, "EVENT, _contactdetails PopulateData API_CheckPresence: " + retval);
-        common.PresenceGet2(presencequery);
+        if (!common.isNull(ulist) && ulist.length > 0)
+        {
+            ulist = common.ReplaceAll(ulist, '-', '');
+            ulist = common.ReplaceAll(ulist, ')', '');
+            ulist = common.ReplaceAll(ulist, '(', '');
+            
+            common.PresenceGet2(ulist);
+        }
     }
-    
     } catch(err) { common.PutToDebugLogException(2, "_contactdetails: PopulateData", err); }
 }
 
@@ -708,6 +728,12 @@ function onDestroy (event)
     
     } catch(err) { common.PutToDebugLogException(2, "_contactdetails: onDestroy", err); }
 }
+
+var contactdetails_public = {
+
+    PopulateData: PopulateData
+};
+window.contactdetails_public = contactdetails_public;
 
 // public members and methods
 return {
