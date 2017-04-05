@@ -503,7 +503,7 @@ webphone_api.onLoaded(function ()
     demotext = document.getElementById('demo_text');
     if (!isNull(demotext))
     {
-        var conf = '' +
+        var conf = '<div style="text-align: center;">' +
             '<br />' +
             '<label for="mdemo_serveraddress" title="VoIP server IP address or domain name">Serveraddress:</label>' +
             '<input type="text" name="mdemo_serveraddress" id="mdemo_serveraddress" placeholder="VoIP server address" title="VoIP server IP address or domain name" /><br />' +
@@ -513,7 +513,8 @@ webphone_api.onLoaded(function ()
             '<input type="text" name="mdemo_password" id="mdemo_password" placeholder="Password" title="SIP account password" /><br />' +
             '<label for="mdemo_callto" title="Destination number to call">Callto:</label>' +
             '<input type="text" name="mdemo_callto" id="mdemo_callto" placeholder="Callto" title="Destination number to call" /><br />' +
-            '<span style="font-style: italic; font-size: .85em; ">*The above form will not be displayed in your final build, these settings will be preconfigured.</span><br />';
+            '<span style="font-style: italic; font-size: .85em; ">*The above form will not be displayed in your final build, these settings will be preconfigured.</span><br />' +
+            '</div>';
     
         demotext.innerHTML += conf;
     }

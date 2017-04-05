@@ -160,6 +160,7 @@ LI#newuser_container { padding: 0; }
 
 .additional_header_left DIV { float: left; }
 .additional_header_left DIV IMG { margin-top: .2em; padding: 0; border: 0; display: block; } /* for presence*/
+#msg_title IMG { display: inline-block; float: right; margin-top: .2em; margin-left: -1.5em; padding: 0; border: 0; } /* for presence*/
 
 .all_app_pages .notification{
     margin: 0; padding: 0; width: 40%; height: 2.3em; float: left; line-height: 1.2em; overflow: hidden;

@@ -6,7 +6,7 @@ var callnumber = '';
 var showcallfwd = false; // dislplay call forward option in menu: callforward csak bejovo hivas ring-nel
 var showignore = false;
 var hanguponchat = false; // bejovo hivasnal call ablakbol chat-et valaszt es ringing-ben van akkor hangup call
-var isvideo = false;  // is video call
+var callmode = 0;  //  // callmode: 0=call-audio, 1=call-audiovideo, 2=call-screenshare
 
 
 function onCreate (event) // called only once - bind events here
@@ -218,8 +218,8 @@ function onStart(event)
     });
     
     calltype  = common.GetIntentParam(global.intentcall, 'calltype');
-    var isvideostr  = common.GetIntentParam(global.intentcall, 'isvideo');
-    if (isvideostr === 'true') { isvideo = true; }
+    var callmodestr  = common.GetIntentParam(global.intentcall, 'callmode');
+    if (!common.isNull(callmodestr) && common.IsNumber(callmodestr)) { callmode = common.StrToInt(callmodestr); }
     
 /*
 if (global.isdebugversionakos)
@@ -247,6 +247,7 @@ if (global.isdebugversionakos)
         webphone_api.gettelsearchname(callnumber, function (recname)
         {
             if (common.isNull(recname) || recname.length < 2 || recname.length > 60) { return; }
+            global.telsearchname = recname;
             global.callName = recname;
             peerdetails = global.callName + '&nbsp;(' + callnumber + ')&nbsp;';
             $('#calledcaller').html(peerdetails);
@@ -334,7 +335,7 @@ if (global.isdebugversionakos)
         }
     }
     
-    if (isvideo === true)
+    if (callmode > 0)
     {
         $('#contact_details').hide();
         $('#video_container').show();
@@ -353,7 +354,7 @@ function OnNewIncomingCall()
     var ep = common.GetEndpoint(global.aline, '', '', false);
     if (common.isNull(ep) || ep.length < 5)
     {
-        common.PutToDebugLog(2, 'ERROR, _call OnNewIncomingCall: ep is NULL')
+        common.PutToDebugLog(2, 'ERROR, _call OnNewIncomingCall: ep is NULL for line: ' + global.aline.toString());
         return;
     }
     
@@ -405,7 +406,7 @@ function RejectCallMultiline(callapi)
                 linetoreject = global.ep[i][common.EP_LINE];
             }
         }
-        
+
         plhandler_public.Reject(linetoreject);
 
     // update lines (remove line and set last active line)
@@ -440,7 +441,7 @@ function RejectCallMultiline(callapi)
             common.RefreshInfo();
         }, 400);
     }
-    isvideo = false;
+    callmode = 0;
     } catch(err) { common.PutToDebugLogException(2, "_call: RejectCallMultiline", err); }
 }
 
@@ -462,7 +463,7 @@ function AcceptHold(callapi)
     if (callapi)
     {
         // find previous active line to put that call on hold
-/*        var prevline = -10;
+        var prevline = -10;
         if (!common.isNull(global.ep))
         {
             for (var i = 0; i < global.ep.length; i++)
@@ -479,17 +480,23 @@ function AcceptHold(callapi)
                 }
             }
         }
+        
+        webphone_api.accept(global.aline);
+
         if (prevline > 0)
         {
             var linetmp = global.aline;
+
             webphone_api.setline(prevline);
             webphone_api.hold(true);
-            webphone_api.setline(linetmp);
-        }*/
-        setTimeout(function ()
-        {
-            webphone_api.accept(global.aline);
-        }, 250);
+            setTimeout(function ()
+            {
+                webphone_api.setline(linetmp);
+                AddCallFunctions(false);
+            }, 250);
+
+            common.PutToDebugLog(2, 'EVENT, AcceptHold hold finished');
+        }
     }
     } catch(err) { common.PutToDebugLogException(2, "_call: AcceptHold", err); }
 }
@@ -530,19 +537,24 @@ function AcceptEnd(callapi)
             }
         }
         
+        webphone_api.accept(global.aline);
+        UpdateLineUI(global.aline);
+        
         if (prevline > 0)
         {
-
             var linetmp = global.aline;
+
             webphone_api.setline(prevline);
             webphone_api.hangup();
+            
+            setTimeout(function ()
+            {
+                webphone_api.setline(linetmp);
+                UpdateLineUI(global.aline);
+            }, 250);
+            
+            common.PutToDebugLog(2, 'EVENT, AcceptEnd finished');
         }
-        setTimeout(function ()
-        {
-            webphone_api.setline(linetmp);
-            webphone_api.accept(global.aline);
-            UpdateLineUI(global.aline);
-        }, 250);
     }
     } catch(err) { common.PutToDebugLogException(2, "_call: AcceptEnd", err); }
 }
@@ -622,9 +634,9 @@ function HangupCall()
 {
     try{
         // reset mute, hold, speaker buttons state
-    $('#mute_status').removeClass("callfunc_status_on");
-    $('#hold_status').removeClass("callfunc_status_on");
-    $('#speaker_status').removeClass("callfunc_status_on");
+//    $('#mute_status').removeClass("callfunc_status_on");
+//    $('#hold_status').removeClass("callfunc_status_on");
+//    $('#speaker_status').removeClass("callfunc_status_on");
 
     if (global.acallcount < 2)
     {
@@ -655,7 +667,7 @@ function HangupCall()
 
         global.hangupPressedCount = 0;
     }
-    isvideo = false;
+    callmode = 0;
 
     } catch(err) { common.PutToDebugLogException(2, "_call: HangupCall", err); }
 }
@@ -701,7 +713,7 @@ function RejectCall(callapi)
     {
         webphone_api.reject(-2);
     }
-    isvideo = false;
+    callmode = 0;
 
     } catch(err) { common.PutToDebugLogException(2, "_call: RejectCall", err); }
 }
@@ -913,6 +925,10 @@ function LineCliked(id, callsetline)
         webphone_api.setline(line);
         common.PutToDebugLog(1, 'EVENT, Line ' + line.toString() + ' selected');
     }
+    
+    AddCallFunctions(false);
+    MeasureCall();
+
     } catch(err) { common.PutToDebugLogException(2, "_call: LineCliked", err); }
 }
 
@@ -1213,6 +1229,47 @@ function AddCallFunctions(addcallfwd) // addcallfwd: true/false   callforward cs
     $('#btn_speaker').attr('title', stringres.get('hint_speaker'));
     $('#btn_chat').attr('title', stringres.get('hint_message'));
     $('#btn_more').attr('title', stringres.get('hint_more'));
+    
+// set mute,hold status accordingly
+    var cline = webphone_api.getline();
+    var mutestate = common.GetMuteState(cline);
+    var holdstate = common.GetHoldState(cline);
+
+    var mstatus = document.getElementById('mute_status');
+    if (!common.isNull(mstatus))
+    {
+        if (mutestate === true)
+        {
+            if ( $(mstatus).hasClass('callfunc_status_on') === false )
+            {
+                $(mstatus).addClass('callfunc_status_on');
+            }
+        }else
+        {
+            if ( $(mstatus).hasClass('callfunc_status_on') )
+            {
+                $(mstatus).removeClass('callfunc_status_on');
+            }
+        }
+    }
+    var hstatus = document.getElementById('hold_status');
+    if (!common.isNull(hstatus))
+    {
+        if (holdstate === true)
+        {
+            if ( $(hstatus).hasClass('callfunc_status_on') === false )
+            {
+                $(hstatus).addClass('callfunc_status_on');
+            }
+        }else
+        {
+            if ( $(hstatus).hasClass('callfunc_status_on') )
+            {
+                $(hstatus).removeClass('callfunc_status_on');
+            }
+        }
+    }
+
 //    }
 
 // calculate width in percent
@@ -1837,15 +1894,6 @@ function Mute() // :boolean   handle Mute - onClick
 
     /*if (muteSuccess)
     {*/
-        if (mstate)
-        {
-            common.PutToDebugLog(1, 'STATUS, ' + stringres.get('muted'));
-        }else
-        {
-            common.PutToDebugLog(1, 'STATUS, ' + stringres.get('unmuted'));
-        }
-        
-        common.SetMuteState(global.aline, mstate);
         return true;
     /*}*/
     } catch(err) { common.PutToDebugLogException(2, '_call: Mute', err); }
@@ -1862,7 +1910,6 @@ function Hold() // :boolean  handle Hold - onClick
 
     if (holdSuccess)
     {
-        common.SetHoldState(global.aline, hstate);
         return true;
     }
     
@@ -1967,6 +2014,7 @@ var MENUITEM_AUDIO_DEVICE = '#menuitem_audio_device';
 var MENUITEM_RECALL_VIDEO = '#menuitem_recall_video';
 var MENUITEM_CALLPARK = '#menuitem_callpark';
 var MENUITEM_MULTILINECALL = '#menuitem_multilinecall';
+//var MENUITEM_SCREENSHARE = '#menuitem_screenshare';
 
 function CreateOptionsMenu (menuId) // adding items to menu, called from html
 {
@@ -2053,7 +2101,8 @@ function CreateOptionsMenu (menuId) // adding items to menu, called from html
     {
         $(menuId).append( '<li id="' + MENUITEM_RECALL_VIDEO + '"><a data-rel="back">' + stringres.get('menu_videorecall') + '</a></li>' ).listview('refresh');
     }
-
+    
+    
 // show Audio device/Hide Audio device  in menu, if not always displayed
     /*if (common.GetParameterBool('displayaudiodevice', false) === false)
     {
@@ -2236,7 +2285,7 @@ function onStop(event)
     plhandler.Cfin();
     
     global.lastRingEvenet = '';
-    isvideo = false;
+    callmode = 0;
     
     if (!common.isNull(document.getElementById('page_call_additional_info')))
     {
@@ -2253,7 +2302,7 @@ function onDestroy (event)
     common.PutToDebugLog(4, "EVENT, _call: onDestroy");
     global.isCallStarted = false;
     $('#callfunctions_layout').html('');
-    isvideo = false;
+    callmode = 0;
     $("#ml_buttons").html('');
     global.acallcount = 0;
     /*

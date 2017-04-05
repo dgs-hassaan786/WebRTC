@@ -53,6 +53,8 @@ function Start() // function called on "Register" button click to start the webp
     webphone_api.setparameter('password', password);
     webphone_api.setparameter('destination', destination);
     
+    SaveSettings();
+    
     DisplayStatus('EVENT, Initializing...');
 
     webphone_api.start();
@@ -99,6 +101,7 @@ webphone_api.onLoaded(function ()
 /** Initiate call to a number, sip username or SIP URI.*/
 function Call()
 {
+    InitializeTextInputs();
     var destnr = destination_input.value;
 
     if (isNull(destnr) || (Trim(destnr)).length < 1)
@@ -580,6 +583,7 @@ function ShowHideAdvancedSettings()
     
     if (rcolumn.style.display === 'none')
     {
+        document.getElementById('left_column').style.marginLeft = '0';
         document.getElementById('right_column').style.display = 'block';
         btnadv.innerHTML = 'Hide Advanced Settings';
     }else
