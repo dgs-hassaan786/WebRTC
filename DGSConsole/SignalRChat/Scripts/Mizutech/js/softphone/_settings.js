@@ -191,6 +191,7 @@ function onStart(event)
 // content was hidden untill jquery mobile loaded. now dislpay content
     document.getElementById('phone_app_main_container').style.display = 'block';
     common.ShowModalLoader(stringres.get('loading'));
+    common.PutToDebugLogSpecial(1, 'EVENT, _settings: onStart display Loading... modal loader_1', false, '');
     
     global.apppletloaded = false;
         
@@ -796,6 +797,7 @@ function AutoStart() //if server, username and password is set, then auto start 
 // content was hidden untill jquery mobile loaded. now dislpay content
             document.getElementById('phone_app_main_container').style.display = 'block';
             common.ShowModalLoader(stringres.get('loading'));
+            common.PutToDebugLogSpecial(1, 'EVENT, _settings: onStart display Loading... modal loader_2', false, '');
 
     // cahangePage gets called serveral times, bu we need to avoid this
             if (changePageCalled)
@@ -1085,10 +1087,10 @@ return;
 
 // rejectonvoipbusy -> removed
 // for java applet and service
-var settOrderWebphone = 'serveraddress_user,sipusername,password,submenu_sipsettings,submenu_media,submenu_calldivert,submenu_general,theme,username,displayname,email,hidemyidentity,usetunneling,transport,proxyaddress,realm,use_fast_ice,use_stun,use_rport,register,registerinterval,filters,keepalive,natopenpackets,ringtimeout,calltimeout,dtmfmode,chatsms,prack,earlymedia,sendrtponmuted,defmute,changesptoring,localip,signalingport,rtpport,capabilityrequest,customsipheader,techprefix,callforwardonbusy,callforwardonnoanswer,callforwardalways,calltransferalways,autoignore,autoaccept,transfwithreplace,voicemailnum,callbacknumber,blacklist,transfertype,automute,autohold,normalizenumber,dialerintegration,integrateifwifionly,nativefilterallow,nativefilterblock,audiodevices,displayvolumecontrols,displayaudiodevice,savetocontacts,sendchatonenter,extraoption,reset_settings,loglevel,loglevel_dbg,playring,codec,'+
+var settOrderWebphone = 'serveraddress_user,sipusername,password,submenu_sipsettings,submenu_media,submenu_calldivert,submenu_general,theme,username,displayname,email,hidemyidentity,usetunneling,transport,proxyaddress,realm,use_fast_ice,use_stun,use_rport,register,registerinterval,filters,keepalive,natopenpackets,ringtimeout,calltimeout,dtmfmode,chatsms,prack,earlymedia,sendrtponmuted,defmute,changesptoring,localip,signalingport,rtpport,capabilityrequest,customsipheader,techprefix,callforwardonbusy,callforwardonnoanswer,callforwardalways,calltransferalways,autoignore,autoaccept,transfwithreplace,voicemailnum,callbacknumber,blacklist,transfertype,automute,autohold,normalizenumber,dialerintegration,integrateifwifionly,nativefilterallow,nativefilterblock,audiodevices,displayvolumecontrols,displayaudiodevice,savetocontacts,sendchatonenter,language,telsearchkey,extraoption,reset_settings,loglevel,loglevel_dbg,playring,codec,'+
         'video,video_bandwidth,video_width,video_height,'+
         'cfgvideo,video_profile,use_h264,use_vp8,use_vp9,video_fps,setfinalcodec,aec,denoise,agc,plc,silencesupress,hardwaremedia,volumein,volumeout,mediaencryption,setqos,codecframecount,doublesendrtp,jittersize,audiobufferlength,speakermode';
-var settOrderWebphoneWebRTCFlash = 'serveraddress_user,sipusername,password,submenu_sipsettings,submenu_media,submenu_calldivert,submenu_general,theme,username,displayname,email,hidemyidentity,usetunneling,realm,filters,ringtimeout,calltimeout,dtmfmode,chatsms,earlymedia,defmute,customsipheader,techprefix,voicemailnum,callforwardonbusy,callforwardonnoanswer,callforwardalways,calltransferalways,autoignore,autoaccept,transfwithreplace,callbacknumber,blacklist,normalizenumber,dialerintegration,integrateifwifionly,nativefilterallow,nativefilterblock,audiodevices,displayvolumecontrols,displayaudiodevice,savetocontacts,sendchatonenter,extraoption,reset_settings,loglevel,loglevel_dbg,codec,'+
+var settOrderWebphoneWebRTCFlash = 'serveraddress_user,sipusername,password,submenu_sipsettings,submenu_media,submenu_calldivert,submenu_general,theme,username,displayname,email,hidemyidentity,usetunneling,realm,filters,ringtimeout,calltimeout,dtmfmode,chatsms,earlymedia,defmute,customsipheader,techprefix,voicemailnum,callforwardonbusy,callforwardonnoanswer,callforwardalways,calltransferalways,autoignore,autoaccept,transfwithreplace,callbacknumber,blacklist,normalizenumber,dialerintegration,integrateifwifionly,nativefilterallow,nativefilterblock,audiodevices,displayvolumecontrols,displayaudiodevice,savetocontacts,sendchatonenter,language,telsearchkey,extraoption,reset_settings,loglevel,loglevel_dbg,codec,'+
         'video,video_bandwidth,video_width,video_height,'+
         'cfgvideo,video_profile,use_h264,use_vp8,use_vp9,video_fps,aec,agc,volumein';
 
@@ -1096,7 +1098,7 @@ var settOrderWebphoneWebRTCFlash = 'serveraddress_user,sipusername,password,subm
 var settOrderReduced = 'serveraddress_user,sipusername,password,username,displayname,email,hidemyidentity,chatsms,voicemailnum,callbacknumber,loglevel';
 
 // for windows softphone
-var settOrderWin = 'serveraddress_user,sipusername,password,submenu_sipsettings,submenu_media,submenu_calldivert,submenu_general,theme,username,displayname,email,hidemyidentity,usetunneling,transport,proxyaddress,realm,use_fast_ice,use_stun,use_rport,register,registerinterval,filters,keepalive,natopenpackets,ringtimeout,calltimeout,dtmfmode,chatsms,prack,earlymedia,sendrtponmuted,defmute,changesptoring,localip,signalingport,rtpport,capabilityrequest,customsipheader,techprefix,callforwardonbusy,callforwardonnoanswer,callforwardalways,calltransferalways,autoignore,autoaccept,rejectonvoipbusy,voicemailnum,callbacknumber,blacklist,transfertype,automute,autohold,normalizenumber,startwithos,dialerintegration,integrateifwifionly,nativefilterallow,nativefilterblock,audiodevices,displayvolumecontrols,displayaudiodevice,savetocontacts,sendchatonenter,extraoption,reset_settings,loglevel,loglevel_dbg,playring,'
+var settOrderWin = 'serveraddress_user,sipusername,password,submenu_sipsettings,submenu_media,submenu_calldivert,submenu_general,theme,username,displayname,email,hidemyidentity,usetunneling,transport,proxyaddress,realm,use_fast_ice,use_stun,use_rport,register,registerinterval,filters,keepalive,natopenpackets,ringtimeout,calltimeout,dtmfmode,chatsms,prack,earlymedia,sendrtponmuted,defmute,changesptoring,localip,signalingport,rtpport,capabilityrequest,customsipheader,techprefix,callforwardonbusy,callforwardonnoanswer,callforwardalways,calltransferalways,autoignore,autoaccept,rejectonvoipbusy,voicemailnum,callbacknumber,blacklist,transfertype,automute,autohold,normalizenumber,startwithos,dialerintegration,integrateifwifionly,nativefilterallow,nativefilterblock,audiodevices,displayvolumecontrols,displayaudiodevice,savetocontacts,sendchatonenter,language,telsearchkey,extraoption,reset_settings,loglevel,loglevel_dbg,playring,'
 //        +'video,video_bandwidth,video_width,video_height,'
 //        +'cfgvideo,video_profile,use_h263,use_h264,video_fps,' +
         + 'codec,setfinalcodec,aec,denoise,agc,plc,silencesupress,hardwaremedia,volumein,volumeout,mediaencryption,setqos,codecframecount,doublesendrtp,jittersize,audiobufferlength,speakermode';
@@ -1406,6 +1408,14 @@ function PopulateList() // :no return value
         {
             var loglevel = common.GetLogLevel();
             if (loglevel < 2)
+            {
+                continue;
+            }
+        }
+        
+        if (settName === 'telsearchkey')
+        {
+            if (common.isNull(common.GetConfig('telsearchurl')) || common.GetConfig('telsearchurl').length < 3)
             {
                 continue;
             }
@@ -2594,6 +2604,10 @@ function OnListItemClick (id) // :no return value
                     var url = common.AddJscommport(global.WIN_SOFTPHONE_URL) + '?extcmd_theme=' + mSettValue;
                     common.WinSoftphoneHttpReq(url, 'GET', '', function (resp) { common.PutToDebugLog(2, 'EVENT, send theme to softphone response: ' + resp); });
                 }
+            }
+            else if (mCurrSettName === 'language')
+            {
+                common.SetLanguage();
             }
         });
     }
@@ -4390,6 +4404,7 @@ function SaveSettings (usrstart)
     }, 5000);
     
     $('#settings_page_title').html(stringres.get('loading'));
+    common.PutToDebugLogSpecial(1, 'EVENT, _settings: SaveSettings set Loading... page title', false, '');
 
 // handle accounts
     if (accountsavailable === false) // true, if there is at least one account created. If "false". means we have to add an account at SaveSettings()

@@ -9,6 +9,7 @@ var mMessage = '';
 var mContent = '';
 var sendrec = false; // if at least one message was sent or received in this session
 var placeholderhidden = false;
+var enablepres = false;
 
 function onCreate (event) // called only once - bind events here
 {
@@ -194,6 +195,8 @@ function onStart(event)
 // needed for proper display and scrolling of listview
     MeasureMessage();
     
+    if (common.UsePresence2() === true) { enablepres = true; }
+    
     // fix for IE 10
     //if (common.IsIeVersion(10)) { $("#messagelist_list").children().css('line-height', 'normal'); }
     
@@ -329,7 +332,86 @@ function PopulateData() // :no return value
     ScrollToBottom();
     RemoveNotification();
     
+// show presence status in title, if we have username/contact
+    if (!common.isNull(mTo) && mTo.length > 0 && enablepres === true)
+    {
+        var presencequery = [];
+        var presence = '-1';
+        var presobj = global.presenceHM[mTo];
+        if (!common.isNull(presobj)) { presence = presobj[common.PRES_STATUS]; }
+
+            // -1=not exists(undefined), 0=offline, 1=invisible, 2=idle, 3=pending, 4=DND, 5=online
+        if (common.isNull(presence) || presence.length < 1 || presence === '-1')
+        {
+            common.PresenceGet2(mTo);
+        }else
+        {
+            DisplayPresence(presence);
+        }
+    }
     } catch(err) { common.PutToDebugLogException(2, "_message: LoadMessage", err); }
+}
+
+function RefreshPresence()
+{
+    common.PresenceGet2(mTo);
+}
+
+var lastpres_stat = '';
+function DisplayPresence(presence)
+{
+    try{
+    if (enablepres !== true || common.isNull(presence) || presence.length < 1) { return; }
+    lastpres_stat = presence;
+
+    if (!common.isNull(document.getElementById('msg_title')) && !common.isNull(mAction))
+    {
+        var ptitle = '';
+        if (mAction === 'sms') { ptitle = stringres.get("msg_title_sms"); } else { ptitle = stringres.get("msg_title_chat"); }
+        
+        var presenceimg = ''
+        if (common.isNull(presence) || presence.length < 1)
+        {
+            presenceimg = '';
+        }
+        else if (presence === '0') // offline
+        {
+            presenceimg = '<img src="' + common.GetElementSource() + 'images/presence_grey.png" />';
+        }
+        else if (presence === '1') // invisible
+        {
+            presenceimg = '<img src="' + common.GetElementSource() + 'images/presence_white.png" />';
+        }
+        else if (presence === '2') // idle
+        {
+            presenceimg = '<img src="' + common.GetElementSource() + 'images/presence_yellow.png" />';
+        }
+        else if (presence === '3') // pending
+        {
+            presenceimg = '<img src="' + common.GetElementSource() + 'images/presence_orange.png" />';
+        }
+        else if (presence === '4') // DND
+        {
+            presenceimg = '<img src="' + common.GetElementSource() + 'images/presence_red.png" />';
+        }
+        else if (presence === '5') // online
+        {
+            presenceimg = '<img src="' + common.GetElementSource() + 'images/presence_green.png" />';
+        }
+        else
+        {
+            presenceimg = '';
+        }
+        
+        if (!common.isNull(presenceimg) && presenceimg.length > 0 && !common.isNull(mTo) && mTo.length > 0)
+        {
+            ptitle = ptitle + '&nbsp;&nbsp;&nbsp;' + mTo + ' ' + presenceimg;
+            
+            document.getElementById('msg_title').innerHTML = ptitle;
+        }
+    }
+    
+    } catch(err) { common.PutToDebugLogException(2, "_message: DisplayPresence", err); }
 }
 
 function RemoveNotification() // remove new message notification (number) from filenames list for the opened message thread
@@ -954,6 +1036,17 @@ function SaveMissedIncomingMessage(action, from, name, msg)
 function ShowIncomingMessage(action, from, msg)
 {
     try{
+// if received message, then set status to online if it was offline
+    if (enablepres === true)
+    {
+        global.msg_presence_timer = 0;
+        
+        if (!common.isNull(lastpres_stat) && lastpres_stat !== '0')
+        {
+            DisplayPresence('5'); // set to online
+        }
+    }
+    
     sendrec = true;
     //if (from === mTo)
     if (mTo.indexOf(from) >= 0)
@@ -1425,6 +1518,12 @@ function onDestroy (event)
     } catch(err) { common.PutToDebugLogException(2, "_message: onDestroy", err); }
 }
 
+var message_public = {
+
+    DisplayPresence: DisplayPresence
+};
+window.message_public = message_public;
+
 // public members and methods
 return {
     onCreate: onCreate,
@@ -1433,6 +1532,7 @@ return {
     onDestroy: onDestroy,
     
     ShowIncomingMessage: ShowIncomingMessage,
-    SaveMissedIncomingMessage: SaveMissedIncomingMessage
+    SaveMissedIncomingMessage: SaveMissedIncomingMessage,
+    RefreshPresence: RefreshPresence,
 };
 });

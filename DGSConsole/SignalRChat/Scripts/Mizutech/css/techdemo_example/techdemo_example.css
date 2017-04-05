@@ -2,7 +2,7 @@ body { margin: auto; padding: 0; text-align: center; font-family: sans-serif, se
 #header { background: #2f2f2f; width: 100%; height: 3em; }
 #content { margin: .1em auto auto auto; padding: 0; width: 700px; } 
 
-#left_column { width: 45%; float: left; }
+#left_column { width: 45%; float: left; margin-left: 27%; }
 #registration_box { text-align: left; background: #dfdfdf; border: 1px solid #ccc; border-radius: .3em; }
 #chat_box { /*text-align: left; background: #dfdfdf; border: 1px solid #ccc; border-radius: .3em; margin-top: .8em;*/ }
 #right_column { width: 49%; margin-left: .8em; float: left; text-align: left; background: #dfdfdf; border: 1px solid #ccc; border-radius: .3em;}
