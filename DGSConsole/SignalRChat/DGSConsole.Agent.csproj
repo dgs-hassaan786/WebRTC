@@ -464,6 +464,7 @@
     <Content Include="Scripts\Mizutech\images\btn_voicemail_txt_big.png" />
     <Content Include="Scripts\Mizutech\images\btn_voicemail_txt__old.png" />
     <Content Include="Scripts\Mizutech\images\call-icon.png" />
+    <Content Include="Scripts\Mizutech\images\caller-img.jpg" />
     <Content Include="Scripts\Mizutech\images\cancel-icon.png" />
     <Content Include="Scripts\Mizutech\images\checkbox_false.png" />
     <Content Include="Scripts\Mizutech\images\checkbox_true.png" />
@@ -491,6 +492,7 @@
     <Content Include="Scripts\Mizutech\images\icon_small.png" />
     <Content Include="Scripts\Mizutech\images\icon_warning.png" />
     <Content Include="Scripts\Mizutech\images\inbound-icon.png" />
+    <Content Include="Scripts\Mizutech\images\incoming-call.gif" />
     <Content Include="Scripts\Mizutech\images\logo.png" />
     <Content Include="Scripts\Mizutech\images\Main_Image.png" />
     <Content Include="Scripts\Mizutech\images\menu.png" />
