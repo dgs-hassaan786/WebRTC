@@ -119,7 +119,7 @@ var ngApp = (function (initializeApp) {
             sendMessage: function (senderName, message, recievername) {
                 window.communicationHub.invoke('sendMessage', {
                     senderName: senderName,
-                    message: message,                    
+                    message: message,
                     recievername: recievername
                 });
             },
@@ -136,7 +136,7 @@ var ngApp = (function (initializeApp) {
 
     }]);
 
-    app.controller('SuperAdminController', function ($scope, SignalRSrvc) {
+    app.controller('SuperAdminController', function ($scope, SignalRSrvc, $timeout) {
         $scope.disableCall = true;
         $scope.isVideo = false;
         $scope.chatVal = [];
@@ -148,13 +148,17 @@ var ngApp = (function (initializeApp) {
             $scope.$apply(function () {
                 $scope.isVideo = val ? val : false;
                 $scope.disableCall = false;
+                $timeout(function () {
+                    socketHandler = null;
+                    socketHandler = new SocketHandler(window.emailID, window.ipAddress, applyIsVideo, endCall);
+                }, 1000);
             });
         }
 
         function endCall() {
             $scope.$apply(function () {
                 $scope.isVideo = false;
-                $scope.disableCall = false;
+                $scope.disableCall = true;
             });
         }
 
@@ -171,7 +175,7 @@ var ngApp = (function (initializeApp) {
             SignalRSrvc.newConnection();
         });
 
-        
+
 
         $scope.$on('newConnectionFromServer', function (event, agentsData) {
 
@@ -231,42 +235,6 @@ var ngApp = (function (initializeApp) {
 
         });
 
-        //$(function () {
-        //    // Reference the auto-generated proxy for the hub.
-        //    var chat = $.connection.chatHub;
-        //    $scope.callUser = [];
-        //    $scope.userList = [];
-
-        //    // Create a function that the hub can call back to return list of all users that are connected
-        //    chat.client.newConnection = function (agentsData) {
-        //        $scope.$apply(function () {
-        //            var indexUserList = 0;
-        //            for (var i = 0; i < agentsData.length; i++) {
-        //                if (agentsData[i].Email != $(window)[0].emailID) {
-        //                    $scope.userList[indexUserList] = angular.copy(agentsData[i]);
-        //                    indexUserList++;
-        //                }
-        //            }
-        //            if ($scope.userList != null) {
-        //                $scope.userDisplayList = [].concat($scope.userList);
-        //                for (var i = 0; i < $scope.userList.length; i++) {
-        //                    if ($scope.userList[i].Status == "Login") {
-        //                        $scope.disableElement[i] = false;
-        //                    }
-        //                    else {
-        //                        $scope.disableElement[i] = true;
-        //                    }
-        //                    $scope.chatVal[i] = 0;
-        //                }
-        //                $scope.dataLoaded = true;
-        //            }
-        //        });
-        //    };
-
-        //    $.connection.hub.start().done(function () {
-        //        chat.server.newConnection();
-        //    });
-        //});
 
         $scope.gotoChatroom = function (index) {
             for (var i = 0; i < $scope.userList.length; i++) { $scope.chatVal[i] = 0; }
@@ -307,6 +275,7 @@ var ngApp = (function (initializeApp) {
             socketHandler.endCall();
             $scope.disableCall = true;
             $scope.isVideo = false;
+
         }
 
         $scope.disableControl = function (data) {
