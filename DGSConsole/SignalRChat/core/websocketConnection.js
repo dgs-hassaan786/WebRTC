@@ -13,7 +13,9 @@
     var pauseplay = document.getElementById("pause-play");
     var muteButton = document.getElementById("mutebtn");
     var unmutebtn = document.getElementById("unmutebtn");
+    var captureScreen = document.getElementById("capturebtn");
     var fullScreenButton = document.getElementById("full-screen");
+    var canvas = document.querySelector('canvas');
 
 
 
@@ -442,16 +444,16 @@
         try {
 
             connectedUser = null;
-            remoteVideo = null;
+            remoteVideo.src = null;
             //stream.getVideoTracks()[0].enabled = false;
 
             stream.getTracks().forEach(function (track) {                
                 track.stop();
             });
 
-            yourConn.getTracks().forEach(function (track) {               
-                track.stop();
-            });
+            //yourConn.getTracks().forEach(function (track) {               
+            //    track.stop();
+            //});
             yourConn.close();
             yourConn.onicecandidate = null;
             yourConn.onaddstream = null;
@@ -490,6 +492,19 @@
             pauseplay.addEventListener("click", function () {
                 self.pauseResumeVideo();
             });
+
+            captureScreen.addEventListener('click', function () {
+                canvas.width = remoteVideo.videoWidth;
+                canvas.height = remoteVideo.videoHeight;
+                canvas.getContext('2d').drawImage(remoteVideo, 0, 0, canvas.width, canvas.height);
+
+                var download = document.createElement('a');
+                download.href = canvas.toDataURL();
+                download.download = 'capture-img.png';
+                download.click();
+
+            });
+
         });
        
     }

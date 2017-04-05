@@ -1,8 +1,63 @@
-﻿@{
+﻿@using System.Security.Claims;
+@using System.Linq;
+@{
     Layout = "~/Views/Shared/_Layout-Mizu.cshtml";
     ViewBag.Title = "WebPhone";
+
+    string email = "", name = "";
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var user = User as ClaimsPrincipal;
+        var claims = user.Claims.ToList();
+        email = User.Identity.Name;
+        name = claims.Where(x => x.Type.Equals("Name")).FirstOrDefault().Value;
 }
 
+    var ipAddress = ViewBag.IpAddress;
+
+}
+
+<style>
+    #self {
+        display: none !important;
+    }
+    .group_btns {
+        width:100%;
+        float:left;
+    }
+.group_btns .btn {
+    padding: 6px 7.2px;
+   }
+.left_btn {
+        border-bottom-left-radius: 0;
+}
+.rgt_btn{
+        border-bottom-right-radius: 0;
+}
+</style>
+<script type='text/javascript'>
+    window.emailID = '@email';
+    window.name = '@name';
+    window.ipAddress = '@ipAddress';
+</script>
+
+@using System.Security.Claims;
+@using System.Linq;
+@{
+    string email = "", name = "";
+    if (User.Identity.IsAuthenticated)
+    {
+        var user = User as ClaimsPrincipal;
+        var claims = user.Claims.ToList();
+        email = User.Identity.Name;
+        name = claims.Where(x => x.Type.Equals("Name")).FirstOrDefault().Value;
+    }
+    <script type='text/javascript'>
+        window.emailID = '@email';
+        window.name = '@name';      
+    </script>
+}
 <div class="dialpad-wraper" style="background-image:url(../../Scripts/Mizutech/images/3.png); background-size:cover; margin-top:50px;">
     <div class="dialpad-main">
         <!-- Modal -->
@@ -30,6 +85,23 @@
                 </div>
             </div>
         </div>
+        <div class="group_btns" role="group" aria-label="..."> <!--btn-group btn-group-justified-->
+            <div class="btn-group" role="group">
+                <!-- just copy this <section> and next script -->                
+                <button id="btnDialer" type="button" class="btn left_btn btn-primary"><i class="glyphicon glyphicon-earphone"></i> Dialer</button>
+                <button id="btnChat" type="button" class="btn btn-success"><i class="glyphicon glyphicon-envelope"></i> Chat</button>
+                <button id="share-screen" type="button" class="btn btn-warning"><i class="glyphicon glyphicon-screenshot"></i><span style="font-size:11px"> Screen Share</span></button>
+                <a id="btnLink" class="btn rgt_btn btn-link" href="javasript:void(0)" target="_blank"><i class="glyphicon glyphicon-link"></i> Link</a>
+            </div>
+            @*<div class="btn-group" role="group">
+                <button id="btnChat" type="button" class="btn btn-success"><i class="glyphicon glyphicon-envelope"></i> Chat</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button id="share-screen" type="button" class="btn btn-warning"><i class="glyphicon glyphicon-screenshot"></i><span style="font-size:11px"> Screen Share</span></button>
+            </div>*@
+        </div>
+
+        <div id="dialerpad">
         <div class="top-box-div">
             <a id="InboundStatus" href="javascript:void(0)" onclick="Login()"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/inbound-icon.png" width="26" height="26" /></div>Login</div></a>
             <a id="OutboundStatus" href="javascript:void(0)"><div class="top-box"><div class="top-box-icon"><img src="https://demov2.webdialer.com/images/outbound-icon.png" width="26" height="26" /></div>Logout</div></a>
@@ -72,8 +144,105 @@
             </ul>
         </div>
     </div>
+        <div id="chat">
+            <div class="container bootstrap snippet">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet portlet-default">
+                            <div class="portlet-heading">
+                                <div class="portlet-title">
+                                    <h4><i class="fa fa-circle text-green"></i> <img src="/Content/DY6gND0.png" draggable="false" style="width:30px" /> <span id="receiverName">Jane Smith</span></h4>
+                                </div>
 
-    <script src="~/Scripts/Mizutech/webphone_api.js"></script>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div id="chat" class="panel-collapse collapse in">
+                                <div>
+                                    <div class="portlet-body chat-widget" style="overflow-y: auto; width: auto; height: 300px;">
+                                        <ol class="chat" style="overflow-y: auto;max-height: 300px;"></ol>
+                                        @*<div class="row">
+                                                <div class="col-lg-12">
+                                                    <p class="text-center text-muted small">January 1, 2014 at 12:23 PM</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="media">
+                                                        <a class="pull-left" href="#">
+                                                            <img class="media-object img-circle" src="http://lorempixel.com/30/30/people/1/" alt="">
+                                                        </a>
+                                                        <div class="media-body">
+                                                            <h4 class="media-heading">
+                                                                Jane Smith
+                                                                <span class="small pull-right">12:23 PM</span>
+                                                            </h4>
+                                                            <p>Hi, I wanted to make sure you got the latest product report. Did Roddy get it to you?</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="media">
+                                                        <a class="pull-left" href="#">
+                                                            <img class="media-object img-circle" src="http://lorempixel.com/30/30/people/7/" alt="">
+                                                        </a>
+                                                        <div class="media-body">
+                                                            <h4 class="media-heading">
+                                                                John Smith
+                                                                <span class="small pull-right">12:28 PM</span>
+                                                            </h4>
+                                                            <p>Yeah I did. Everything looks good.</p>
+                                                            <p>Did you have an update on purchase order #302?</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="media">
+                                                        <a class="pull-left" href="#">
+                                                            <img class="media-object img-circle" src="http://lorempixel.com/30/30/people/7/" alt="">
+                                                        </a>
+                                                        <div class="media-body">
+                                                            <h4 class="media-heading">
+                                                                Jane Smith
+                                                                <span class="small pull-right">12:39 PM</span>
+                                                            </h4>
+                                                            <p>No not yet, the transaction hasn't cleared yet. I will let you know as soon as everything goes through. Any idea where you want to get lunch today?</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>*@
+                                    </div>
+                                </div>
+                                <div class="portlet-footer">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <textarea id="message" class="form-control" placeholder="Enter message..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" id="btnSend" class="btn btn-default pull-right" onclick="sendMsg()">Send</button>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col-md-4 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+       <script src="~/Scripts/Mizutech/webphone_api.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.1.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/core/signalR/hubProvider.js"></script>
     @*<script>webphone_api.parameters.issdk = false;</script>*@
     <script>
         var serveraddress_input = "10.114.5.111:5060"
@@ -312,12 +481,133 @@
 
             }
         });
-
+        
         $(document).ready(function () {
             $("#InboundStatus").click();
         });
 
+        $("#btnDialer").click(function () {
+            $("#dialerpad").show();
+            $("#chat").hide();
+        });
+        $("#btnChat").click(function () {
+            $("#chat").show();
+            $("#dialerpad").hide();
+            try{
+                setupChatHub();
+            }
+            catch(exception){
+                console.log('error');
+            }
+        });
+        $("#chat").hide();
+
+       (function getManager() {
+
+            var id = 'aisha.siddiqui@dgsworld.com';
+            var userManager = "";
+            $.ajax({
+                url: 'https://localhost:44308/api/v1/users/manager',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(id)
+            }).success(function (data, status, config, headers) {
+                window.userManager = data;
+            }).error(function (data, status, config, headers) {
+                window.userManager = null
+            });         
+        })();
+    
+        function onConnected() {
+            return "Email=" + window.emailID + "&Name=" + window.name + '&Status=' + 'Login'; // hassaankhan@gmail.com
+        }
+        function setupChatHub() {
+            var connection = $.hubConnection('https://demov3connect.webdialer.com' + '/signalr', { //'http://localhost:65251/'
+                useDefaultPath: false, jsonp: true, transport: 'webSockets'
+            });
+            //Starting Hub Connection
+            window.communicationHub = connection.createHubProxy('DWDCommunicationHub');
+            connection.qs = onConnected();
+            connection.start().done(function () {
+                console.log('Hub has started');
+                //On Broadcast from server to client
+                window.communicationHub.on('broadcastMessage', function (data) {
+                    debugger;
+                    sendMessageFromServer(data);
+                    //$rootScope.$broadcast('sendMessageFromServer', data);
+                });
+            });
+
+        }
+        //To invoke server side send message function from client side
+        function sendMessage(senderName, message, recievername) {
+            window.communicationHub.invoke('sendMessage', {
+                senderName: senderName,
+                message: message,
+                recievername: recievername
+            });
+        }
+        //On broadcast from server handling of messages in chat
+        //  $scope.$on('sendMessageFromServer', function (event, data) {
+        function sendMessageFromServer(event, data) {
+            var senderName = data.senderName;
+            var receiverName = data.recievername;
+            var message = data.message;
+            var chat_show = $(".chat");
+            var formattedSenderName = senderName;@*//.substring(0, senderName.lastIndexOf('@'));*@
+
+            if (senderName == window.emailID) {
+                $scope.$apply(function () {
+                    chat_show.append('<li class="self">' + '<div class="avatar">' + '<img src="/Content/HYcn9xO.png" draggable="false"/>' + '</div>' + '<div class="msg">' + '<p><strong>' + 'You&nbsp:&nbsp&nbsp&nbsp' + '</strong> ' + '&nbsp&nbsp' + message + '&nbsp&nbsp' + '</p>' + '&nbsp&nbsp' + '<time>20:18</time>' + '</div>');
+                });
+                return;
+            }
+
+            if (receiverName == window.emailID) {
+                $scope.$apply(function () {
+                    chat_show.append('<li class="other">' + '<div class="avatar">' + '<img src="/Content/DY6gND0.png" draggable="false"/>' + '</div>' + '<div class="msg">' + '<p><strong>' + formattedSenderName + '&nbsp:&nbsp&nbsp&nbsp' + '</strong>' + message + '&nbsp&nbsp' + '</p>' + '&nbsp&nbsp' + '<time>20:18</time>' + '</div>');
+                });
+                return;
+            }
+        };
+        //key press event raised of send message
+        function sendmsg() {         
+            var message = $("#message").val();
+            sendMessage(window.emailID, message, window.userManager[0]);
+            $("#message").val("");
+            event.preventDefault();
+        }
+        $('#message').keypress(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) {
+                sendmsg();
+            }
+        })
+        $("#btnSend").on('click',function () {
+           sendmsg();
+        });
         //});
     </script>
+
+
+
+    @section scripts {
+
+        <script>
+            $(document).ready(function () {
+
+                $('#share-screen').on('click', function () {
+
+                    debugger
+                    var strWindowFeatures = "location=yes,height=570,width=800,scrollbars=yes,status=yes";
+                    var URL = window.location.origin + '/home/sceenshare' ;
+                    var win = window.open(URL, "_blank", strWindowFeatures);
+
+                });
+
+            })
+        </script>
+    }
 </div>
 

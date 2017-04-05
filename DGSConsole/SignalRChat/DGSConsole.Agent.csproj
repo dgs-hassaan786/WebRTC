@@ -197,6 +197,7 @@
     <Compile Include="ViewModels\AgentDataProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\5WUpcPZ.png" />
     <Content Include="Content\bootstrap - Copy.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -204,6 +205,8 @@
     <Content Include="Content\bootstrap.min - Copy.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Custom.min.css" />
+    <Content Include="Content\DY6gND0.png" />
+    <Content Include="Content\HYcn9xO.png" />
     <Content Include="Content\sound\beep-01.wav" />
     <Content Include="Content\sound\DTMF0.mp3" />
     <Content Include="Content\sound\DTMF1.mp3" />
@@ -266,6 +269,7 @@
     <Content Include="core\client.js" />
     <Content Include="core\remoteAccess.js" />
     <Content Include="core\RTCMultiConnection.min.js" />
+    <Content Include="core\screen.js" />
     <Content Include="core\signalR\hubProvider.js" />
     <Content Include="core\socket.io.min.js" />
     <Content Include="core\stunservers.js" />
@@ -596,6 +600,7 @@
     <Content Include="Views\Home\ChatRoom.cshtml" />
     <Content Include="Views\Home\WebPhone.cshtml" />
     <Content Include="Views\Shared\_Layout-Mizu.cshtml" />
+    <Content Include="Views\Home\SceenShare.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

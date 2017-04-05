@@ -17,5 +17,7 @@ namespace DGSConsole.Agent.Models
         public string Password { get; set; }
         public string Role { get; set; }
         public List<string> ConnectionIds { get; set; }
+        public int Manager { get; set; }
+        public int ID { get; set; }
     }
 }

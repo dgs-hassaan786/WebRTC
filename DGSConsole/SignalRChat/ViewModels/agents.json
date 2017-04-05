@@ -1,23 +1,56 @@
 ﻿[
   {
+    "ID": 1,
     "Name": "Hassaan Khan",
     "Status": "Log out",
     "Email": "hassaan.khan@dgsworld.com",
     "Password": "hassaan123",
-    "Role":  "Supervisor"
+    "Role": "Supervisor",
+    "Manager": 0
   },
   {
+    "ID": 2,
     "Name": "Awais Majeed",
     "Status": "Log out",
     "Email": "awais.majeed@dgsworld.com",
     "Password": "awais123",
-    "Role": "Agent"
+    "Role": "Agent",
+    "Manager": 1
   },
   {
+    "ID": 3,
     "Name": "Aisha Siddiqui",
     "Status": "Log out",
     "Email": "aisha.siddiqui@dgsworld.com",
     "Password": "aisha123",
-    "Role": "Agent"
+    "Role": "Agent",
+    "Manager": 1
+  },
+  {
+    "ID": 4,
+    "Name": "Ghazanfar Khan",
+    "Status": "Log out",
+    "Email": "ghazanfar.khan@dgsworld.com",
+    "Password": "ghazanfar123",
+    "Role": "Agent",
+    "Manager": 6
+  },
+  {
+    "ID": 5,
+    "Name": "Haroon Ibrahim",
+    "Status": "Log out",
+    "Email": "haroon.ibrahim@dgsworld.com",
+    "Password": "haroon123",
+    "Role": "Agent",
+    "Manager" :  6
+  },
+  {
+    "ID": 6,
+    "Name": "Chad Rycenga",
+    "Status": "Log out",
+    "Email": "chad.rycenga@dgsworld.com",
+    "Password": "chad123",
+    "Role": "Supervisor",
+    "Manager": 0
   }
 ]
