@@ -17,15 +17,10 @@
     var ipAddress = ViewBag.IpAddress;
 }
 
-<!--
-> Muaz Khan     - https://github.com/muaz-khan
-> MIT License   - https://www.webrtc-experiment.com/licence/
-> Documentation - https://github.com/muaz-khan/WebRTC-Experiment/tree/master/screen-sharing
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>WebRTC Screen Sharing</title>
+    <title>DgsConsole Screen Sharing</title>
 
     <script>
             if(!location.hash.replace('#', '').length) {
@@ -37,11 +32,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link rel="author" type="text/html" href="https://plus.google.com/+MuazKhan">
+
     <meta name="author" content="Muaz Khan">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <link rel="stylesheet" href="https://cdn.webrtc-experiment.com/style.css">
+    <link rel="stylesheet" href="~/Content/style.css">
 
     <script type='text/javascript'>
         window.emailID = '@email';
@@ -141,13 +136,11 @@ border: none;
             document.createElement('footer');
     </script>
 
-    <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/ajhifddimkapgcifgcodmmfdlknahffk">
-
     <!-- scripts used for screen-sharing -->
-    <script src='https://cdn.webrtc-experiment.com/firebase.js'> </script>
-    <script src="https://cdn.webrtc-experiment.com/getScreenId.js"> </script>
-    <script src="https://cdn.webrtc-experiment.com/BandwidthHandler.js"></script>
-    <script src="https://cdn.webrtc-experiment.com/screen.js"> </script>
+    <script src='~/core/firebase.js'> </script>
+    <script src="~/core/getScreenId.js"> </script>
+    <script src="~/core/BandwidthHandler.js"></script>
+    <script src="~/core/screen.js"> </script>
 </head>
 
 <body>
@@ -190,10 +183,6 @@ border: none;
                         }
                     });
                 }
-
-                // Muaz Khan     - https://github.com/muaz-khan
-                // MIT License   - https://www.webrtc-experiment.com/licence/
-                // Documentation - https://github.com/muaz-khan/WebRTC-Experiment/tree/master/screen-sharing
 
                 var videosContainer = document.getElementById("videos-container") || document.body;
                 var roomsList = document.getElementById('rooms-list');
@@ -239,9 +228,7 @@ border: none;
                     video.play();
                     rotateVideo(video);
                 };
-
-                // using firebase for signaling
-                // screen.firebase = 'signaling';
+              
 
                 // if someone leaves; just remove his screen
                 screensharing.onuserleft = function(userid) {
@@ -257,10 +244,7 @@ border: none;
                     this.disabled = true;
                 };
 
-                document.getElementById('share-screen').onclick = function() {
-                    //var username = document.getElementById('user-name');
-                    //username.disabled = this.disabled = true;
-
+                document.getElementById('share-screen').onclick = function() {                    
                     screensharing.isModerator = true;
                     screensharing.userid = window.emailID;
 
@@ -292,12 +276,8 @@ border: none;
                 };
         </script>
 
-        <script>
-                // todo: need to check exact chrome browser because opera also uses chromium framework
+        <script> 
                 var isChrome = !!navigator.webkitGetUserMedia;
-
-                // DetectRTC.js - https://github.com/muaz-khan/WebRTC-Experiment/tree/master/DetectRTC
-                // Below code is taken from RTCMultiConnection-v1.8.js (http://www.rtcmulticonnection.org/changes-log/#v1.8)
                 var DetectRTC = {};
 
                 (function () {
@@ -406,14 +386,11 @@ border: none;
             <ol>
                 <li>
                     Chrome?
-                    <a href="https://chrome.google.com/webstore/detail/screen-capturing/ajhifddimkapgcifgcodmmfdlknahffk" target="_blank">Store</a>
-                    / <a href="https://github.com/muaz-khan/Chrome-Extensions/tree/master/desktopCapture">Source Code</a>
-                    /
-                    <button onclick="!!navigator.webkitGetUserMedia && !!window.chrome && !!chrome.webstore && !!chrome.webstore.install && chrome.webstore.install('https://chrome.google.com/webstore/detail/ajhifddimkapgcifgcodmmfdlknahffk', function() {location.reload();})" id="install-button" style="font-size:inherit; padding-bottom:0;">Click to Install</button>
+                    <a href="https://chrome.google.com/webstore/detail/screen-capturing/ajhifddimkapgcifgcodmmfdlknahffk" target="_blank">Store</a>                                        
                 </li>
 
                 <li>
-                    Firefox? <a href="https://addons.mozilla.org/en-US/firefox/addon/enable-screen-capturing/">Store</a> / <a href="https://github.com/muaz-khan/Firefox-Extensions/tree/master/enable-screen-capturing">Source Code</a> / <button onclick="intallFirefoxScreenCapturingExtension(); this.disabled = true;" style="font-size:inherit; padding-bottom:0;">Click to Install</button>
+                    Firefox? <a href="https://addons.mozilla.org/en-US/firefox/addon/enable-screen-capturing/">Store</a>
                 </li>
             </ol>
         </section>         

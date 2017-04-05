@@ -225,7 +225,11 @@
     <Content Include="Content\sound\rtc_ringbacktone.wav" />
     <Content Include="Content\sound\rtc_ringtone.wav" />
     <Content Include="Content\sound\rtc_ringtone_orig.wav" />
+    <Content Include="Content\style.css" />
     <Content Include="core\app.js" />
+    <Content Include="core\BandwidthHandler.js" />
+    <Content Include="core\firebase.js" />
+    <Content Include="core\getScreenId.js" />
     <Content Include="core\libs\angular-pageslide\angular-pageslide-directive.js" />
     <Content Include="core\libs\angular-pageslide\angular-pageslide-directive.min.js" />
     <Content Include="core\libs\angular\angular-animate.js" />
