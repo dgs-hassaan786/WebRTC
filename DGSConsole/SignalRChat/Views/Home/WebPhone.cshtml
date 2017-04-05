@@ -42,22 +42,6 @@
     window.ipAddress = '@ipAddress';
 </script>
 
-@using System.Security.Claims;
-@using System.Linq;
-@{
-    string email = "", name = "";
-    if (User.Identity.IsAuthenticated)
-    {
-        var user = User as ClaimsPrincipal;
-        var claims = user.Claims.ToList();
-        email = User.Identity.Name;
-        name = claims.Where(x => x.Type.Equals("Name")).FirstOrDefault().Value;
-    }
-    <script type='text/javascript'>
-        window.emailID = '@email';
-        window.name = '@name';      
-    </script>
-}
 <div class="dialpad-wraper" style="background-image:url(../../Scripts/Mizutech/images/3.png); background-size:cover; margin-top:50px;">
     <div class="dialpad-main">
         <!-- Modal -->
