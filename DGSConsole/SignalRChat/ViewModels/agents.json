@@ -5,7 +5,8 @@
     "Status": "Log out",
     "Email": "hassaan.khan@dgsworld.com",
     "Password": "hassaan123",
-    "Role": "Supervisor"
+    "Role": "Supervisor",
+    "Manager": 0
   },
   {
     "ID": 2,

@@ -269,6 +269,7 @@
     <Content Include="core\client.js" />
     <Content Include="core\remoteAccess.js" />
     <Content Include="core\RTCMultiConnection.min.js" />
+    <Content Include="core\screen.js" />
     <Content Include="core\signalR\hubProvider.js" />
     <Content Include="core\socket.io.min.js" />
     <Content Include="core\stunservers.js" />
@@ -597,6 +598,7 @@
     <Content Include="Views\Home\ChatRoom.cshtml" />
     <Content Include="Views\Home\WebPhone.cshtml" />
     <Content Include="Views\Shared\_Layout-Mizu.cshtml" />
+    <Content Include="Views\Home\SceenShare.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
