@@ -34,7 +34,7 @@ namespace DGSConsole.Agent
             // Call the addNewMessageToPage method to update clients.
             Clients.All.addNewMessageToPage(name, message);
         }
-        public void sendMessage(string senderName, string message, string connID, string recievername)
+        public void sendMessage(string senderName, string message, string recievername)
         {
 
             Clients.All.broadcastMessage(senderName, message, recievername);

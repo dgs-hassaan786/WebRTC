@@ -41,7 +41,9 @@ namespace DGSConsole.Agent.ViewModels
                 Cache[agent.Email].Status = agent.Status;
                 Cache[agent.Email].Name = agent.Name;
                 Cache[agent.Email].Role = agent.Role;
-                Cache[agent.Email].Password = agent.Password;                
+                Cache[agent.Email].Password = agent.Password;
+                Cache[agent.Email].Manager = agent.Manager;
+                Cache[agent.Email].ID = agent.ID;    
             }
         }
 
@@ -69,6 +71,7 @@ namespace DGSConsole.Agent.ViewModels
                 agent.Email = context.QueryString["Email"];
                 agent.Name = context.QueryString["Name"];
                 agent.Status = context.QueryString["Status"];
+                //agent.Manager = Convert.ToInt16(context.QueryString["Manager"]);
                 var connId = context.ConnectionId;
 
                 if (!AgentDataProvider.Cache.ContainsKey(agent.Email))
@@ -84,6 +87,7 @@ namespace DGSConsole.Agent.ViewModels
                         AgentDataProvider.Cache[agent.Email].ConnectionIds.Add(connId);
                         AgentDataProvider.Cache[agent.Email].Status = agent.Status;
                         AgentDataProvider.Cache[agent.Email].Name = agent.Name;
+                       // AgentDataProvider.Cache[agent.Email].Manager = agent.Manager;
                     }
                 }
 

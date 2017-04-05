@@ -25,6 +25,22 @@ namespace DGSConsole.Agent.Controllers
                 return InternalServerError(ex);
             }
         }
+        [Route("users/manager")]
+        [HttpPost]
+        public IHttpActionResult GetUserManagers([FromBody]string emailID)
+        {
+            try
+            {
+                if (AgentDataProvider.Cache.ContainsKey(emailID))
+                {                 
+                    return Ok(from e in AgentDataProvider.GetAllAgentsData()
+                              where e.ID == AgentDataProvider.Cache[emailID].Manager
+                              select e.Email);
+                }
+                else return NotFound();               
+            }
+            catch (Exception ex) { return InternalServerError(ex); }
+        }
 
     }
 }
