@@ -1,7 +1,20 @@
-﻿
+﻿@using System.Security.Claims;
+@using System.Linq;
 @{
     Layout = null;
     ViewBag.Title = "SceenShare";
+
+    string email = "", name = "";
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var user = User as ClaimsPrincipal;
+        var claims = user.Claims.ToList();
+        email = User.Identity.Name;
+        name = claims.Where(x => x.Type.Equals("Name")).FirstOrDefault().Value;
+    }
+
+    var ipAddress = ViewBag.IpAddress;
 }
 
 <!--
@@ -29,6 +42,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
     <link rel="stylesheet" href="https://cdn.webrtc-experiment.com/style.css">
+
+    <script type='text/javascript'>
+        window.emailID = '@email';
+        window.name = '@name';
+        window.ipAddress = '@ipAddress';
+    </script>
 
     <style>
         video {
@@ -61,15 +80,52 @@
         }
 
         .setup {
-            border-bottom-left-radius: 0;
-            border-top-left-radius: 0;
-            font-size: 102%;
-            height: 47px;
-            margin-left: -9px;
-            margin-top: 8px;
-            position: absolute;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    font-size: 102%;
+    float: right;
+    padding: 6px 12px;
         }
-
+        .experiment span h2 {
+            border:none;
+            font-size: 22px;
+            padding: 10px;
+        }
+.join {
+    font-size: 14px !important;
+    cursor: pointer;
+    float:right;
+    width:100%;
+}
+.experiment table tbody tr td {
+    padding: 3px 4px;
+    margin: 0;
+    width:auto !important;
+}
+.experiment td {
+    width: auto !important;
+    padding: 0;
+    font-size: 20px;
+}
+.experiment .exp_head {
+    font-size: 18px;
+    border: none;
+    padding: 0px 10px;
+}
+.experiment ol {
+    margin: 0;
+    padding: 0px 32px;
+    font-size: 13px;
+        }
+.experiment ol li{
+border: none;
+    width: 50%;
+    padding: 0 0px 0 0px;
+    margin: 0;
+        }
+.experiment ol li button{
+    padding-bottom: 3px !important;
+        }
         p {
             padding: 1em;
         }
@@ -111,7 +167,7 @@
                 <span>
                     Private ?? <a href="/screen-sharing/" target="_blank" title="Open this link for private screen sharing!"><code><strong id="unique-token">#123456789</strong></code></a>
                 </span>
-                <input type="text" id="user-name" placeholder="Your Name">
+                <input type="text" id="user-name" placeholder="Your Name" style="display:none">
                 <button id="share-screen" class="setup">Share Your Screen</button>
             </section>
 
@@ -141,7 +197,8 @@
 
                 var videosContainer = document.getElementById("videos-container") || document.body;
                 var roomsList = document.getElementById('rooms-list');
-
+                
+                
                 var screensharing = new Screen();
 
                 screensharing.onscreen = function(_screen) {
@@ -201,20 +258,20 @@
                 };
 
                 document.getElementById('share-screen').onclick = function() {
-                    var username = document.getElementById('user-name');
-                    username.disabled = this.disabled = true;
+                    //var username = document.getElementById('user-name');
+                    //username.disabled = this.disabled = true;
 
                     screensharing.isModerator = true;
-                    screensharing.userid = username.value;
+                    screensharing.userid = window.emailID;
 
                     screensharing.share();
                 };
 
                 function rotateVideo(video) {
-                    video.style[navigator.mozGetUserMedia ? 'transform' : '-webkit-transform'] = 'rotate(0deg)';
-                    setTimeout(function() {
-                        video.style[navigator.mozGetUserMedia ? 'transform' : '-webkit-transform'] = 'rotate(360deg)';
-                    }, 1000);
+                    //video.style[navigator.mozGetUserMedia ? 'transform' : '-webkit-transform'] = 'rotate(0deg)';
+                    //setTimeout(function() {
+                    //    video.style[navigator.mozGetUserMedia ? 'transform' : '-webkit-transform'] = 'rotate(360deg)';
+                    //}, 1000);
                 }
 
                 (function() {
@@ -345,7 +402,7 @@
         </script>
 
         <section class="experiment">
-            <h2>Prerequisites</h2>
+            <h2 class="exp_head">Prerequisites</h2>
             <ol>
                 <li>
                     Chrome?

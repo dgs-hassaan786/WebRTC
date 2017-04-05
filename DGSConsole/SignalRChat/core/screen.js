@@ -23,6 +23,9 @@
         var signaler, self = this;
         this.channel = channel || location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
 
+        //debugger;
+        this.channel = this.channel.replace('WebPhone', 'SceenShare');
+
         // get alerted for each new meeting
         this.onscreen = function (screen) {
             if (self.detectedRoom) return;
