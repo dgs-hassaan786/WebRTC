@@ -122,7 +122,7 @@
                 <li onclick="Transfer();"><a id="Transfer" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/transfer-icon.png" width="35" height="26" /></span>Transfer</a></li>
                 <li onclick="Cancel()"><a id="Cancel" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/cancel-icon.png" width="35" height="26" /></span>Cancel</a></li>
                 <li onclick="Conference();"><a id="Conference" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/conference-icon.png" width="35" height="26" /></span>Conference</a></li>
-                <li class="green-bg" id="IboundCall" onclick="Accept();"><a href="javascript:void(0)" onclick='call();'><span class="green-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
+                @*<li class="green-bg" id="IboundCall" onclick="Accept();"><a href="javascript:void(0)" onclick='call();'><span class="green-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>*@
                 <li class="green-bg" id="OutboundCall" onclick="Call()"><a href="javascript:void(0)" onclick='call();'><span class="green-icon"><img src="https://demov2.webdialer.com/images/call-icon.png" width="35" height="26" /></span></a></li>
                 <li onclick="Toggle();"><a id="Toggle" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/toggle-icon.png" width="35" height="26" /></span>Toggle</a></li>
                 <li><a id="Hold" href="javascript:void(0)"><span class="btm-icon"><img src="https://demov2.webdialer.com/images/hold-icon.png" width="35" height="26" /></span><span id="HoldButtonText">Hold</span></a></li>
@@ -236,7 +236,7 @@
         var username_input = "5111";
         var password_input = "1234";
         var destination_input = document.getElementById('destnumber');
-        document.getElementById('IboundCall').style.display = 'none';
+        //document.getElementById('IboundCall').style.display = 'none';
 
         // document.getElementById('btn_hangup').disabled = true;
         //document.getElementById('icoming_call_layout').style.display = 'none';
@@ -452,8 +452,8 @@
                     $('#myModal').modal('show');
                     document.getElementById('IncomingCallbody').innerHTML = "Call is coming from: " + peername;
                     //IncomingCallbody
-                    document.getElementById('IboundCall').style.display = 'block';
-                    document.getElementById('OutboundCall').style.display = 'none';
+                    //document.getElementById('IboundCall').style.display = 'block';
+                    //document.getElementById('OutboundCall').style.display = 'none';
                     document.getElementById('callerid').innerHTML = peername;
                     document.getElementById('TFN').innerHTML = peerdisplayname.split('-')[1];
                 }
@@ -463,8 +463,8 @@
             if (event === 'callDisconnected') {
                 document.getElementById('btn_hangup').disabled = true;
                 document.getElementById('icoming_call_layout').style.display = 'none';
-                document.getElementById('IboundCall').style.display = 'none';
-                document.getElementById('OutboundCall').style.display = 'block';
+                //document.getElementById('IboundCall').style.display = 'none';
+                //document.getElementById('OutboundCall').style.display = 'block';
 
             }
         });
