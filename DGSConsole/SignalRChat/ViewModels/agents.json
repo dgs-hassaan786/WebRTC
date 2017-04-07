@@ -18,6 +18,15 @@
     "Manager": 1
   },
   {
+    "ID": 7,
+    "Name": "Awais Majeed",
+    "Status": "Log out",
+    "Email": "noman.nazar@dgsworld.com",
+    "Password": "noman123",
+    "Role": "Agent",
+    "Manager": 1
+  },
+  {
     "ID": 3,
     "Name": "Aisha Siddiqui",
     "Status": "Log out",
@@ -42,7 +51,7 @@
     "Email": "haroon.ibrahim@dgsworld.com",
     "Password": "haroon123",
     "Role": "Agent",
-    "Manager" :  6
+    "Manager": 6
   },
   {
     "ID": 6,

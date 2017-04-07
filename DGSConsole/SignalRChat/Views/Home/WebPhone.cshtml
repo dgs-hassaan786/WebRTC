@@ -146,7 +146,7 @@
                             <div id="chat" class="panel-collapse collapse in">
                                 <div>
                                     <div class="portlet-body chat-widget" style="overflow-y: auto; width: auto; height: 300px;">
-                                        <ol class="chat" style="overflow-y: auto;max-height: 300px;"></ol>                                    
+                                        <ol class="chat"></ol>                                    
                                     </div>
                                 </div>
                                 <div class="portlet-footer">
@@ -547,12 +547,9 @@
             $(document).ready(function () {
 
                 $('#share-screen').on('click', function () {
-
-                    debugger
                     var strWindowFeatures = "location=yes,height=570,width=800,scrollbars=yes,status=yes";
                     var URL = window.location.origin + '/home/sceenshare';
                     var win = window.open(URL, "_blank", strWindowFeatures);
-
                 });
 
             })

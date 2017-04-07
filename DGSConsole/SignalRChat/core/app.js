@@ -149,6 +149,7 @@ var ngApp = (function (initializeApp) {
                 $scope.isVideo = val ? val : false;
                 $scope.disableCall = false;
                 $timeout(function () {
+                    socketHandler.removeEventListners();
                     socketHandler = null;
                     socketHandler = new SocketHandler(window.emailID, window.ipAddress, applyIsVideo, endCall);
                 }, 1000);
@@ -162,7 +163,7 @@ var ngApp = (function (initializeApp) {
             });
         }
 
-        var socketHandler = new SocketHandler(window.emailID, window.ipAddress, applyIsVideo, endCall);  // alert(data.host);
+        var socketHandler = new SocketHandler(window.emailID, window.ipAddress, applyIsVideo, endCall);  // alert(data.host);        
 
         $scope.Name = "Testing Angular";
         $scope.options = { page: 1, pagesize: 10, pagingOptions: [5, 10, 15, 20, 50, 100, 500, 1000] };

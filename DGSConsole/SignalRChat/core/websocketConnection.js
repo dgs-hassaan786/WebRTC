@@ -508,6 +508,14 @@
         });
        
     }
+    
+    self.removeEventListners = function () {
+        mutebtn.removeEventListener('click',null,false);
+        unmutebtn.removeEventListener('click', null, false);
+        playButton.removeEventListener('click', null, false);
+        pauseplay.removeEventListener('click', null, false);
+        captureScreen.removeEventListener('click', null, false);
+    }
 
     eventlistners();
     return self;

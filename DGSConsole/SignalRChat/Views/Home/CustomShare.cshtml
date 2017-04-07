@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "CustomShare";
+}
+
+<h2>CustomShare</h2>
+
+<video id="video1" autoplay controls></video>
+
+@section scripts{
+    <script src="~/core/Modernizr.min.js"></script>
+    <script>
+
+        var videotag = document.getElementById('video1');
+
+        function hasGetUserMedia() {
+            return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                      navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        }
+
+        if (hasGetUserMedia()) {
+
+
+            var peerConnCfg = { 'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }] },
+            peerConn = new RTCPeerConnection(peerConnCfg),
+            signalingChannel = new WebSocket('ws://my-websocket-server:port/');
+          
+
+            var peerConn = new RTCPeerConnection();
+            peerConn.onaddstream = function (evt) {
+                var videoElem = document.createElement("video");
+                document.appendChild(videoElem);
+                videoElem.src = URL.createObjectURL(evt.stream);
+            };
+
+
+            if (Modernizr.getusermedia) {
+                var media = Modernizr.prefixed('getUserMedia', navigator);
+                media({ video: true, audio : true }, function (stream) {
+
+                    videotag.src = window.URL.createObjectURL(stream);
+
+                    peerConn.addStream(stream);
+
+                    peerConn.createOffer(function (offer) {
+                        peerConn.setLocalDescription(new RTCSessionDescription(offer), function () {
+                            // send the offer to a server to be forwarded to the other peer
+                        }, error);
+                    }, error);
+
+                    peerConn.setRemoteDescription(new RTCSessionDescription(offer), function () {
+                        peerConn.createAnswer(function (answer) {
+                            peerConn.setLocalDescription(new RTCSessionDescription(answer), function () {
+                                // send the answer to a server to be forwarded back to the caller
+                            }, error);
+                        }, error);
+                    }, error);
+
+
+                }, function (err) {
+                    console.log(err);
+                });
+            } else {
+                console.log('no navigator found....');
+            }
+        }
+
+
+
+    </script>
+}

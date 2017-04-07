@@ -66,5 +66,10 @@ namespace DGSConsole.Agent.Controllers
         {
             return View();
         }
+
+        public ActionResult CustomShare()
+        {
+            return View();
+        }
     }
 }

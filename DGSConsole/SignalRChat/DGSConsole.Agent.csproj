@@ -271,6 +271,7 @@
     <Content Include="core\libs\smart-table\smart-table.min.js" />
     <Content Include="core\libs\smart-table\sortable.js" />
     <Content Include="core\client.js" />
+    <Content Include="core\Modernizr.min.js" />
     <Content Include="core\remoteAccess.js" />
     <Content Include="core\RTCMultiConnection.min.js" />
     <Content Include="core\screen.js" />
@@ -652,6 +653,7 @@
     <Content Include="Scripts\Mizutech\native\opx32.so" />
     <Content Include="Scripts\Mizutech\native\opx64.so" />
     <Content Include="Scripts\Mizutech\native\webrtcplugin.pkg" />
+    <Content Include="Views\Home\CustomShare.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

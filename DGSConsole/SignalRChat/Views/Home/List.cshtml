@@ -148,7 +148,16 @@
                 </thead>
                 <tbody>
                     <tr dir-paginate="row in userDisplayList | itemsPerPage:options.pagesize track by $index " current-page="options.page">
-                        <td ng-repeat="col in columns" ng-bind="row[col.field]"></td>
+                        <td ng-repeat="col in columns">
+                            <span ng-if="col.field=='Status'">
+                              <span ng-if="row['ConnectionIds'].length>0 && row['Status'] == 'Login'">Available</span>   
+                                <span ng-if="row['ConnectionIds'].length==0 && row['Status'] == 'Login'">Login but Not available</span>  
+                                <span ng-if="row['Status'] != 'Login'" ng-bind="row[col.field]"></span>  
+                            </span>
+                            <span ng-if="col.field!='Status'" ng-bind="row[col.field]">
+
+                            </span>
+                        </td>
                      
                        
                         <td>
