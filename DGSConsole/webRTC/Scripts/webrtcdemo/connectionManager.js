@@ -11,9 +11,26 @@ WebRTC API has been normalized using 'adapter.js'
 
 ************************************************/
 WebRtcDemo.ConnectionManager = (function () {
+    //var stun_server = {
+    //    urls: 'stun:844a960f.ngrok.io'
+    //};
+
+    // or TURN
+    var turn_server = {
+        urls: 'turn:844a960f.ngrok.io',
+        credential: 'admin',
+        username: 'aisha'
+    };
+
+    var _iceServers = [ turn_server];
+    var rtcPeerConfig = {
+        iceTransports: 'all',
+        iceServers: _iceServers
+    };
     var _signaler,
         _connections = {},
-        _iceServers = [{ url: 'stun:74.125.142.127:19302' }], // stun.l.google.com - Firefox does not support DNS names.
+
+      //  _iceServers = [{ url: 'stun:74.125.142.127:19302' }], // stun.l.google.com - Firefox does not support DNS names.
 
         /* Callbacks */
         _onReadyForStreamCallback = function () { console.log('UNIMPLEMENTED: _onReadyForStreamCallback'); },
@@ -35,17 +52,19 @@ WebRtcDemo.ConnectionManager = (function () {
 
             // Create a new PeerConnection
             var connection = new RTCPeerConnection({ iceServers: _iceServers });
-
+            console.log("using ice server" + _iceServers + "using peer connection" + connection);
             // ICE Candidate Callback
             connection.onicecandidate = function (event) {
-                if (event.candidate) {
-                    // Found a new candidate
-                    console.log('WebRTC: new ICE candidate');
-                    _signaler.sendSignal(JSON.stringify({ "candidate": event.candidate }), partnerClientId);
-                } else {
-                    // Null candidate means we are done collecting candidates.
-                    console.log('WebRTC: ICE candidate gathering complete');
-                }
+                try{
+                    if (event.candidate) {
+                        // Found a new candidate
+                        console.log('WebRTC: new ICE candidate');
+                        _signaler.sendSignal(JSON.stringify({ "candidate": event.candidate }), partnerClientId);
+                    } else {
+                        // Null candidate means we are done collecting candidates.
+                        console.log('WebRTC: ICE candidate gathering complete');
+                    }}
+                catch (e) { console.error(e);}
             };
 
             // State changing
@@ -85,7 +104,7 @@ WebRtcDemo.ConnectionManager = (function () {
         _receivedSdpSignal = function (connection, partnerClientId, sdp) {
             console.log('WebRTC: processing sdp signal');
             connection.setRemoteDescription(new RTCSessionDescription(sdp), function () {
-                if (connection.remoteDescription.type == "offer") {
+                if (connection.remoteDescription.type == "offer") { 
                     console.log('WebRTC: received offer, sending response...');
                     _onReadyForStreamCallback(connection);
                     connection.createAnswer(function (desc) {
